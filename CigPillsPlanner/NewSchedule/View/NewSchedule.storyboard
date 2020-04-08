@@ -9,7 +9,7 @@
         <!--New Schedule Table View Controller-->
         <scene sceneID="2Vw-qF-Nxl">
             <objects>
-                <tableViewController storyboardIdentifier="NewScheduleTableViewController" id="dgA-PF-LoN" customClass="NewScheduleTableViewController" customModule="Cig_n_Pills_Planner" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NewScheduleTableViewController" id="dgA-PF-LoN" customClass="NewScheduleTableViewController" customModule="CigPillsPlanner" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="pq4-IK-YBe">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -175,13 +175,15 @@
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Eo-EL-pWd">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="140" id="I4B-Fd-1ph"/>
+                                                    </constraints>
                                                 </pickerView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="5Eo-EL-pWd" secondAttribute="trailing" id="FQu-Qq-Lap"/>
-                                                <constraint firstItem="5Eo-EL-pWd" firstAttribute="top" secondItem="JPy-AP-Eui" secondAttribute="top" id="Gfk-8k-qdt"/>
-                                                <constraint firstAttribute="bottom" secondItem="5Eo-EL-pWd" secondAttribute="bottom" id="gYo-db-kBt"/>
-                                                <constraint firstItem="5Eo-EL-pWd" firstAttribute="leading" secondItem="JPy-AP-Eui" secondAttribute="leading" id="uvV-Sl-gdw"/>
+                                                <constraint firstItem="5Eo-EL-pWd" firstAttribute="leading" secondItem="JPy-AP-Eui" secondAttribute="leading" id="Czy-fd-3J8"/>
+                                                <constraint firstAttribute="trailing" secondItem="5Eo-EL-pWd" secondAttribute="trailing" id="KST-ap-Ves"/>
+                                                <constraint firstItem="5Eo-EL-pWd" firstAttribute="centerY" secondItem="JPy-AP-Eui" secondAttribute="centerY" id="oot-g1-g0Y"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -264,11 +266,13 @@
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="300" minuteInterval="5" style="wheels" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpk-Hm-ldz">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="140" id="Y0C-9b-MfZ"/>
+                                                    </constraints>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="tpk-Hm-ldz" firstAttribute="top" secondItem="6Ck-O2-elc" secondAttribute="top" id="13P-He-bDy"/>
-                                                <constraint firstAttribute="bottom" secondItem="tpk-Hm-ldz" secondAttribute="bottom" id="fdN-XE-Db7"/>
+                                                <constraint firstItem="tpk-Hm-ldz" firstAttribute="centerY" secondItem="6Ck-O2-elc" secondAttribute="centerY" id="86o-9d-jVb"/>
                                                 <constraint firstAttribute="trailing" secondItem="tpk-Hm-ldz" secondAttribute="trailing" id="h5f-ZD-qbf"/>
                                                 <constraint firstItem="tpk-Hm-ldz" firstAttribute="leading" secondItem="6Ck-O2-elc" secondAttribute="leading" id="sVT-2y-4wq"/>
                                             </constraints>
@@ -375,13 +379,15 @@
                                             <subviews>
                                                 <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3wK-BD-RCk">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="140" id="Bfk-HJ-es9"/>
+                                                    </constraints>
                                                 </pickerView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="3wK-BD-RCk" firstAttribute="centerY" secondItem="kDu-7F-Gc8" secondAttribute="centerY" id="J7Z-Wy-5sp"/>
                                                 <constraint firstItem="3wK-BD-RCk" firstAttribute="leading" secondItem="kDu-7F-Gc8" secondAttribute="leading" id="mIs-FT-Ica"/>
-                                                <constraint firstItem="3wK-BD-RCk" firstAttribute="top" secondItem="kDu-7F-Gc8" secondAttribute="top" id="nHw-1a-z58"/>
                                                 <constraint firstAttribute="trailing" secondItem="3wK-BD-RCk" secondAttribute="trailing" id="q9L-qt-lzg"/>
-                                                <constraint firstAttribute="bottom" secondItem="3wK-BD-RCk" secondAttribute="bottom" id="xwR-0j-kAD"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AddNewSheduleTableDelegate: class {
+protocol NewScheduleDelegate: class {
     func addDidFinish(_ addNewSheduleTable: NewScheduleTableViewController)
     func addDidCancel(_ addNewSheduleTable: NewScheduleTableViewController)
 }
@@ -74,19 +74,16 @@ class NewScheduleTableViewController: UITableViewController {
     
     private var limitCellIsSelect = false {
         willSet {
-            limitPicker.isHidden = limitCellIsSelect
             setValueToPicker(row: limitLabels[1].text)
         }
     }
     private var intervalCellIsSelect = false {
         willSet {
-            intervalPicker.isHidden = intervalCellIsSelect
             setIntervalToIntervalPicker()
         }
     }
     private var reduceCellIsSelect = false {
         willSet {
-            reducePicker.isHidden = reduceCellIsSelect
             setValueToPicker(row: reduceLabels[0].text, second: reduceLabels[3].text)
         }
     }
@@ -104,7 +101,7 @@ class NewScheduleTableViewController: UITableViewController {
     private var interval: TimeInterval? = 300
     private var reduce = (1, 1)
     
-    var model: CigaretteSheduleModel!
+    var model: CigaretteScheduleModel!
     
 
 // MARK: - Scenario
@@ -124,7 +121,7 @@ class NewScheduleTableViewController: UITableViewController {
 // MARK: - Delegate
     
     
-    weak var delegate: AddNewSheduleTableDelegate?
+    weak var delegate: NewScheduleDelegate?
         
 // MARK: - Life cycle
     
@@ -354,13 +351,13 @@ extension NewScheduleTableViewController {
             let pack = try getPack()
             switch scenario {
             case .accountingOnly:
-                model = CigaretteSheduleModel(pack: pack, scenario: scenario)
+                model = CigaretteScheduleModel(pack: pack, scenario: scenario)
             case .withInterval:
-                model = CigaretteSheduleModel(pack: pack, interval: interval, scenario: scenario)
+                model = CigaretteScheduleModel(pack: pack, scenario: scenario, interval: interval)
             case .withLimitAndReduce:
-                model = CigaretteSheduleModel(pack: pack, perDay: limit, reduce: reduce, scenario: scenario)
+                model = CigaretteScheduleModel(pack: pack, scenario: scenario, limit: limit, reduce: reduce)
             case .withLimitAndIntervalAndReduce:
-                model = CigaretteSheduleModel(pack: pack, perDay: limit, interval: interval, reduce: reduce, scenario: scenario)
+                model = CigaretteScheduleModel(pack: pack, scenario: scenario, limit: limit, interval: interval, reduce: reduce)
             }
             delegate?.addDidFinish(self)
         } catch Errors.wrongPrice {
@@ -417,7 +414,7 @@ extension NewScheduleTableViewController {
         guard let packSize = packSize else {
             throw Errors.haveNoPackSize
         }
-        return PackModel(mark: mark, price: price, piecesInPack: packSize)
+        return PackModel(mark: mark, price: price, perPack: packSize)
     }
     
 }

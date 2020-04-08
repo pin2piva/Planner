@@ -8,9 +8,9 @@
 
 import Foundation
 
-enum Scenario {
-    case accountingOnly // только учет
-    case withLimitAndReduce // фиксированное количество
-    case withInterval // через заданные промежутки времени
-    case withLimitAndIntervalAndReduce
+enum Scenario: String {
+    case accountingOnly = "Accounting only" // только учет
+    case withLimitAndReduce = "Accounting with limit and reduce" // фиксированное количество
+    case withInterval = "Accounting with interval" // через заданные промежутки времени
+    case withLimitAndIntervalAndReduce = "Accounting with limit, interval and reduce"
 }

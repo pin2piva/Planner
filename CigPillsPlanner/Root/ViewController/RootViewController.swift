@@ -81,11 +81,10 @@ class RootViewController: UIViewController {
 }
 
 
-extension RootViewController: AddNewSheduleTableDelegate {
+extension RootViewController: NewScheduleDelegate {
     
     func addDidFinish(_ addNewSheduleTable: NewScheduleTableViewController) {
-        mainController.storage.counter.insert(addNewSheduleTable.model, at: 0)
-        mainController.tableView.reloadData()
+        mainController.workWithCigaretteCounter(addNewSheduleTable.model)
         navController.dismiss(animated: true)
     }
     

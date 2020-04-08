@@ -7,9 +7,18 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct PackModel {
-    var mark: String
-    var price: Float
-    var piecesInPack: Int
+class PackModel: Object {
+    @objc dynamic var mark: String = ""
+    @objc dynamic var price: Float = 0
+    @objc dynamic var piecesInPack: Int = 0
+    
+    convenience init(mark: String, price: Float, perPack: Int) {
+        self.init()
+        self.mark = mark
+        self.price = price
+        self.piecesInPack = perPack
+    }
+    
 }

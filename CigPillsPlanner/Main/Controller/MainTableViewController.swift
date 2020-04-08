@@ -7,22 +7,23 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainTableViewController: UITableViewController {
     
     private var breakingButton: UIButton!
-    
-    var storage = CigaretteSheduleStorageModel()
+    private var objects: Results<CigaretteCounterModel>!
+    private var counterModel: CigaretteCounterModel!
         
 // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.register(UINib(nibName: "CigAccountingCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        checkHaveCounterModelInDB()
+        tableView.register(UINib(nibName: "CigaretteAccountingCell", bundle: nil), forCellReuseIdentifier: "Cell")
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddNew)), animated: true)
-        
         createButton()
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -42,16 +43,34 @@ class MainTableViewController: UITableViewController {
     }
     
     private func breakingButtonEnabling() {
-        if storage.counter.isEmpty {
+        if counterModel.counter.isEmpty {
             breakingButton.isEnabled = false
         } else {
             breakingButton.isEnabled = true
         }
     }
     
+    private func checkHaveCounterModelInDB() {
+        guard let objects = DataManager.shared.retrieveCigCounterFromDataBase() else {
+            print("что-то с базой данных. Не сработал мето \(#function)")
+            return
+        }
+        self.objects = objects
+        guard objects.count != 0 else {
+            counterModel = CigaretteCounterModel()
+            DataManager.shared.saveObject(counterModel)
+            return
+        }
+        counterModel = objects.first!
+    }
+    
+    func workWithCigaretteCounter(_ model: CigaretteScheduleModel) {
+        DataManager.shared.insertNewObject(counterModel, model: model)
+        tableView.reloadData()
+    }
+    
     @objc private func increaceCount() {
-        storage.counter[0].lastReception = Date()
-        storage.counter[0].counter += 1
+        DataManager.shared.updateCountInObject(cigCounter: counterModel)
         tableView.reloadData()
     }
     
@@ -62,12 +81,12 @@ class MainTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return storage.counter.count
+        return counterModel.counter.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CigaretteCellProtocol
-        cell.setValues(storage, indexPath: indexPath)
+        cell.setValues(counterModel, indexPath: indexPath)
         return cell as! UITableViewCell
     }
     
@@ -77,6 +96,13 @@ class MainTableViewController: UITableViewController {
         AppDelegate.shared.rootViewController.showTabBarViewController()
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            DataManager.shared.deleteCigSchedule(objects[0], indexPath: indexPath)
+            self.tableView.deleteRows(at: [indexPath], with: .left)
+        }
+    }
+    
 // MARK: - @obcj private methods
     
     @objc private func showAddNew() {
@@ -84,3 +110,4 @@ class MainTableViewController: UITableViewController {
     }
 
 }
+

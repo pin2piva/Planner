@@ -7,61 +7,48 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct CigaretteSheduleModel {
-    
-//    enum WhatDate {
-//        case current
-//        case reception
-//        case next
-//    }
+class CigaretteScheduleModel: Object {
+
     
 // MARK: - Properties
     
-    var pack: PackModel
-    var perDay: Int?
-    var interval: TimeInterval?
-    var reduce: (Int, Int)
+    @objc dynamic var pack: PackModel?
+    @objc dynamic var scenario: String = "Accounting only"
     
-    let currentDate: Date = Date()
-    var counter: Int = 0 {
-        didSet {
-            guard let perDay = perDay else { return }
-            if counter == perDay {
-                print("Вы выкурили запланированное количество сигарет")
-            } else if counter > perDay {
-                print("Вы превысили установленную норму в \(perDay)")
-            }
-        }
-    }
-    var firstReception: Date?
-    var lastReception: Date?
-    let scenario: Scenario
+    var limit = RealmOptional<Int>()
     
-// MARK: - Initializators
+    var interval = RealmOptional<Double>()
     
-    init(pack: PackModel, perDay: Int? = nil, interval: TimeInterval? = nil, reduce: (Int, Int) = (0, 0), scenario: Scenario) {
+    @objc dynamic var reduceCig: Int = 0
+    @objc dynamic var reducePerDay: Int = 0
+    
+    @objc dynamic var counter: Int = 0
+    
+    @objc dynamic var currentDate = Date()
+    
+    @objc dynamic var firstReception: Date? = nil
+    @objc dynamic var lastReception: Date? = nil
+    
+    convenience init(pack: PackModel, scenario: Scenario, limit: Int? = nil, interval: TimeInterval? = nil, reduce: (Int, Int) = (0, 0)) {
+        self.init()
         self.pack = pack
-        self.perDay = perDay
-        self.interval = interval
-        self.reduce = reduce
-        self.scenario = scenario
+        self.scenario = scenario.rawValue
+        if let limit = limit {
+            self.limit = RealmOptional(limit)
+        }
+        if let interval = interval {
+            self.interval = RealmOptional(interval)
+        }
+        self.reduceCig = reduce.0
+        self.reducePerDay = reduce.1
     }
+    
     
 // MARK: - Func
     
-    mutating func increaseCount() {
-        setReception()
-        counter += 1
-    }
 
-    private mutating func setReception() {
-        if counter == 0 && firstReception == nil {
-            firstReception = Date()
-        } else if counter > 0 && firstReception != nil {
-            lastReception = Date()
-        }
-    }
 //
 //    func getDateString(date: WhatDate) -> String? {
 //        switch date {

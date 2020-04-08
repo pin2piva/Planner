@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CigaretteCellProtocol {
-    func setValues(_ storage: CigaretteSheduleStorageModel, indexPath: IndexPath)
+    func setValues(_ storage: CigaretteCounterModel, indexPath: IndexPath)
 }
 
 class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
@@ -33,19 +33,19 @@ class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
         // Configure the view for the selected state
     }
     
-    func setValues(_ storage: CigaretteSheduleStorageModel, indexPath: IndexPath) {
+    func setValues(_ storage: CigaretteCounterModel, indexPath: IndexPath) {
         let element = storage.counter[indexPath.row]
-        let currentMark = element.pack.mark
+        let currentMark = element.pack!.mark
         mark.text = currentMark
-        price.text = "\(element.pack.price)"
-        
+        price.text = "\(element.pack!.price)"
+
         lastTimeDynamicDelta(lastTime: element.lastReception)
         
-        let totalCountInt = storage.counter.reduce(0, { $0 + $1.counter })
-        let markCountInt = storage.counter.filter({ $0.pack.mark == currentMark }).reduce(0, { $0 + $1.counter })
+        
+        let markCountInt = storage.counter.enumerated().filter({ $0.offset >= indexPath.row && $0.element.pack?.mark == currentMark }).reduce(0, { $0 + $1.element.counter })
         
         markCount.text = String(markCountInt)
-        totalCount.text = String(totalCountInt)
+        totalCount.text = String(storage.totalCount)
     }
     
     private func lastTimeDynamicDelta(lastTime: Date?) {
@@ -53,7 +53,6 @@ class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
             guard let lastTime = lastTime else {
                 timer.invalidate()
-                print("timer invalidated")
                 return
             }
             self?.lastTime.text = DateManager.shared.differenceBetweenNow(and: lastTime)

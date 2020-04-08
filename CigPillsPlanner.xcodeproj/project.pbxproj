@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,7 +12,6 @@
 		91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE3D243CA36E00516C35 /* RootViewController.swift */; };
 		91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE47243CA58900516C35 /* SplashViewController.swift */; };
 		91C5EE4E243CA61A00516C35 /* CigaretteCounterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE4D243CA61A00516C35 /* CigaretteCounterModel.swift */; };
-		91C5EE50243CA64900516C35 /* AllSchedulesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE4F243CA64900516C35 /* AllSchedulesModel.swift */; };
 		91C5EE52243CA66900516C35 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE51243CA66900516C35 /* MainTableViewController.swift */; };
 		91C5EE5D243CA75E00516C35 /* PackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE5C243CA75E00516C35 /* PackModel.swift */; };
 		91C5EE5F243CA77B00516C35 /* CigaretteScheduleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE5E243CA77B00516C35 /* CigaretteScheduleModel.swift */; };
@@ -29,6 +28,7 @@
 		91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */; };
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
 		91C5EE85243CABBD00516C35 /* NewSchedule.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */; };
+		91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DataManager.swift */; };
 		D9ECCC80B04CF0C1B7756FAC /* Pods_CigPillsPlanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */; };
 /* End PBXBuildFile section */
 
@@ -41,7 +41,6 @@
 		91C5EE3D243CA36E00516C35 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		91C5EE47243CA58900516C35 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		91C5EE4D243CA61A00516C35 /* CigaretteCounterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteCounterModel.swift; sourceTree = "<group>"; };
-		91C5EE4F243CA64900516C35 /* AllSchedulesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSchedulesModel.swift; sourceTree = "<group>"; };
 		91C5EE51243CA66900516C35 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		91C5EE5C243CA75E00516C35 /* PackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackModel.swift; sourceTree = "<group>"; };
 		91C5EE5E243CA77B00516C35 /* CigaretteScheduleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteScheduleModel.swift; sourceTree = "<group>"; };
@@ -58,6 +57,7 @@
 		91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteAccountingCell.swift; sourceTree = "<group>"; };
 		91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteAccountingCell.xib; sourceTree = "<group>"; };
 		91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewSchedule.storyboard; sourceTree = "<group>"; };
+		91EB1572243DB3D900B5E75D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CigPillsPlanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CigPillsPlanner.debug.xcconfig"; path = "Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -206,7 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				91C5EE4D243CA61A00516C35 /* CigaretteCounterModel.swift */,
-				91C5EE4F243CA64900516C35 /* AllSchedulesModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -339,6 +338,7 @@
 		91C5EE7D243CAAA600516C35 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				91EB1572243DB3D900B5E75D /* DataManager.swift */,
 				91C5EE77243CA9DE00516C35 /* DateManager.swift */,
 				91C5EE79243CA9FA00516C35 /* AlertManager.swift */,
 				91C5EE7B243CAA1E00516C35 /* ErrorManager.swift */,
@@ -471,6 +471,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */,
+				91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */,
 				91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */,
 				91C5EE5D243CA75E00516C35 /* PackModel.swift in Sources */,
 				91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */,
@@ -488,7 +489,6 @@
 				91C5EE65243CA83100516C35 /* TabBarController.swift in Sources */,
 				91C5EE52243CA66900516C35 /* MainTableViewController.swift in Sources */,
 				91C5EE75243CA9B500516C35 /* HaveTabBarItem.swift in Sources */,
-				91C5EE50243CA64900516C35 /* AllSchedulesModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

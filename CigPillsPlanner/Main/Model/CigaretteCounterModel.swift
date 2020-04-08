@@ -7,20 +7,18 @@
 //
 
 import Foundation
+import RealmSwift
 
-class CigaretteSheduleStorageModel {
+class CigaretteCounterModel: Object {
     
-    var counter = [CigaretteSheduleModel]()
-    var startDate: Date = Date()
-    
-    func getTotalCount() -> Int {
-        guard counter.count > 0 else { return 0 }
-        return counter.reduce(0, { $0 + $1.counter })
-    }
-    
-    func getTotalPrice() -> Float {
-        guard counter.count > 0 else { return 0 }
-        return counter.reduce(0, { $0 + $1.pack.price * Float($1.counter) / Float($1.pack.piecesInPack) })
-    }
-    
+    let counter = List<CigaretteScheduleModel>()
+    @objc dynamic var startDate = Date()
+    @objc dynamic var totalCount: Int = 0
+//    @objc dynamic var markCount: Data? = nil
+//
 }
+//
+//class MarkCounter: Object {
+//    @objc dynamic var mark: String = ""
+//    @objc dynamic var count: Int = 0
+//}
