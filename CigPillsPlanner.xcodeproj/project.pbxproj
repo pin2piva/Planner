@@ -29,10 +29,12 @@
 		91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */; };
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
 		91C5EE85243CABBD00516C35 /* NewSchedule.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */; };
+		D9ECCC80B04CF0C1B7756FAC /* Pods_CigPillsPlanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		91C5EE24243CA2CC00516C35 /* Cig'n'Pills Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cig'n'Pills Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EC5D5B9AE74923AE7BD0F68 /* Pods-CigPillsPlanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CigPillsPlanner.release.xcconfig"; path = "Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner.release.xcconfig"; sourceTree = "<group>"; };
+		91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CigPillsPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C5EE27243CA2CC00516C35 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C5EE30243CA2CD00516C35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91C5EE35243CA2CD00516C35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -56,6 +58,8 @@
 		91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteAccountingCell.swift; sourceTree = "<group>"; };
 		91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteAccountingCell.xib; sourceTree = "<group>"; };
 		91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewSchedule.storyboard; sourceTree = "<group>"; };
+		A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CigPillsPlanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CigPillsPlanner.debug.xcconfig"; path = "Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,29 +67,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9ECCC80B04CF0C1B7756FAC /* Pods_CigPillsPlanner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D0FA9206D195D2F74A98F95 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		91C5EE1B243CA2CB00516C35 = {
 			isa = PBXGroup;
 			children = (
-				91C5EE26243CA2CC00516C35 /* Cig'n'Pills Planner */,
+				91C5EE26243CA2CC00516C35 /* CigPillsPlanner */,
 				91C5EE25243CA2CC00516C35 /* Products */,
+				DB85E2961235EC41ECCD295C /* Pods */,
+				4D0FA9206D195D2F74A98F95 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		91C5EE25243CA2CC00516C35 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE24243CA2CC00516C35 /* Cig'n'Pills Planner.app */,
+				91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		91C5EE26243CA2CC00516C35 /* Cig'n'Pills Planner */ = {
+		91C5EE26243CA2CC00516C35 /* CigPillsPlanner */ = {
 			isa = PBXGroup;
 			children = (
 				91C5EE3B243CA30400516C35 /* Root */,
@@ -101,7 +116,7 @@
 				91C5EE76243CA9C700516C35 /* Protocols */,
 				91C5EE7D243CAAA600516C35 /* Managers */,
 			);
-			path = "Cig'n'Pills Planner";
+			path = CigPillsPlanner;
 			sourceTree = "<group>";
 		};
 		91C5EE3B243CA30400516C35 /* Root */ = {
@@ -331,24 +346,35 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		DB85E2961235EC41ECCD295C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */,
+				7EC5D5B9AE74923AE7BD0F68 /* Pods-CigPillsPlanner.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		91C5EE23243CA2CC00516C35 /* Cig'n'Pills Planner */ = {
+		91C5EE23243CA2CC00516C35 /* CigPillsPlanner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 91C5EE38243CA2CD00516C35 /* Build configuration list for PBXNativeTarget "Cig'n'Pills Planner" */;
+			buildConfigurationList = 91C5EE38243CA2CD00516C35 /* Build configuration list for PBXNativeTarget "CigPillsPlanner" */;
 			buildPhases = (
+				B91B07F4A0BC2410002340D4 /* [CP] Check Pods Manifest.lock */,
 				91C5EE20243CA2CC00516C35 /* Sources */,
 				91C5EE21243CA2CC00516C35 /* Frameworks */,
 				91C5EE22243CA2CC00516C35 /* Resources */,
+				3626794169A63DFDDA25CEB4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "Cig'n'Pills Planner";
+			name = CigPillsPlanner;
 			productName = "Cig'n'Pills Planner";
-			productReference = 91C5EE24243CA2CC00516C35 /* Cig'n'Pills Planner.app */;
+			productReference = 91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -366,7 +392,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 91C5EE1F243CA2CC00516C35 /* Build configuration list for PBXProject "Cig'n'Pills Planner" */;
+			buildConfigurationList = 91C5EE1F243CA2CC00516C35 /* Build configuration list for PBXProject "CigPillsPlanner" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -379,7 +405,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				91C5EE23243CA2CC00516C35 /* Cig'n'Pills Planner */,
+				91C5EE23243CA2CC00516C35 /* CigPillsPlanner */,
 			);
 		};
 /* End PBXProject section */
@@ -396,6 +422,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3626794169A63DFDDA25CEB4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B91B07F4A0BC2410002340D4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CigPillsPlanner-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		91C5EE20243CA2CC00516C35 /* Sources */ = {
@@ -543,11 +611,12 @@
 		};
 		91C5EE39243CA2CD00516C35 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 583KZML67D;
-				INFOPLIST_FILE = "$(SRCROOT)/Cig'n'Pills Planner/SupportingFiles/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/CigPillsPlanner/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -556,17 +625,18 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "pin2piva.Cig-n-Pills-Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		91C5EE3A243CA2CD00516C35 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EC5D5B9AE74923AE7BD0F68 /* Pods-CigPillsPlanner.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 583KZML67D;
-				INFOPLIST_FILE = "$(SRCROOT)/Cig'n'Pills Planner/SupportingFiles/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/CigPillsPlanner/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -575,14 +645,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "pin2piva.Cig-n-Pills-Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		91C5EE1F243CA2CC00516C35 /* Build configuration list for PBXProject "Cig'n'Pills Planner" */ = {
+		91C5EE1F243CA2CC00516C35 /* Build configuration list for PBXProject "CigPillsPlanner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91C5EE36243CA2CD00516C35 /* Debug */,
@@ -591,7 +661,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		91C5EE38243CA2CD00516C35 /* Build configuration list for PBXNativeTarget "Cig'n'Pills Planner" */ = {
+		91C5EE38243CA2CD00516C35 /* Build configuration list for PBXNativeTarget "CigPillsPlanner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91C5EE39243CA2CD00516C35 /* Debug */,
