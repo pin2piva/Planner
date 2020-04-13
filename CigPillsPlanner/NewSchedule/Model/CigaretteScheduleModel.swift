@@ -50,7 +50,7 @@ class CigaretteScheduleModel: Object {
         }
         schedule.reduceCig = reduce.0
         schedule.reducePerDay = reduce.1
-        schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd" }
+        schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
         DataManager.shared.add(schedule)
     }
     

@@ -11,8 +11,9 @@ import RealmSwift
 
 class MainTableViewController: UITableViewController {
     
-    private var breakingButton: UIButton!
     private var schedules: Results<CigaretteScheduleModel>!
+    private var markCounter: Results<MarkCounter>!
+    private var breakingButton: UIButton!
     private var timer: Timer?
     
     
@@ -57,6 +58,21 @@ class MainTableViewController: UITableViewController {
         AppDelegate.shared.rootViewController.showTabBarViewController()
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.row == 0 {
+            return false
+        }
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let schedule = schedules[indexPath.row]
+            DataManager.shared.deleteYesterdaySchedule(schedule)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
     
     // MARK: - Private methods
     
@@ -97,7 +113,7 @@ class MainTableViewController: UITableViewController {
     }
     
     private func checkTodaySchedule(_ completion: (() -> Void)? = nil) {
-        let currentDateString = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd" }
+        let currentDateString = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
         if let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString {
             DataManager.shared.updateToYesterday(schedule: lastShedule)
             createCurrentScheduleWithLastProperties(from: lastShedule)
@@ -108,7 +124,7 @@ class MainTableViewController: UITableViewController {
     
     private func checkTodayScheduleWhenAppRun() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { [unowned self] (timer) in
+        timer = Timer.scheduledTimer(withTimeInterval: 40, repeats: true, block: { [unowned self] (timer) in
             self.checkTodaySchedule() { [unowned self] in
                 self.tableView.reloadData()
             }
@@ -134,7 +150,7 @@ class MainTableViewController: UITableViewController {
     // MARK: - @obcj private methods
     
     @objc private func editCurrentSchedule() {
-        let currentDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd" }
+        let currentDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
         let currentSchedule = schedules.filter({ $0.currentStringDate == currentDate }).first
         AppDelegate.shared.rootViewController.showAddNewSheduleController(currentSchedule)
     }

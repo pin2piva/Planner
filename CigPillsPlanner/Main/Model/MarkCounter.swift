@@ -15,6 +15,14 @@ class MarkCounter: Object {
     @objc dynamic var mark: String = ""
     let counter = List<Count>()
     
+    func createMarkCounter(mark: String, price: Float) {
+        let markCounter = MarkCounter()
+        markCounter.mark = mark
+        let count = Count()
+        count.price = String(price)
+        markCounter.counter.append(count)
+    }
+    
     override class func primaryKey() -> String? {
         return "mark"
     }

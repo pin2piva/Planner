@@ -39,7 +39,8 @@ class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
         
         mark.text = schedule.mark
         price.text = "\(String(describing: schedule.price))"
-        lastTime(lastTime: schedule.lastTimeSmoke, isToday: schedule.isToday)
+        lastTime.text = schedule.currentStringDate
+//        lastTime(lastTime: schedule.lastTimeSmoke, isToday: schedule.isToday)
         
 //        let markCount = markCounter.count?.markCount
 //        let totalCount = markCounter

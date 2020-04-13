@@ -44,9 +44,7 @@ class DataManager {
     
     func updateToYesterday(schedule: CigaretteScheduleModel) {
         try! realm.write {
-            
-                schedule.isToday = false
-            
+            schedule.isToday = false
         }
     }
     
