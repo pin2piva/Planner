@@ -13,8 +13,10 @@ class CigaretteScheduleModel: Object {
 
     
 // MARK: - Properties
+    @objc dynamic var mark: String = ""
+    @objc dynamic var price: Float = 0
+    @objc dynamic var packSize: Int = 0
     
-    @objc dynamic var pack: PackModel?
     @objc dynamic var scenario: String = "Accounting only"
     
     var limit = RealmOptional<Int>()
@@ -24,60 +26,55 @@ class CigaretteScheduleModel: Object {
     @objc dynamic var reduceCig: Int = 0
     @objc dynamic var reducePerDay: Int = 0
     
-    @objc dynamic var counter: Int = 0
+    @objc dynamic var count: Int = 0
     
-    @objc dynamic var currentDate = Date()
+    @objc dynamic var isToday = true
+    @objc dynamic var currentStringDate: String = ""
     
-    @objc dynamic var firstReception: Date? = nil
-    @objc dynamic var lastReception: Date? = nil
+    @objc dynamic var lastTimeSmoke: Date? = nil
     
-    convenience init(pack: PackModel, scenario: Scenario, limit: Int? = nil, interval: TimeInterval? = nil, reduce: (Int, Int) = (0, 0)) {
-        self.init()
-        self.pack = pack
-        self.scenario = scenario.rawValue
+    
+// MARK: - init
+    
+    func createNewSchedule(mark: String, price: Float, packSize: Int, scenario: String, limit: Int? = nil, interval: TimeInterval? = nil, reduce: (Int, Int) = (0, 0)) {
+        let schedule = CigaretteScheduleModel()
+        schedule.mark = mark
+        schedule.price = price
+        schedule.packSize = packSize
+        schedule.scenario = scenario
         if let limit = limit {
-            self.limit = RealmOptional(limit)
+            schedule.limit = RealmOptional(limit)
         }
         if let interval = interval {
-            self.interval = RealmOptional(interval)
+            schedule.interval = RealmOptional(interval)
         }
-        self.reduceCig = reduce.0
-        self.reducePerDay = reduce.1
+        schedule.reduceCig = reduce.0
+        schedule.reducePerDay = reduce.1
+        schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd" }
+        DataManager.shared.add(schedule)
     }
     
+
+// MARK: - Internal methods
     
-// MARK: - Func
+    func increaceCount() {
+        self.count += 1
+        DataManager.shared.add(self)
+    }
+    
+    func isTomorrow() {
+        if isToday {
+            isToday = false
+        }
+        DataManager.shared.add(self)
+    }
     
 
-//
-//    func getDateString(date: WhatDate) -> String? {
-//        switch date {
-//        case .current:
-//            return getDateFormatter({ "dd.MM.yyyy HH:mm" }).string(from: currentDate)
-//        case .reception:
-//            guard let reception = firstReception else { return nil }
-//            return getDateFormatter({ "HH:mm" }).string(from: reception)
-//        case .next:
-//            return getDateFormatter({ "HH:mm" }).string(from: getNextTime(after: "02:00"))
-//        }
-//
-//    }
-//
-//    private func getDateFormatter(_ format: () -> String) -> DateFormatter {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.locale = Locale.current
-//        dateFormatter.timeZone = TimeZone.current
-//        dateFormatter.dateFormat = format()
-//        return dateFormatter
-//    }
-//
-//    func getNextTime(after interval: String) -> Date {
-//        let dateFormatter = getDateFormatter({ "HH:mm" })
-//        let intervalDate = dateFormatter.date(from: interval)
-//        let components = Calendar.current.dateComponents([.hour, .minute], from: intervalDate!)
-//        let newDate = dateFormatter.calendar.date(byAdding: components, to: counter == 1 ? firstReception! : lastReception!)
-//        return newDate!
-//    }
+// MARK: - Primary Key
+    
+    override class func primaryKey() -> String? {
+        return "currentStringDate"
+    }
     
 }
 

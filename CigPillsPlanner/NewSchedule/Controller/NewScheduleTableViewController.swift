@@ -9,13 +9,13 @@
 import UIKit
 
 protocol NewScheduleDelegate: class {
-    func addDidFinish(_ addNewSheduleTable: NewScheduleTableViewController)
-    func addDidCancel(_ addNewSheduleTable: NewScheduleTableViewController)
+    func addDidFinish()
+    func addDidCancel()
 }
 
 class NewScheduleTableViewController: UITableViewController {
     
-// MARK: - Text field section
+    // MARK: - Text field section
     
     @IBOutlet private var textFields: [UITextField]! {
         didSet {
@@ -23,7 +23,7 @@ class NewScheduleTableViewController: UITableViewController {
         }
     }
     
-// MARK: - Limit section
+    // MARK: - Limit section
     
     @IBOutlet private weak var limitSwitch: UISwitch!
     @IBOutlet private weak var limitCell: UITableViewCell!
@@ -36,7 +36,7 @@ class NewScheduleTableViewController: UITableViewController {
     }
     
     
-// MARK: - Interval section
+    // MARK: - Interval section
     
     @IBOutlet private weak var intervalSwitch: UISwitch!
     @IBOutlet private weak var intervalCell: UITableViewCell!
@@ -48,7 +48,7 @@ class NewScheduleTableViewController: UITableViewController {
     }
     
     
-// MARK: - Reduce section
+    // MARK: - Reduce section
     
     @IBOutlet private weak var reduceSwitch: UISwitch!
     @IBOutlet private weak var reduceCell: UITableViewCell!
@@ -61,16 +61,32 @@ class NewScheduleTableViewController: UITableViewController {
     }
     
     
+    // MARK: - Private properties
     
-// MARK: - Private properties
+    private var saveButton: UIBarButtonItem!
+    private var schedule: CigaretteScheduleModel!
     
-    var saveButton: UIBarButtonItem!
-    
-    private let intervalFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter
-    }()
+    private var limitIsOn = false {
+        willSet {
+            if !newValue && viewIfLoaded != nil {
+                limitCellIsSelect = newValue
+            }
+        }
+    }
+    private var intervalIsOn = false {
+        willSet {
+            if !newValue && viewIfLoaded != nil {
+                intervalCellIsSelect = newValue
+            }
+        }
+    }
+    private var reduceIsOn = false {
+        willSet {
+            if !newValue && viewIfLoaded != nil {
+                reduceCellIsSelect = newValue
+            }
+        }
+    }
     
     private var limitCellIsSelect = false {
         willSet {
@@ -89,22 +105,85 @@ class NewScheduleTableViewController: UITableViewController {
     }
     
     private var hasChanges: Bool {
-        textFields.reduce(0, { $0 + $1.text!.count }) > 0
+        return fieldsHaveChanges()
     }
     
     
-// MARK: - Model properties
-    private var mark = ""
-    private var price: Float?
-    private var packSize: Int?
-    private var limit: Int? = 1
-    private var interval: TimeInterval? = 300
-    private var reduce = (1, 1)
+    // MARK: - Original properties
+    
+    private var originalMark = "" {
+        didSet {
+            editedMark = originalMark
+        }
+    }
+    private var originalPrice: Float = 0.0 {
+        didSet {
+            editedPrice = originalPrice
+        }
+    }
+    private var originalPackSize: Int = 0 {
+        didSet {
+            editedPackSize = originalPackSize
+        }
+    }
+    private var originalLimit: Int? = 1 {
+        didSet {
+            editedLimit = originalLimit
+        }
+    }
+    private var originalInterval: TimeInterval? = 300 {
+        didSet {
+            editedInterval = originalInterval
+        }
+    }
+    private var originalReduce: (Int, Int) = (1, 1) {
+        didSet {
+            editedReduce = originalReduce
+        }
+    }
+    
+    
+    // MARK: - Edited properties
+    
+    private var editedMark = "" {
+        didSet {
+            viewIfLoaded?.layoutIfNeeded()
+        }
+    }
+    private var editedPrice: Float = 0.0 {
+        didSet {
+            viewIfLoaded?.layoutIfNeeded()
+        }
+    }
+    private var editedPackSize: Int = 0 {
+        didSet {
+            viewIfLoaded?.layoutIfNeeded()
+        }
+    }
+    private var editedLimit: Int? = 1 {
+        didSet {
+            checkChangesInPickerValue()
+        }
+    }
+    private var editedInterval: TimeInterval? = 300 {
+        didSet {
+            checkChangesInPickerValue()
+        }
+    }
+    private var editedReduce = (1, 1) {
+        didSet {
+            checkChangesInPickerValue()
+        }
+    }
+    
+    
+    // MARK: - Internal properties
     
     var model: CigaretteScheduleModel!
     
-
-// MARK: - Scenario
+    
+    // MARK: - Scenario
+    
     lazy private var scenario: Scenario = {
         if !limitSwitch.isOn && !intervalSwitch.isOn && !reduceSwitch.isOn {
             return Scenario.accountingOnly
@@ -112,22 +191,29 @@ class NewScheduleTableViewController: UITableViewController {
             return Scenario.withLimitAndReduce
         } else if !limitSwitch.isOn && !reduceSwitch.isOn && intervalSwitch.isOn {
             return Scenario.withInterval
+        } else if limitSwitch.isOn && !reduceSwitch.isOn && !intervalSwitch.isOn {
+            return Scenario.withLimit
+        } else if limitSwitch.isOn && !reduceSwitch.isOn && intervalSwitch.isOn {
+            return Scenario.withLimitAndInterval
         } else {
             return Scenario.withLimitAndIntervalAndReduce
         }
     }()
     
     
-// MARK: - Delegate
-    
+    // MARK: - Delegate
     
     weak var delegate: NewScheduleDelegate?
-        
-// MARK: - Life cycle
+    var count = 0
+    
+    // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSaveButton()
+        setSelectionToSwitches()
+        setupBarButtonItems()
+        setValuesToFields()
+        
         title = "Add New Shedule"
     }
     
@@ -136,9 +222,9 @@ class NewScheduleTableViewController: UITableViewController {
         isModalInPresentation = hasChanges
         saveButton.isEnabled = hasChanges
     }
-
-
-// MARK: - Table view delegate
+    
+    
+    // MARK: - Table view delegate
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
@@ -198,7 +284,7 @@ class NewScheduleTableViewController: UITableViewController {
         tableUpdates()
     }
     
-// MARK: - IBActions
+    // MARK: - IBActions
     
     @IBAction func switchesAction(_ sender: UISwitch) {
         switch sender.tag {
@@ -226,12 +312,99 @@ class NewScheduleTableViewController: UITableViewController {
         tableUpdates()
     }
     
-// MARK: - Private methods
     
-    private func addSaveButton() {
+    // MARK: - Internal methods
+    
+    func setVaulesToOriginalProperties(from model: CigaretteScheduleModel) {
+        switch model.scenario {
+        case Scenario.accountingOnly.rawValue:
+            getSelection(false, false, false)
+        case Scenario.withInterval.rawValue:
+            originalInterval = model.interval.value
+            getSelection(false, true, false)
+        case Scenario.withLimitAndInterval.rawValue:
+            originalLimit = model.limit.value
+            originalInterval = model.interval.value
+            getSelection(true, true, false)
+        case Scenario.withLimit.rawValue:
+            originalLimit = model.limit.value
+            getSelection(true, false, false)
+        case Scenario.withLimitAndReduce.rawValue:
+            originalLimit = model.limit.value
+            originalReduce = (model.reduceCig, model.reducePerDay)
+            getSelection(true, false, true)
+        case Scenario.withLimitAndIntervalAndReduce.rawValue:
+            originalInterval = model.interval.value
+            originalLimit = model.limit.value
+            originalReduce = (model.reduceCig, model.reducePerDay)
+            getSelection(true, true, true)
+        default:
+            return
+        }
+        setRequiredValues(from: model)
+    }
+
+
+    
+    // MARK: - Private methods
+    
+    private func checkChangesInPickerValue() {
+        if (viewIfLoaded != nil) {
+            saveButton.isEnabled = hasChanges
+        }
+    }
+    
+    private func getSelection(_ limitIsOn: Bool, _ intervalIsOn: Bool, _ reduceIsOn: Bool) {
+        self.limitIsOn = limitIsOn
+        self.intervalIsOn = intervalIsOn
+        self.reduceIsOn = reduceIsOn
+    }
+    
+    private func setSelectionToSwitches() {
+        limitSwitch.setOn(limitIsOn, animated: true)
+        intervalSwitch.setOn(intervalIsOn, animated: true)
+        reduceSwitch.setOn(reduceIsOn, animated: true)
+    }
+    
+    private func setRequiredValues(from model: CigaretteScheduleModel) {
+        originalMark = model.mark
+        originalPrice = model.price
+        originalPackSize = model.packSize
+    }
+    
+    private func setValuesToFields() {
+    
+        textFields[0].text = originalMark
+        
+        if originalPrice != 0 {
+            textFields[1].text = String(originalPrice)
+        } else {
+            textFields[1].text = ""
+        }
+        
+        if originalPackSize != 0 {
+            textFields[2].text = String(originalPackSize)
+        } else {
+            textFields[2].text = ""
+        }
+        
+        limitLabels[1].text = String(originalLimit!)
+        
+        let currentDate = Date()
+        let dateWithInterval = Date(timeIntervalSinceNow: originalInterval!)
+        intervalLabels[1].text = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute], currentDate, and: dateWithInterval) {"HH:mm"}
+        
+        reduceLabels[0].text = String(originalReduce.0)
+        reduceLabels[3].text = String(originalReduce.1)
+    }
+    
+    private func setupBarButtonItems() {
         saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
         saveButton.isEnabled = false
         navigationItem.setRightBarButton(saveButton, animated: true)
+        
+        let refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearAllFields))
+        navigationItem.setLeftBarButton(refreshButton, animated: true)
     }
     
     private func scrollToUnhidePicker(indexPath: IndexPath) {
@@ -282,9 +455,24 @@ class NewScheduleTableViewController: UITableViewController {
         tableView.endUpdates()
     }
     
+    private func fieldsHaveChanges() -> Bool {
+        if  originalMark == editedMark &&
+            originalPrice == editedPrice &&
+            originalPackSize == editedPackSize &&
+            originalLimit == editedLimit &&
+            originalInterval == editedInterval &&
+            originalReduce == editedReduce &&
+            limitIsOn == limitSwitch.isOn &&
+            intervalIsOn == intervalSwitch.isOn &&
+            reduceIsOn == reduceSwitch.isOn {
+            return false
+        }
+        return true
+    }
+    
     private func setIntervalToIntervalPicker() {
         guard let dateString = intervalLabels[1].text else { return }
-        guard let date = intervalFormatter.date(from: dateString) else { return }
+        guard let date = DateManager.shared.getDate(from: dateString, {"HH:mm"}) else { return }
         intervalPicker.setDate(date, animated: false)
     }
     
@@ -304,35 +492,45 @@ class NewScheduleTableViewController: UITableViewController {
         getShedule()
     }
     
-// MARK: - objc private methods
+    // MARK: - objc private methods
     
     @objc private func save() {
         saveNewShedule()
+        print("price = \(editedPrice)")
+        print("size = \(editedPackSize)")
+    }
+    
+    @objc private func clearAllFields() {
+        let defaultModel = CigaretteScheduleModel()
+        setVaulesToOriginalProperties(from: defaultModel)
+        setValuesToFields()
+        setSelectionToSwitches()
+        tableUpdates()
     }
     
     @objc private func timerInputAction(sender: UIDatePicker) {
         let date = sender.date
-        interval = sender.countDownDuration
-        intervalLabels[1].text = intervalFormatter.string(from: date)
+        editedInterval = sender.countDownDuration
+        intervalLabels[1].text = DateManager.shared.getStringDate(date: date) {"HH:mm"}
     }
     
     @objc private func textDidChange(_ sender: UITextField) {
         guard let text = sender.text else { return }
         switch sender.tag {
         case 0:
-            mark = text
+            editedMark = text
         case 1:
             guard text.first != "." || text.last != "." || text.filter({ $0 == "." }).count <= 1 || text != "" else {
-                price = nil
+                editedPrice = 0.0
                 return
             }
-            price = Float(text)
+            editedPrice = Float(text)!
         case 2:
             guard text != "" else {
-                packSize = nil
+                editedPackSize = 0
                 return
             }
-            packSize = Int(text)
+            editedPackSize = Int(text)!
         default:
             break
         }
@@ -344,22 +542,36 @@ class NewScheduleTableViewController: UITableViewController {
 // MARK: - extensions
 
 
+
 // MARK: - Get model
+
 extension NewScheduleTableViewController {
     private func getShedule() {
         do {
-            let pack = try getPack()
+            try checkMark()
+            try checkPrice()
+            try checkPackSize()
+            schedule = CigaretteScheduleModel()
             switch scenario {
             case .accountingOnly:
-                model = CigaretteScheduleModel(pack: pack, scenario: scenario)
+                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue)
             case .withInterval:
-                model = CigaretteScheduleModel(pack: pack, scenario: scenario, interval: interval)
+                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, interval: editedInterval)
+            case .withLimitAndInterval:
+                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval)
+            case .withLimit:
+                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit)
             case .withLimitAndReduce:
-                model = CigaretteScheduleModel(pack: pack, scenario: scenario, limit: limit, reduce: reduce)
+                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, reduce: editedReduce)
             case .withLimitAndIntervalAndReduce:
-                model = CigaretteScheduleModel(pack: pack, scenario: scenario, limit: limit, interval: interval, reduce: reduce)
+                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval, reduce: editedReduce)
             }
-            delegate?.addDidFinish(self)
+            if UserDefaults.standard.bool(forKey: "NOTfirstTime") {
+                delegate?.addDidFinish()
+            } else {
+                UserDefaults.standard.set(true, forKey: "NOTfirstTime")
+                AppDelegate.shared.rootViewController.showMainTable()
+            }
         } catch Errors.wrongPrice {
             showWrongPriceAlert()
         } catch Errors.haveNoMark {
@@ -384,8 +596,8 @@ extension NewScheduleTableViewController {
         AlertManager.showAlert(title: .haveNoMark, message: .haveNoMark, style: .alert, presentIn: self) { () -> [UIAlertAction] in
             let returnAction = UIAlertAction(title: "Ввести марку", style: .default, handler: nil)
             let continueAction = UIAlertAction(title: "Сохранить", style: .default) { [unowned self] (_) in
-                self.mark = "unknown"
-                self.textFields[0].text = self.mark
+                self.editedMark = "unknown"
+                self.textFields[0].text = self.editedMark
                 self.saveNewShedule()
             }
             return [returnAction, continueAction]
@@ -396,7 +608,7 @@ extension NewScheduleTableViewController {
         AlertManager.showAlert(title: .haveNoPackSize, message: .haveNoPackSize, style: .alert, presentIn: self) { () -> [UIAlertAction] in
             let returnAction = UIAlertAction(title: "Ввести количество", style: .default, handler: nil)
             let continueAction = UIAlertAction(title: "Сохранить", style: .default) { [unowned self] (_) in
-                self.packSize = 20
+                self.editedPackSize = 20
                 self.textFields[2].text = "20"
                 self.saveNewShedule()
             }
@@ -404,23 +616,29 @@ extension NewScheduleTableViewController {
         }
     }
     
-    private func getPack() throws -> PackModel {
-        guard let price = price else {
+    private func checkPrice() throws {
+        guard editedPrice != 0.0 else {
             throw Errors.wrongPrice
         }
-        guard mark != "" else {
+    }
+    
+    private func checkMark() throws {
+        guard editedMark != "" else {
             throw Errors.haveNoMark
         }
-        guard let packSize = packSize else {
+    }
+    
+    private func checkPackSize() throws {
+        guard editedPackSize != 0 else {
             throw Errors.haveNoPackSize
         }
-        return PackModel(mark: mark, price: price, perPack: packSize)
     }
     
 }
 
 
 // MARK: - Text Field Delegate
+
 extension NewScheduleTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -431,6 +649,7 @@ extension NewScheduleTableViewController: UITextFieldDelegate {
 
 
 // MARK: - Picker view data source
+
 extension NewScheduleTableViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         switch pickerView.tag {
@@ -460,13 +679,12 @@ extension NewScheduleTableViewController: UIPickerViewDataSource {
             return 0
         }
     }
-
-    
     
 }
 
 
 // MARK: - Picker view delegate
+
 extension NewScheduleTableViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return "\(row + 1)"
@@ -475,7 +693,7 @@ extension NewScheduleTableViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView.tag {
         case 0:
-            limit = row + 1
+            editedLimit = row + 1
             limitLabels[1].text = "\(row + 1)"
             limitLabels[0].text = row == 0 ? "Cigarette per day" : "Cigarettes per day"
             if row < reducePicker.selectedRow(inComponent: 0) && row < 10 {
@@ -485,7 +703,7 @@ extension NewScheduleTableViewController: UIPickerViewDelegate {
         case 1:
             switch component {
             case 0:
-                reduce.0 = row + 1
+                editedReduce.0 = row + 1
                 reduceLabels[0].text = "\(row + 1)"
                 reduceLabels[1].text = row == 0 ? "cigarette" : "cigarettes"
                 if row > limitPicker.selectedRow(inComponent: 0) {
@@ -493,7 +711,7 @@ extension NewScheduleTableViewController: UIPickerViewDelegate {
                     limitLabels[1].text = "\(row + 1)"
                 }
             case 1:
-                reduce.1 = row + 1
+                editedReduce.1 = row + 1
                 reduceLabels[3].text = "\(row + 1)"
                 reduceLabels[4].text = row == 0 ? "day" : "days"
             default:
@@ -508,11 +726,12 @@ extension NewScheduleTableViewController: UIPickerViewDelegate {
 
 
 // MARK: - Adaptive presentation controller delegate
+
 extension NewScheduleTableViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
         AlertManager.showAlert(title: .naveChanges, message: .haveChanges, style: .actionSheet, presentIn: self) { () -> [UIAlertAction] in
             let discardAction = UIAlertAction(title: "Выйти", style: .destructive) { [unowned self] (_) in
-                self.delegate?.addDidCancel(self)
+                self.delegate?.addDidCancel()
             }
             let continueAction = UIAlertAction(title: "Продолжить", style: .cancel, handler: nil)
             return [discardAction, continueAction]

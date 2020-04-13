@@ -35,7 +35,11 @@ class SplashViewController: UIViewController {
         actitvityIndicator.startAnimating()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [unowned self] in
             self.actitvityIndicator.stopAnimating()
-            AppDelegate.shared.rootViewController.showMainTable()
+            if UserDefaults.standard.bool(forKey: "NOTfirstTime") {
+                AppDelegate.shared.rootViewController.showMainTable()
+            } else {
+                AppDelegate.shared.rootViewController.addFirstSchedule()
+            }
         }
     }
 

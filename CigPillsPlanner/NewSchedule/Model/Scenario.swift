@@ -12,5 +12,7 @@ enum Scenario: String {
     case accountingOnly = "Accounting only" // только учет
     case withLimitAndReduce = "Accounting with limit and reduce" // фиксированное количество
     case withInterval = "Accounting with interval" // через заданные промежутки времени
+    case withLimit = "Accounting with limit"
+    case withLimitAndInterval = "Accounting with limit and interval"
     case withLimitAndIntervalAndReduce = "Accounting with limit, interval and reduce"
 }

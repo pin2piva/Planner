@@ -16,35 +16,42 @@ class DataManager {
     
     private let realm = try! Realm()
     
-    func saveObject(_ cigCounter: CigaretteCounterModel) {
+    
+    func updateDayliCounter() {
+        
+    }
+    
+    func updateMarkCounter() {
+        
+    }
+
+    
+    func add(_ schedule: CigaretteScheduleModel) {
         try! realm.write {
-            realm.add(cigCounter)
+            realm.add(schedule, update: .modified)
         }
     }
     
-    func insertNewObject(_ cigCounter: CigaretteCounterModel, model: CigaretteScheduleModel) {
+    func deleteYesterdaySchedule(_ schedule: CigaretteScheduleModel) {
         try! realm.write {
-            cigCounter.counter.insert(model, at: 0)
+            realm.delete(schedule)
         }
     }
     
-    func updateCountInObject(cigCounter: CigaretteCounterModel) {
+    func retrieveSchedulesFromDataBase() -> Results<CigaretteScheduleModel>? {
+        return realm.objects(CigaretteScheduleModel.self)
+    }
+    
+    func updateToYesterday(schedule: CigaretteScheduleModel) {
         try! realm.write {
-            cigCounter.counter[0].counter += 1
-            cigCounter.totalCount += 1
-            cigCounter.counter[0].lastReception = Date()
+            
+                schedule.isToday = false
             
         }
     }
     
-    func deleteCigSchedule(_ cigCounter: CigaretteCounterModel, indexPath: IndexPath) {
-        try! realm.write {
-            cigCounter.counter.remove(at: indexPath.row)
-        }
-    }
-    
-    func retrieveCigCounterFromDataBase() -> Results<CigaretteCounterModel>? {
-        return realm.objects(CigaretteCounterModel.self)
+    func getDescendingSortedSchedules() -> Results<CigaretteScheduleModel> {
+        return realm.objects(CigaretteScheduleModel.self).sorted(byKeyPath: "currentStringDate", ascending: false)
     }
     
 }

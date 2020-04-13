@@ -12,22 +12,25 @@ class DateManager {
     
     static let shared = DateManager()
     
-//    let dateFormatter = DateFormatter()
-//    let dateComponents = DateComponents()
-//
-//    func getDateFormatter(_ format: () -> String) -> DateFormatter {
-//        dateFormatter.locale = Locale.current
-//        dateFormatter.timeZone = TimeZone.current
-//        dateFormatter.dateFormat = format()
-//        return dateFormatter
-//    }
+    let dateFormatter = DateFormatter()
     
-    func differenceBetweenNow(and last: Date) -> String? {
-        let components = Calendar.current.dateComponents([.hour, .minute, .second], from: last, to: Date())
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss"
+    func getStringDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date, _ completion: () -> String?) -> String? {
+        let components = Calendar.current.dateComponents(components, from: from, to: to)
+        dateFormatter.dateFormat = completion()
         let date = Calendar(identifier: .gregorian).date(from: components)
         return dateFormatter.string(from: date!)
+    }
+    
+    
+    
+    func getStringDate(date: Date, _ completion: () -> String?) -> String {
+        dateFormatter.dateFormat = completion()
+        return dateFormatter.string(from: date)
+    }
+    
+    func getDate(from string: String, _ completion: () -> String?) -> Date? {
+        dateFormatter.dateFormat = completion()
+        return dateFormatter.date(from: string)
     }
     
     

@@ -11,9 +11,8 @@
 		91C5EE31243CA2CD00516C35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE30243CA2CD00516C35 /* Assets.xcassets */; };
 		91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE3D243CA36E00516C35 /* RootViewController.swift */; };
 		91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE47243CA58900516C35 /* SplashViewController.swift */; };
-		91C5EE4E243CA61A00516C35 /* CigaretteCounterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE4D243CA61A00516C35 /* CigaretteCounterModel.swift */; };
+		91C5EE4E243CA61A00516C35 /* MarkCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE4D243CA61A00516C35 /* MarkCounter.swift */; };
 		91C5EE52243CA66900516C35 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE51243CA66900516C35 /* MainTableViewController.swift */; };
-		91C5EE5D243CA75E00516C35 /* PackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE5C243CA75E00516C35 /* PackModel.swift */; };
 		91C5EE5F243CA77B00516C35 /* CigaretteScheduleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE5E243CA77B00516C35 /* CigaretteScheduleModel.swift */; };
 		91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE60243CA79B00516C35 /* Scenario.swift */; };
 		91C5EE63243CA7D500516C35 /* NewScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE62243CA7D500516C35 /* NewScheduleTableViewController.swift */; };
@@ -29,6 +28,7 @@
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
 		91C5EE85243CABBD00516C35 /* NewSchedule.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */; };
 		91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DataManager.swift */; };
+		91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1574243F0C0700B5E75D /* DayliCounter.swift */; };
 		D9ECCC80B04CF0C1B7756FAC /* Pods_CigPillsPlanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,9 +40,8 @@
 		91C5EE35243CA2CD00516C35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91C5EE3D243CA36E00516C35 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		91C5EE47243CA58900516C35 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
-		91C5EE4D243CA61A00516C35 /* CigaretteCounterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteCounterModel.swift; sourceTree = "<group>"; };
+		91C5EE4D243CA61A00516C35 /* MarkCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCounter.swift; sourceTree = "<group>"; };
 		91C5EE51243CA66900516C35 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
-		91C5EE5C243CA75E00516C35 /* PackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackModel.swift; sourceTree = "<group>"; };
 		91C5EE5E243CA77B00516C35 /* CigaretteScheduleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteScheduleModel.swift; sourceTree = "<group>"; };
 		91C5EE60243CA79B00516C35 /* Scenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
 		91C5EE62243CA7D500516C35 /* NewScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewScheduleTableViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +57,7 @@
 		91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteAccountingCell.xib; sourceTree = "<group>"; };
 		91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewSchedule.storyboard; sourceTree = "<group>"; };
 		91EB1572243DB3D900B5E75D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		91EB1574243F0C0700B5E75D /* DayliCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayliCounter.swift; sourceTree = "<group>"; };
 		A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CigPillsPlanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CigPillsPlanner.debug.xcconfig"; path = "Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -205,7 +205,8 @@
 		91C5EE4C243CA5ED00516C35 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE4D243CA61A00516C35 /* CigaretteCounterModel.swift */,
+				91C5EE4D243CA61A00516C35 /* MarkCounter.swift */,
+				91EB1574243F0C0700B5E75D /* DayliCounter.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -256,7 +257,6 @@
 		91C5EE5A243CA74100516C35 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE5C243CA75E00516C35 /* PackModel.swift */,
 				91C5EE5E243CA77B00516C35 /* CigaretteScheduleModel.swift */,
 				91C5EE60243CA79B00516C35 /* Scenario.swift */,
 			);
@@ -473,11 +473,11 @@
 				91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */,
 				91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */,
 				91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */,
-				91C5EE5D243CA75E00516C35 /* PackModel.swift in Sources */,
+				91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */,
 				91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */,
 				91C5EE28243CA2CC00516C35 /* AppDelegate.swift in Sources */,
 				91C5EE63243CA7D500516C35 /* NewScheduleTableViewController.swift in Sources */,
-				91C5EE4E243CA61A00516C35 /* CigaretteCounterModel.swift in Sources */,
+				91C5EE4E243CA61A00516C35 /* MarkCounter.swift in Sources */,
 				91C5EE71243CA92800516C35 /* VisualizationTableViewController.swift in Sources */,
 				91C5EE7A243CA9FA00516C35 /* AlertManager.swift in Sources */,
 				91C5EE78243CA9DE00516C35 /* DateManager.swift in Sources */,

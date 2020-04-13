@@ -31,6 +31,7 @@ class RootViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         addNewChild(current)
     }
     
@@ -39,6 +40,14 @@ class RootViewController: UIViewController {
     func showMainTable() {
         mainController = MainTableViewController()
         navController = UINavigationController(rootViewController: mainController)
+        addNewChild(navController)
+        removeOldChild(navController)
+    }
+    
+    func addFirstSchedule() {
+        let storyboard = UIStoryboard(name: "NewSchedule", bundle: nil)
+        let addNewShedule = storyboard.instantiateViewController(identifier: "NewScheduleTableViewController") as! NewScheduleTableViewController
+        navController = UINavigationController(rootViewController: addNewShedule)
         addNewChild(navController)
         removeOldChild(navController)
     }
@@ -52,12 +61,15 @@ class RootViewController: UIViewController {
         navController.pushViewController(tabBarController, animated: true)
     }
     
-    func showAddNewSheduleController() {
+    func showAddNewSheduleController(_ currentSchedule: CigaretteScheduleModel?) {
         let storyboard = UIStoryboard(name: "NewSchedule", bundle: nil)
         let addNewShedule = storyboard.instantiateViewController(identifier: "NewScheduleTableViewController") as! NewScheduleTableViewController
         let new = UINavigationController(rootViewController: addNewShedule)
         new.presentationController?.delegate = (addNewShedule as UIAdaptivePresentationControllerDelegate)
         addNewShedule.delegate = self
+        if let currentSchedule = currentSchedule {
+            addNewShedule.setVaulesToOriginalProperties(from: currentSchedule)
+        }
         navController.modalPresentationStyle = .automatic
         navController.present(new, animated: true, completion: nil)
     }
@@ -83,12 +95,12 @@ class RootViewController: UIViewController {
 
 extension RootViewController: NewScheduleDelegate {
     
-    func addDidFinish(_ addNewSheduleTable: NewScheduleTableViewController) {
-        mainController.workWithCigaretteCounter(addNewSheduleTable.model)
+    func addDidFinish() {
+        mainController.tableView.reloadData()
         navController.dismiss(animated: true)
     }
     
-    func addDidCancel(_ addNewSheduleTable: NewScheduleTableViewController) {
+    func addDidCancel() {
         navController.dismiss(animated: true)
     }
     
