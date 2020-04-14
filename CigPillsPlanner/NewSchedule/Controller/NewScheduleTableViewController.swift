@@ -64,7 +64,7 @@ class NewScheduleTableViewController: UITableViewController {
     // MARK: - Private properties
     
     private var saveButton: UIBarButtonItem!
-    private var schedule: CigaretteScheduleModel!
+    private var lastTimeSmoke: Date?
     
     private var limitIsOn = false {
         willSet {
@@ -176,12 +176,7 @@ class NewScheduleTableViewController: UITableViewController {
         }
     }
     
-    
-    // MARK: - Internal properties
-    
-    var model: CigaretteScheduleModel!
-    
-    
+
     // MARK: - Scenario
     
     lazy private var scenario: Scenario = {
@@ -315,33 +310,34 @@ class NewScheduleTableViewController: UITableViewController {
     
     // MARK: - Internal methods
     
-    func setVaulesToOriginalProperties(from model: CigaretteScheduleModel) {
-        switch model.scenario {
+    func setVaulesToOriginalProperties(from schedule: CigaretteScheduleModel) {
+        switch schedule.scenario {
         case Scenario.accountingOnly.rawValue:
             getSelection(false, false, false)
         case Scenario.withInterval.rawValue:
-            originalInterval = model.interval.value
+            originalInterval = schedule.interval.value
             getSelection(false, true, false)
         case Scenario.withLimitAndInterval.rawValue:
-            originalLimit = model.limit.value
-            originalInterval = model.interval.value
+            originalLimit = schedule.limit.value
+            originalInterval = schedule.interval.value
             getSelection(true, true, false)
         case Scenario.withLimit.rawValue:
-            originalLimit = model.limit.value
+            originalLimit = schedule.limit.value
             getSelection(true, false, false)
         case Scenario.withLimitAndReduce.rawValue:
-            originalLimit = model.limit.value
-            originalReduce = (model.reduceCig, model.reducePerDay)
+            originalLimit = schedule.limit.value
+            originalReduce = (schedule.reduceCig, schedule.reducePerDay)
             getSelection(true, false, true)
         case Scenario.withLimitAndIntervalAndReduce.rawValue:
-            originalInterval = model.interval.value
-            originalLimit = model.limit.value
-            originalReduce = (model.reduceCig, model.reducePerDay)
+            originalInterval = schedule.interval.value
+            originalLimit = schedule.limit.value
+            originalReduce = (schedule.reduceCig, schedule.reducePerDay)
             getSelection(true, true, true)
         default:
             return
         }
-        setRequiredValues(from: model)
+        lastTimeSmoke = schedule.lastTimeSmoke
+        setRequiredValues(from: schedule)
     }
 
 
@@ -520,17 +516,20 @@ class NewScheduleTableViewController: UITableViewController {
         case 0:
             editedMark = text
         case 1:
-            guard text.first != "." || text.last != "." || text.filter({ $0 == "." }).count <= 1 || text != "" else {
+            print(text)
+            guard text != "" || text.first != "." || text.last != "." || text.filter({ $0 == "." }).count <= 1 else {
                 editedPrice = 0.0
                 return
             }
-            editedPrice = Float(text)!
+            guard let price = Float(text) else { return }
+            editedPrice = price
         case 2:
             guard text != "" else {
                 editedPackSize = 0
                 return
             }
-            editedPackSize = Int(text)!
+            guard let packSize = Int(text) else { return }
+            editedPackSize = packSize
         default:
             break
         }
@@ -551,20 +550,19 @@ extension NewScheduleTableViewController {
             try checkMark()
             try checkPrice()
             try checkPackSize()
-            schedule = CigaretteScheduleModel()
             switch scenario {
             case .accountingOnly:
-                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue)
+                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, lastTimeSmoke: lastTimeSmoke)
             case .withInterval:
-                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, interval: editedInterval)
+                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, interval: editedInterval, lastTimeSmoke: lastTimeSmoke)
             case .withLimitAndInterval:
-                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval)
+                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval, lastTimeSmoke: lastTimeSmoke)
             case .withLimit:
-                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit)
+                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, lastTimeSmoke: lastTimeSmoke)
             case .withLimitAndReduce:
-                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, reduce: editedReduce)
+                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, reduce: editedReduce, lastTimeSmoke: lastTimeSmoke)
             case .withLimitAndIntervalAndReduce:
-                schedule.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval, reduce: editedReduce)
+                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval, reduce: editedReduce, lastTimeSmoke: lastTimeSmoke)
             }
             if UserDefaults.standard.bool(forKey: "NOTfirstTime") {
                 delegate?.addDidFinish()

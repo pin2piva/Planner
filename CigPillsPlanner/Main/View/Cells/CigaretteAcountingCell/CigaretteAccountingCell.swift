@@ -18,8 +18,8 @@ class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
     @IBOutlet weak var mark: UILabel!
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var lastTime: UILabel!
-    @IBOutlet weak var markCount: UILabel!
-    @IBOutlet weak var totalCount: UILabel!
+    @IBOutlet weak var markCountLabel: UILabel!
+    @IBOutlet weak var totalCountLabel: UILabel!
     
     private var timer: Timer?
     
@@ -39,28 +39,33 @@ class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
         
         mark.text = schedule.mark
         price.text = "\(String(describing: schedule.price))"
-        lastTime.text = schedule.currentStringDate
-//        lastTime(lastTime: schedule.lastTimeSmoke, isToday: schedule.isToday)
+        lastTime(lastTime: schedule.lastTimeSmoke, isToday: schedule.isToday)
         
-//        let markCount = markCounter.count?.markCount
-//        let totalCount = markCounter
-//        self.markCount.text = String(markCount!)
-//        self.totalCount.text = String(totalCount)
+        let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)
+            markCountLabel.text = "d: \(dayliCount)"
+        
+        let totalCount = DataManager.shared.getTotalCountBeforeCurrent(date: schedule.currentStringDate)
+        totalCountLabel.text = "t: \(totalCount)"
     }
     
     private func lastTime(lastTime: Date?, isToday: Bool) {
         timer?.invalidate()
         if isToday {
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
-                guard let lastTime = lastTime else {
+                guard let date = lastTime else {
+                    self?.lastTime.text = "Not smoked yet"
                     timer.invalidate()
                     return
                 }
-                self?.lastTime.text = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], lastTime, and: Date()) { "HH:mm:ss" }
+                let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], date, and: Date()) { "HH:mm:ss" }
+                self?.lastTime.text = "Last time - \(lastTimeString!)"
             })
         } else {
-            guard let date = lastTime else { return }
-            self.lastTime.text = DateManager.shared.getStringDate(date: date) { "EE, MM-dd-yyyy HH:mm" }
+            guard let date = lastTime else {
+                self.lastTime.text = "Did not smoke"
+                return
+            }
+            self.lastTime.text = DateManager.shared.getStringDate(date: date) { "EE, MM-dd-yyyy HH:mm:ss" }
         }
     }
     

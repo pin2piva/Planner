@@ -78,9 +78,9 @@
             <connections>
                 <outlet property="lastTime" destination="AYm-cs-qte" id="82p-Pb-YmN"/>
                 <outlet property="mark" destination="PgW-Zq-sMH" id="7gY-8O-GXd"/>
-                <outlet property="markCount" destination="bhF-5z-V7h" id="Wlx-Bx-w2w"/>
+                <outlet property="markCountLabel" destination="bhF-5z-V7h" id="Wlx-Bx-w2w"/>
                 <outlet property="price" destination="uVc-gk-kwJ" id="dRT-NO-1c3"/>
-                <outlet property="totalCount" destination="osa-cc-VMX" id="gyZ-0O-nPq"/>
+                <outlet property="totalCountLabel" destination="osa-cc-VMX" id="gyZ-0O-nPq"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="112.83482142857142"/>
         </tableViewCell>

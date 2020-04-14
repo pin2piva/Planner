@@ -13,15 +13,9 @@ import RealmSwift
 class MarkCounter: Object {
     
     @objc dynamic var mark: String = ""
-    let counter = List<Count>()
+    let counter = List<PriceMarkCounter>()
     
-    func createMarkCounter(mark: String, price: Float) {
-        let markCounter = MarkCounter()
-        markCounter.mark = mark
-        let count = Count()
-        count.price = String(price)
-        markCounter.counter.append(count)
-    }
+
     
     override class func primaryKey() -> String? {
         return "mark"
@@ -29,14 +23,10 @@ class MarkCounter: Object {
     
 }
 
-class Count: Object {
+class PriceMarkCounter: Object {
     
     @objc dynamic var price: String = ""
     @objc dynamic var markCount: Int = 0
-    
-    override class func primaryKey() -> String? {
-        return "price"
-    }
     
 }
 

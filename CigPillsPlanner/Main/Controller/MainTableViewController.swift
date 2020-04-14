@@ -12,9 +12,10 @@ import RealmSwift
 class MainTableViewController: UITableViewController {
     
     private var schedules: Results<CigaretteScheduleModel>!
-    private var markCounter: Results<MarkCounter>!
+    private var markCounter: MarkCounter?
     private var breakingButton: UIButton!
     private var timer: Timer?
+    private var count = 0
     
     
     // MARK: - Life cycle
@@ -30,6 +31,9 @@ class MainTableViewController: UITableViewController {
     
     override func viewWillLayoutSubviews() {
         breakingButtonEnabling()
+        
+        checkAndCreateMarkCounterFor(currentSchedule: getCurrentSchedule())
+        checkAndCreateDayliCounterFor(currentSchedule: getCurrentSchedule())
     }
     
     
@@ -124,7 +128,7 @@ class MainTableViewController: UITableViewController {
     
     private func checkTodayScheduleWhenAppRun() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 40, repeats: true, block: { [unowned self] (timer) in
+        timer = Timer.scheduledTimer(withTimeInterval: 29, repeats: true, block: { [unowned self] (timer) in
             self.checkTodaySchedule() { [unowned self] in
                 self.tableView.reloadData()
             }
@@ -132,11 +136,8 @@ class MainTableViewController: UITableViewController {
         
     }
     
-    
-    
     private func createCurrentScheduleWithLastProperties(from lastSchedule: CigaretteScheduleModel) {
-        let currentSchedule = CigaretteScheduleModel()
-        currentSchedule.createNewSchedule(mark: lastSchedule.mark,
+        DataManager.shared.createNewSchedule(mark: lastSchedule.mark,
                                           price: lastSchedule.price,
                                           packSize: lastSchedule.packSize,
                                           scenario: lastSchedule.scenario,
@@ -146,17 +147,50 @@ class MainTableViewController: UITableViewController {
                                                    lastSchedule.reducePerDay))
     }
     
+    private func getCurrentSchedule() -> CigaretteScheduleModel? {
+        let currentDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
+        let currentSchedule = schedules.filter({ $0.currentStringDate == currentDate }).first
+        return currentSchedule
+    }
+    
+    private func checkAndCreateMarkCounterFor(currentSchedule: CigaretteScheduleModel?) {
+        guard let currentSchedule = currentSchedule else { return }
+        let mark = currentSchedule.mark
+        let price = currentSchedule.price
+        if DataManager.shared.getMarkCounter(for: mark) == nil {
+            DataManager.shared.createMarkCounter(with: mark, price)
+        }
+    }
+    
+    private func checkAndCreateDayliCounterFor(currentSchedule: CigaretteScheduleModel?) {
+        guard let currentSchedule = currentSchedule else { return }
+        let mark = currentSchedule.mark
+        let price = currentSchedule.price
+        let dateString = currentSchedule.currentStringDate
+        if DataManager.shared.getDayliCounter(for: dateString) == nil {
+            DataManager.shared.createDayliCounter(dateString, mark, price)
+        }
+    }
+    
     
     // MARK: - @obcj private methods
     
     @objc private func editCurrentSchedule() {
-        let currentDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
-        let currentSchedule = schedules.filter({ $0.currentStringDate == currentDate }).first
+        let currentSchedule = getCurrentSchedule()
         AppDelegate.shared.rootViewController.showAddNewSheduleController(currentSchedule)
     }
     
     @objc private func increaceCount() {
-        print("+1")
+        
+        count += 1
+        print(count)
+        
+        let current = getCurrentSchedule()
+        guard let currentSchedule = current else { return }
+        DataManager.shared.increaceTodayCount(for: currentSchedule)
+        DataManager.shared.increaceMarkCount(for: currentSchedule)
+        DataManager.shared.increaceDayliCount(for: currentSchedule)
+        
         tableView.reloadData()
     }
     

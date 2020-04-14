@@ -107,14 +107,14 @@
 				91C5EE45243CA51A00516C35 /* Splash */,
 				91C5EE49243CA5D200516C35 /* Main */,
 				91C5EE57243CA70700516C35 /* NewSchedule */,
-				91C5EE3F243CA39600516C35 /* Application */,
-				91C5EE42243CA40800516C35 /* SupportingFiles */,
 				91C5EE66243CA83500516C35 /* TabBar */,
 				91C5EE6A243CA87F00516C35 /* Detail */,
 				91C5EE6E243CA8E400516C35 /* Diagram */,
 				91C5EE72243CA92E00516C35 /* Visualization */,
 				91C5EE76243CA9C700516C35 /* Protocols */,
 				91C5EE7D243CAAA600516C35 /* Managers */,
+				91C5EE3F243CA39600516C35 /* Application */,
+				91C5EE42243CA40800516C35 /* SupportingFiles */,
 			);
 			path = CigPillsPlanner;
 			sourceTree = "<group>";

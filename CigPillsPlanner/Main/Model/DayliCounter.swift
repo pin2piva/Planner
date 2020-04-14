@@ -25,8 +25,4 @@ class MarkDateCounter: Object {
     @objc dynamic var count: Int = 0
     @objc dynamic var price: Float = 0
     
-    override class func primaryKey() -> String? {
-        return "mark"
-    }
-    
 }
