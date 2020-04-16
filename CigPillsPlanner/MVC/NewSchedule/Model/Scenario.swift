@@ -15,4 +15,39 @@ enum Scenario: String {
     case withLimit = "Accounting with limit"
     case withLimitAndInterval = "Accounting with limit and interval"
     case withLimitAndIntervalAndReduce = "Accounting with limit, interval and reduce"
+    
+    static func getCurrentSelection(_ rawValue: String) -> (Bool, Bool, Bool) {
+        switch rawValue {
+        case self.accountingOnly.rawValue:
+            return (false, false, false)
+        case self.withLimitAndReduce.rawValue:
+            return (true, false, true)
+        case self.withInterval.rawValue:
+            return (false, true, false)
+        case self.withLimit.rawValue:
+            return (true, false, false)
+        case self.withLimitAndInterval.rawValue:
+            return (true, true, false)
+        case self.withLimitAndIntervalAndReduce.rawValue:
+            return (true, true, true)
+        default:
+            return (false, false, false)
+        }
+    }
+    
+    static func getScenario(_ limitIsOn: Bool, _ intervalIsOn: Bool, _ reduceIsOn: Bool) -> String {
+        if !limitIsOn && !intervalIsOn && !reduceIsOn {
+            return Scenario.accountingOnly.rawValue
+        } else if limitIsOn && reduceIsOn && !intervalIsOn {
+            return Scenario.withLimitAndReduce.rawValue
+        } else if !limitIsOn && !reduceIsOn && intervalIsOn {
+            return Scenario.withInterval.rawValue
+        } else if limitIsOn && !reduceIsOn && !intervalIsOn {
+            return Scenario.withLimit.rawValue
+        } else if limitIsOn && !reduceIsOn && intervalIsOn {
+            return Scenario.withLimitAndInterval.rawValue
+        } else {
+            return Scenario.withLimitAndIntervalAndReduce.rawValue
+        }
+    }
 }

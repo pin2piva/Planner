@@ -8,25 +8,27 @@
 
 import UIKit
 
-protocol CigaretteCellProtocol {
-    func setValues(_ schedule: CigaretteScheduleModel)
-}
 
-class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
+
+
+
+class CigaretteAccountingCell: UITableViewCell {
     
     
-    @IBOutlet weak var mark: UILabel!
-    @IBOutlet weak var price: UILabel!
-    @IBOutlet weak var lastTime: UILabel!
-    @IBOutlet weak var markCountLabel: UILabel!
+    @IBOutlet weak var markLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var totayCountLabel: UILabel!
     @IBOutlet weak var totalCountLabel: UILabel!
+    @IBOutlet weak var lastBreakTimeLabel: UILabel!
+    @IBOutlet weak var lastBreakLabel: UILabel!
     
     private var timer: Timer?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        setupLayer()
     }
+
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -35,37 +37,46 @@ class CigaretteAccountingCell: UITableViewCell, CigaretteCellProtocol {
         
     }
     
-    func setValues(_ schedule: CigaretteScheduleModel) { //, markCounter: MarkCounter
-        
-        mark.text = schedule.mark
-        price.text = "\(String(describing: schedule.price))"
-        lastTime(lastTime: schedule.lastTimeSmoke, isToday: schedule.isToday)
-        
-        let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)
-            markCountLabel.text = "d: \(dayliCount)"
-        
-        let totalCount = DataManager.shared.getTotalCountBeforeCurrent(date: schedule.currentStringDate)
-        totalCountLabel.text = "t: \(totalCount)"
+    private func setupLayer() {
+        self.clipsToBounds = true
+        self.layer.cornerRadius = 15
+        self.layer.borderColor = UIColor.systemGray5.cgColor
+        self.layer.borderWidth = 5
     }
     
-    private func lastTime(lastTime: Date?, isToday: Bool) {
+
+    
+    func setValues(_ schedule: CigaretteScheduleModel) { //, markCounter: MarkCounter
+        
+        markLabel.text = schedule.mark
+        priceLabel.text = "\(String(describing: schedule.price))"
+        lastBreakLabel.text = "Last smoke break"
+        lastTime(schedule)
+        let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)
+            totayCountLabel.text = "\(dayliCount)"
+        let totalCount = DataManager.shared.getTotalCountBeforeCurrent(date: schedule.currentStringDate)
+        totalCountLabel.text = "\(totalCount)"
+    }
+    
+    func lastTime(_ schedule: CigaretteScheduleModel) {
         timer?.invalidate()
-        if isToday {
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
-                guard let date = lastTime else {
-                    self?.lastTime.text = "Not smoked yet"
+        if schedule.isToday {
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (timer) in
+                guard let date = schedule.lastTimeSmoke else {
+                    self?.lastBreakTimeLabel.text = "00:00:00"
                     timer.invalidate()
                     return
                 }
                 let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], date, and: Date()) { "HH:mm:ss" }
-                self?.lastTime.text = "Last time - \(lastTimeString!)"
-            })
+                self?.lastBreakTimeLabel.text = "\(lastTimeString!)"
+            }
         } else {
-            guard let date = lastTime else {
-                self.lastTime.text = "Did not smoke"
+            guard let date = schedule.lastTimeSmoke else {
+                self.lastBreakLabel.text = "\(schedule.currentStringDate)"
+                self.lastBreakTimeLabel.text = "Did not smoke"
                 return
             }
-            self.lastTime.text = DateManager.shared.getStringDate(date: date) { "EE, MM-dd-yyyy HH:mm:ss" }
+            self.lastBreakTimeLabel.text = DateManager.shared.getStringDate(date: date) { "EE, MM-dd-yyyy HH:mm" }
         }
     }
     

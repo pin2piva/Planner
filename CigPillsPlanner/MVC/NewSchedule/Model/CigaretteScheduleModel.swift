@@ -23,8 +23,8 @@ class CigaretteScheduleModel: Object {
     
     var interval = RealmOptional<Double>()
     
-    @objc dynamic var reduceCig: Int = 0
-    @objc dynamic var reducePerDay: Int = 0
+    var reduceCig = RealmOptional<Int>()
+    var reducePerDay = RealmOptional<Int>()
     
     @objc dynamic var todayScheduleCount: Int = 0
     

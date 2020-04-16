@@ -30,9 +30,10 @@ class DataManager {
                            price: Float,
                            packSize: Int,
                            scenario: String,
-                           limit: Int? = nil,
-                           interval: TimeInterval? = nil,
-                           reduce: (Int, Int) = (0, 0),
+                           limit: Int?,
+                           interval: TimeInterval?,
+                           reduceCig: Int?,
+                           reducePerDay: Int?,
                            lastTimeSmoke: Date? = nil) {
         let schedule = CigaretteScheduleModel()
         schedule.mark = mark
@@ -45,8 +46,12 @@ class DataManager {
         if let interval = interval {
             schedule.interval = RealmOptional(interval)
         }
-        schedule.reduceCig = reduce.0
-        schedule.reducePerDay = reduce.1
+        if let reduceCig = reduceCig {
+            schedule.reduceCig = RealmOptional(reduceCig)
+        }
+        if let reducePerDay = reducePerDay {
+            schedule.reducePerDay = RealmOptional(reducePerDay)
+        }
         schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
         schedule.lastTimeSmoke = lastTimeSmoke
         add(schedule)

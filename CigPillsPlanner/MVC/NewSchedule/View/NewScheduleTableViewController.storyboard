@@ -312,10 +312,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="0.0" id="w8H-UJ-Win">
-                                        <rect key="frame" x="0.0" y="911.00000023841858" width="414" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="911.00000023841858" width="414" height="1.1920928955078125e-07"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w8H-UJ-Win" id="2Qb-Nn-NNL">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="1.1920928955078125e-07"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -394,10 +394,6 @@
                                 </cells>
                             </tableViewSection>
                         </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="dgA-PF-LoN" id="T4M-PT-NvR"/>
-                            <outlet property="delegate" destination="dgA-PF-LoN" id="dEC-SV-MVc"/>
-                        </connections>
                     </tableView>
                     <connections>
                         <outlet property="intervalCell" destination="nxy-vy-6n3" id="Sbs-Bg-zhO"/>

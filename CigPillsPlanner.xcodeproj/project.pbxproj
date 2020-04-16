@@ -27,7 +27,9 @@
 		91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */; };
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
 		91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */; };
-		91CDFCCA24484CEB0078F4C1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 91CDFCC924484CEB0078F4C1 /* SwiftPackageProductDependency */; };
+		91CDFCCA24484CEB0078F4C1 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 91CDFCC924484CEB0078F4C1 /* RealmSwift */; };
+		91E537CE2448A7770056E67A /* CigaretteLimitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E537CC2448A7770056E67A /* CigaretteLimitCell.swift */; };
+		91E537CF2448A7770056E67A /* CigaretteLimitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91E537CD2448A7770056E67A /* CigaretteLimitCell.xib */; };
 		91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DataManager.swift */; };
 		91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1574243F0C0700B5E75D /* DayliCounter.swift */; };
 /* End PBXBuildFile section */
@@ -55,6 +57,8 @@
 		91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteAccountingCell.swift; sourceTree = "<group>"; };
 		91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteAccountingCell.xib; sourceTree = "<group>"; };
 		91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewScheduleTableViewController.storyboard; sourceTree = "<group>"; };
+		91E537CC2448A7770056E67A /* CigaretteLimitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteLimitCell.swift; sourceTree = "<group>"; };
+		91E537CD2448A7770056E67A /* CigaretteLimitCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteLimitCell.xib; sourceTree = "<group>"; };
 		91EB1572243DB3D900B5E75D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		91EB1574243F0C0700B5E75D /* DayliCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayliCounter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91CDFCCA24484CEB0078F4C1 /* BuildFile in Frameworks */,
+				91CDFCCA24484CEB0078F4C1 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +104,6 @@
 			children = (
 				91C5EE26243CA2CC00516C35 /* CigPillsPlanner */,
 				91C5EE25243CA2CC00516C35 /* Products */,
-				DB85E2961235EC41ECCD295C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				91C5EE54243CA69E00516C35 /* CigaretteAcountingCell */,
+				91E537D02448A7980056E67A /* CigaretteLimitCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -350,11 +354,13 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		DB85E2961235EC41ECCD295C /* Pods */ = {
+		91E537D02448A7980056E67A /* CigaretteLimitCell */ = {
 			isa = PBXGroup;
 			children = (
+				91E537CC2448A7770056E67A /* CigaretteLimitCell.swift */,
+				91E537CD2448A7770056E67A /* CigaretteLimitCell.xib */,
 			);
-			path = Pods;
+			path = CigaretteLimitCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -374,7 +380,7 @@
 			);
 			name = CigPillsPlanner;
 			packageProductDependencies = (
-				91CDFCC924484CEB0078F4C1 /* SwiftPackageProductDependency */,
+				91CDFCC924484CEB0078F4C1 /* RealmSwift */,
 			);
 			productName = "Cig'n'Pills Planner";
 			productReference = 91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */;
@@ -405,7 +411,7 @@
 			);
 			mainGroup = 91C5EE1B243CA2CB00516C35;
 			packageReferences = (
-				91CDFCC824484CEB0078F4C1 /* RemoteSwiftPackageReference */,
+				91CDFCC824484CEB0078F4C1 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = 91C5EE25243CA2CC00516C35 /* Products */;
 			projectDirPath = "";
@@ -423,6 +429,7 @@
 			files = (
 				91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */,
 				91C5EE31243CA2CD00516C35 /* Assets.xcassets in Resources */,
+				91E537CF2448A7770056E67A /* CigaretteLimitCell.xib in Resources */,
 				91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,6 +443,7 @@
 			files = (
 				91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */,
 				91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */,
+				91E537CE2448A7770056E67A /* CigaretteLimitCell.swift in Sources */,
 				91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */,
 				91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */,
 				91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */,
@@ -635,7 +643,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		91CDFCC824484CEB0078F4C1 /* RemoteSwiftPackageReference */ = {
+		91CDFCC824484CEB0078F4C1 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-cocoa.git";
 			requirement = {
@@ -646,9 +654,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		91CDFCC924484CEB0078F4C1 /* SwiftPackageProductDependency */ = {
+		91CDFCC924484CEB0078F4C1 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91CDFCC824484CEB0078F4C1 /* RemoteSwiftPackageReference */;
+			package = 91CDFCC824484CEB0078F4C1 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

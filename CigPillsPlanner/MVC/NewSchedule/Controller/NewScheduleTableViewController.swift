@@ -15,6 +15,7 @@ protocol NewScheduleDelegate: class {
 
 class NewScheduleTableViewController: UITableViewController {
     
+    
     // MARK: - Text field section
     
     @IBOutlet private var textFields: [UITextField]! {
@@ -65,6 +66,12 @@ class NewScheduleTableViewController: UITableViewController {
     
     private var saveButton: UIBarButtonItem!
     private var lastTimeSmoke: Date?
+    private var scenario: String {
+        Scenario.getScenario(limitSwitch.isOn, intervalSwitch.isOn, reduceSwitch.isOn)
+    }
+    
+    // MARK: - Bool private properties
+    
     
     private var limitIsOn = false {
         willSet {
@@ -87,7 +94,6 @@ class NewScheduleTableViewController: UITableViewController {
             }
         }
     }
-    
     private var limitCellIsSelect = false {
         willSet {
             setValueToPicker(row: limitLabels[1].text)
@@ -103,13 +109,12 @@ class NewScheduleTableViewController: UITableViewController {
             setValueToPicker(row: reduceLabels[0].text, second: reduceLabels[3].text)
         }
     }
-    
     private var hasChanges: Bool {
         return fieldsHaveChanges()
     }
     
     
-    // MARK: - Original properties
+    // MARK: - Original private properties
     
     private var originalMark = "" {
         didSet {
@@ -126,24 +131,29 @@ class NewScheduleTableViewController: UITableViewController {
             editedPackSize = originalPackSize
         }
     }
-    private var originalLimit: Int? = 1 {
+    private var originalLimit: Int? {
         didSet {
             editedLimit = originalLimit
         }
     }
-    private var originalInterval: TimeInterval? = 300 {
+    private var originalInterval: TimeInterval? {
         didSet {
             editedInterval = originalInterval
         }
     }
-    private var originalReduce: (Int, Int) = (1, 1) {
+    private var originalReduceCig: Int? {
         didSet {
-            editedReduce = originalReduce
+            editedReduceCig = originalReduceCig
+        }
+    }
+    private var originalReducePerDay: Int? {
+        didSet {
+            editedReducePerDay = originalReducePerDay
         }
     }
     
     
-    // MARK: - Edited properties
+    // MARK: - Edited private properties
     
     private var editedMark = "" {
         didSet {
@@ -160,42 +170,28 @@ class NewScheduleTableViewController: UITableViewController {
             viewIfLoaded?.layoutIfNeeded()
         }
     }
-    private var editedLimit: Int? = 1 {
+    private var editedLimit: Int? {
         didSet {
             checkChangesInPickerValue()
         }
     }
-    private var editedInterval: TimeInterval? = 300 {
+    private var editedInterval: TimeInterval? {
         didSet {
             checkChangesInPickerValue()
         }
     }
-    private var editedReduce = (1, 1) {
+    private var editedReduceCig: Int? {
+        didSet {
+            checkChangesInPickerValue()
+        }
+    }
+    private var editedReducePerDay: Int? {
         didSet {
             checkChangesInPickerValue()
         }
     }
     
 
-    // MARK: - Scenario
-    
-    lazy private var scenario: Scenario = {
-        if !limitSwitch.isOn && !intervalSwitch.isOn && !reduceSwitch.isOn {
-            return Scenario.accountingOnly
-        } else if limitSwitch.isOn && reduceSwitch.isOn && !intervalSwitch.isOn {
-            return Scenario.withLimitAndReduce
-        } else if !limitSwitch.isOn && !reduceSwitch.isOn && intervalSwitch.isOn {
-            return Scenario.withInterval
-        } else if limitSwitch.isOn && !reduceSwitch.isOn && !intervalSwitch.isOn {
-            return Scenario.withLimit
-        } else if limitSwitch.isOn && !reduceSwitch.isOn && intervalSwitch.isOn {
-            return Scenario.withLimitAndInterval
-        } else {
-            return Scenario.withLimitAndIntervalAndReduce
-        }
-    }()
-    
-    
     // MARK: - Delegate
     
     weak var delegate: NewScheduleDelegate?
@@ -221,29 +217,7 @@ class NewScheduleTableViewController: UITableViewController {
     // MARK: - IBActions
     
     @IBAction func switchesAction(_ sender: UISwitch) {
-        switch sender.tag {
-        case 0:
-            limitCellIsSelect = false
-            setColorToTextIn(limitLabels, limitCellIsSelect)
-            if !sender.isOn {
-                reduceSwitch.setOn(false, animated: true)
-                reduceCellIsSelect = true
-                setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
-            }
-        case 1:
-            intervalCellIsSelect = false
-            setColorToTextIn(intervalLabels, intervalCellIsSelect)
-        case 2:
-            reduceCellIsSelect = false
-            setColorToTextIn(reduceLabels, reduceCellIsSelect)
-            if sender.isOn {
-                limitSwitch.setOn(true, animated: true)
-            }
-        default:
-            return
-        }
-        view.endEditing(true)
-        tableUpdates()
+        switchAction(with: sender)
     }
     
     
@@ -258,38 +232,48 @@ class NewScheduleTableViewController: UITableViewController {
     // MARK: - Internal methods
     
     func setVaulesToOriginalProperties(from schedule: CigaretteScheduleModel) {
-        switch schedule.scenario {
-        case Scenario.accountingOnly.rawValue:
-            getSelection(false, false, false)
-        case Scenario.withInterval.rawValue:
-            originalInterval = schedule.interval.value
-            getSelection(false, true, false)
-        case Scenario.withLimitAndInterval.rawValue:
-            originalLimit = schedule.limit.value
-            originalInterval = schedule.interval.value
-            getSelection(true, true, false)
-        case Scenario.withLimit.rawValue:
-            originalLimit = schedule.limit.value
-            getSelection(true, false, false)
-        case Scenario.withLimitAndReduce.rawValue:
-            originalLimit = schedule.limit.value
-            originalReduce = (schedule.reduceCig, schedule.reducePerDay)
-            getSelection(true, false, true)
-        case Scenario.withLimitAndIntervalAndReduce.rawValue:
-            originalInterval = schedule.interval.value
-            originalLimit = schedule.limit.value
-            originalReduce = (schedule.reduceCig, schedule.reducePerDay)
-            getSelection(true, true, true)
-        default:
-            return
-        }
-        lastTimeSmoke = schedule.lastTimeSmoke
-        setRequiredValues(from: schedule)
+        originalMark            = schedule.mark
+        originalPrice           = schedule.price
+        originalPackSize        = schedule.packSize
+        originalInterval        = schedule.interval.value
+        originalLimit           = schedule.limit.value
+        originalReduceCig       = schedule.reduceCig.value
+        originalReducePerDay    = schedule.reducePerDay.value
+        lastTimeSmoke           = schedule.lastTimeSmoke
+        let selection = Scenario.getCurrentSelection(schedule.scenario)
+        setSelection(selection)
     }
-
 
     
     // MARK: - Private methods
+    
+    private func setValuesToFields() {
+        textFields[0].text = originalMark
+        if originalPrice != 0 {
+            textFields[1].text = String(originalPrice)
+        } else {
+            textFields[1].text = ""
+        }
+        if originalPackSize != 0 {
+            textFields[2].text = String(originalPackSize)
+        } else {
+            textFields[2].text = ""
+        }
+        if let limit = originalLimit {
+            limitLabels[1].text = String(limit)
+        }
+        if let interval = originalInterval {
+            let currentDate = Date()
+            let dateWithInterval = Date(timeIntervalSinceNow: interval)
+            intervalLabels[1].text = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute], currentDate, and: dateWithInterval) {"HH:mm"}
+        }
+        if let reduceCig = originalReduceCig {
+            reduceLabels[0].text = String(reduceCig)
+        }
+        if let reducePerDay = originalReducePerDay {
+            reduceLabels[3].text = String(reducePerDay)
+        }
+    }
     
     private func checkChangesInPickerValue() {
         if (viewIfLoaded != nil) {
@@ -297,10 +281,10 @@ class NewScheduleTableViewController: UITableViewController {
         }
     }
     
-    private func getSelection(_ limitIsOn: Bool, _ intervalIsOn: Bool, _ reduceIsOn: Bool) {
-        self.limitIsOn = limitIsOn
-        self.intervalIsOn = intervalIsOn
-        self.reduceIsOn = reduceIsOn
+    private func setSelection(_ selection: (Bool, Bool, Bool)) {
+        self.limitIsOn = selection.0
+        self.intervalIsOn = selection.1
+        self.reduceIsOn = selection.2
     }
     
     private func setSelectionToSwitches() {
@@ -309,37 +293,31 @@ class NewScheduleTableViewController: UITableViewController {
         reduceSwitch.setOn(reduceIsOn, animated: true)
     }
     
-    private func setRequiredValues(from model: CigaretteScheduleModel) {
-        originalMark = model.mark
-        originalPrice = model.price
-        originalPackSize = model.packSize
-    }
-    
-    private func setValuesToFields() {
-    
-        textFields[0].text = originalMark
-        
-        if originalPrice != 0 {
-            textFields[1].text = String(originalPrice)
-        } else {
-            textFields[1].text = ""
-        }
-        
-        if originalPackSize != 0 {
-            textFields[2].text = String(originalPackSize)
-        } else {
-            textFields[2].text = ""
-        }
-        
-        limitLabels[1].text = String(originalLimit!)
-        
-        let currentDate = Date()
-        let dateWithInterval = Date(timeIntervalSinceNow: originalInterval!)
-        intervalLabels[1].text = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute], currentDate, and: dateWithInterval) {"HH:mm"}
-        
-        reduceLabels[0].text = String(originalReduce.0)
-        reduceLabels[3].text = String(originalReduce.1)
-    }
+    private func switchAction(with sender: UISwitch) {
+         switch sender.tag {
+         case 0:
+             limitCellIsSelect = false
+             setColorToTextIn(limitLabels, limitCellIsSelect)
+             if !sender.isOn {
+                 reduceSwitch.setOn(false, animated: true)
+                 reduceCellIsSelect = true
+                 setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
+             }
+         case 1:
+             intervalCellIsSelect = false
+             setColorToTextIn(intervalLabels, intervalCellIsSelect)
+         case 2:
+             reduceCellIsSelect = false
+             setColorToTextIn(reduceLabels, reduceCellIsSelect)
+             if sender.isOn {
+                 limitSwitch.setOn(true, animated: true)
+             }
+         default:
+             return
+         }
+         view.endEditing(true)
+         tableUpdates()
+     }
     
     private func setupBarButtonItems() {
         saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
@@ -399,15 +377,16 @@ class NewScheduleTableViewController: UITableViewController {
     }
     
     private func fieldsHaveChanges() -> Bool {
-        if  originalMark == editedMark &&
-            originalPrice == editedPrice &&
-            originalPackSize == editedPackSize &&
-            originalLimit == editedLimit &&
-            originalInterval == editedInterval &&
-            originalReduce == editedReduce &&
-            limitIsOn == limitSwitch.isOn &&
-            intervalIsOn == intervalSwitch.isOn &&
-            reduceIsOn == reduceSwitch.isOn {
+        if  originalMark            == editedMark &&
+            originalPrice           == editedPrice &&
+            originalPackSize        == editedPackSize &&
+            originalLimit           == editedLimit &&
+            originalInterval        == editedInterval &&
+            originalReduceCig       == editedReduceCig &&
+            originalReducePerDay    == editedReducePerDay &&
+            limitIsOn               == limitSwitch.isOn &&
+            intervalIsOn            == intervalSwitch.isOn &&
+            reduceIsOn              == reduceSwitch.isOn {
             return false
         }
         return true
@@ -482,6 +461,7 @@ class NewScheduleTableViewController: UITableViewController {
     
 }
 
+
 // MARK: - extensions
 
 
@@ -494,20 +474,15 @@ extension NewScheduleTableViewController {
             try checkMark()
             try checkPrice()
             try checkPackSize()
-            switch scenario {
-            case .accountingOnly:
-                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, lastTimeSmoke: lastTimeSmoke)
-            case .withInterval:
-                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, interval: editedInterval, lastTimeSmoke: lastTimeSmoke)
-            case .withLimitAndInterval:
-                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval, lastTimeSmoke: lastTimeSmoke)
-            case .withLimit:
-                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, lastTimeSmoke: lastTimeSmoke)
-            case .withLimitAndReduce:
-                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, reduce: editedReduce, lastTimeSmoke: lastTimeSmoke)
-            case .withLimitAndIntervalAndReduce:
-                DataManager.shared.createNewSchedule(mark: editedMark, price: editedPrice, packSize: editedPackSize, scenario: scenario.rawValue, limit: editedLimit, interval: editedInterval, reduce: editedReduce, lastTimeSmoke: lastTimeSmoke)
-            }
+            DataManager.shared.createNewSchedule(mark: editedMark,
+                                                 price: editedPrice,
+                                                 packSize: editedPackSize,
+                                                 scenario: scenario,
+                                                 limit: editedLimit,
+                                                 interval: editedInterval,
+                                                 reduceCig: editedReduceCig,
+                                                 reducePerDay: editedReducePerDay,
+                                                 lastTimeSmoke: lastTimeSmoke)
             if UserDefaults.standard.bool(forKey: "NOTfirstTime") {
                 delegate?.addDidFinish()
             } else {
@@ -645,7 +620,7 @@ extension NewScheduleTableViewController: UIPickerViewDelegate {
         case 1:
             switch component {
             case 0:
-                editedReduce.0 = row + 1
+                editedReduceCig = row + 1
                 reduceLabels[0].text = "\(row + 1)"
                 reduceLabels[1].text = row == 0 ? "cigarette" : "cigarettes"
                 if row > limitPicker.selectedRow(inComponent: 0) {
@@ -653,7 +628,7 @@ extension NewScheduleTableViewController: UIPickerViewDelegate {
                     limitLabels[1].text = "\(row + 1)"
                 }
             case 1:
-                editedReduce.1 = row + 1
+                editedReducePerDay = row + 1
                 reduceLabels[3].text = "\(row + 1)"
                 reduceLabels[4].text = row == 0 ? "day" : "days"
             default:

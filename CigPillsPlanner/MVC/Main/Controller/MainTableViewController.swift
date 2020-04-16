@@ -27,6 +27,9 @@ class MainTableViewController: UITableViewController {
         setupNavigationItem()
         createButton()
         
+        
+        tableView.tableFooterView = UIView()
+        self.view.backgroundColor = .systemGray5
     }
     
     override func viewWillLayoutSubviews() {
@@ -48,11 +51,11 @@ class MainTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CigaretteCellProtocol
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CigaretteAccountingCell
         let reve = schedules.sorted(byKeyPath: "currentStringDate", ascending: false)
         cell.setValues(reve[indexPath.row])
         
-        return cell as! UITableViewCell
+        return cell
     }
     
     
@@ -128,7 +131,7 @@ class MainTableViewController: UITableViewController {
     
     private func checkTodayScheduleWhenAppRun() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 20, repeats: true) { [unowned self] (_) in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [unowned self] (_) in
             self.checkTodaySchedule()
         }
     }
@@ -140,8 +143,8 @@ class MainTableViewController: UITableViewController {
                                           scenario: lastSchedule.scenario,
                                           limit: lastSchedule.limit.value,
                                           interval: lastSchedule.interval.value,
-                                          reduce: (lastSchedule.reduceCig,
-                                                   lastSchedule.reducePerDay))
+                                          reduceCig: lastSchedule.reduceCig.value,
+                                          reducePerDay: lastSchedule.reducePerDay.value)
     }
     
     private func getCurrentSchedule() -> CigaretteScheduleModel? {
