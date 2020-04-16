@@ -116,24 +116,21 @@ class MainTableViewController: UITableViewController {
         checkTodayScheduleWhenAppRun()
     }
     
-    private func checkTodaySchedule(_ completion: (() -> Void)? = nil) {
+    private func checkTodaySchedule() {
         let currentDateString = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
         if let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString {
             DataManager.shared.updateToYesterday(schedule: lastShedule)
             createCurrentScheduleWithLastProperties(from: lastShedule)
             schedules = DataManager.shared.getDescendingSortedSchedules()
-            completion?()
+            tableView.reloadData()
         }
     }
     
     private func checkTodayScheduleWhenAppRun() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 29, repeats: true, block: { [unowned self] (timer) in
-            self.checkTodaySchedule() { [unowned self] in
-                self.tableView.reloadData()
-            }
-        })
-        
+        timer = Timer.scheduledTimer(withTimeInterval: 20, repeats: true) { [unowned self] (_) in
+            self.checkTodaySchedule()
+        }
     }
     
     private func createCurrentScheduleWithLastProperties(from lastSchedule: CigaretteScheduleModel) {
@@ -181,16 +178,11 @@ class MainTableViewController: UITableViewController {
     }
     
     @objc private func increaceCount() {
-        
-        count += 1
-        print(count)
-        
         let current = getCurrentSchedule()
         guard let currentSchedule = current else { return }
         DataManager.shared.increaceTodayCount(for: currentSchedule)
         DataManager.shared.increaceMarkCount(for: currentSchedule)
         DataManager.shared.increaceDayliCount(for: currentSchedule)
-        
         tableView.reloadData()
     }
     

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,14 +26,13 @@
 		91C5EE7C243CAA1E00516C35 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE7B243CAA1E00516C35 /* ErrorManager.swift */; };
 		91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */; };
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
-		91C5EE85243CABBD00516C35 /* NewSchedule.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */; };
+		91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */; };
+		91CDFCCA24484CEB0078F4C1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 91CDFCC924484CEB0078F4C1 /* SwiftPackageProductDependency */; };
 		91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DataManager.swift */; };
 		91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1574243F0C0700B5E75D /* DayliCounter.swift */; };
-		D9ECCC80B04CF0C1B7756FAC /* Pods_CigPillsPlanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7EC5D5B9AE74923AE7BD0F68 /* Pods-CigPillsPlanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CigPillsPlanner.release.xcconfig"; path = "Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner.release.xcconfig"; sourceTree = "<group>"; };
 		91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CigPillsPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C5EE27243CA2CC00516C35 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C5EE30243CA2CD00516C35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,11 +54,9 @@
 		91C5EE7B243CAA1E00516C35 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteAccountingCell.swift; sourceTree = "<group>"; };
 		91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteAccountingCell.xib; sourceTree = "<group>"; };
-		91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewSchedule.storyboard; sourceTree = "<group>"; };
+		91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewScheduleTableViewController.storyboard; sourceTree = "<group>"; };
 		91EB1572243DB3D900B5E75D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		91EB1574243F0C0700B5E75D /* DayliCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayliCounter.swift; sourceTree = "<group>"; };
-		A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CigPillsPlanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CigPillsPlanner.debug.xcconfig"; path = "Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,19 +64,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9ECCC80B04CF0C1B7756FAC /* Pods_CigPillsPlanner.framework in Frameworks */,
+				91CDFCCA24484CEB0078F4C1 /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4D0FA9206D195D2F74A98F95 /* Frameworks */ = {
+		916CD7B324483D1900812760 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A0CD7AA7E8C1991896F115BC /* Pods_CigPillsPlanner.framework */,
+				91C5EE76243CA9C700516C35 /* Protocols */,
+				91C5EE7D243CAAA600516C35 /* Managers */,
 			);
-			name = Frameworks;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		916CD7B424483D3700812760 /* MVC */ = {
+			isa = PBXGroup;
+			children = (
+				91C5EE3B243CA30400516C35 /* Root */,
+				91C5EE45243CA51A00516C35 /* Splash */,
+				91C5EE49243CA5D200516C35 /* Main */,
+				91C5EE57243CA70700516C35 /* NewSchedule */,
+				91C5EE66243CA83500516C35 /* TabBar */,
+				91C5EE6A243CA87F00516C35 /* Detail */,
+				91C5EE6E243CA8E400516C35 /* Diagram */,
+				91C5EE72243CA92E00516C35 /* Visualization */,
+			);
+			path = MVC;
 			sourceTree = "<group>";
 		};
 		91C5EE1B243CA2CB00516C35 = {
@@ -88,7 +101,6 @@
 				91C5EE26243CA2CC00516C35 /* CigPillsPlanner */,
 				91C5EE25243CA2CC00516C35 /* Products */,
 				DB85E2961235EC41ECCD295C /* Pods */,
-				4D0FA9206D195D2F74A98F95 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,16 +115,8 @@
 		91C5EE26243CA2CC00516C35 /* CigPillsPlanner */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE3B243CA30400516C35 /* Root */,
-				91C5EE45243CA51A00516C35 /* Splash */,
-				91C5EE49243CA5D200516C35 /* Main */,
-				91C5EE57243CA70700516C35 /* NewSchedule */,
-				91C5EE66243CA83500516C35 /* TabBar */,
-				91C5EE6A243CA87F00516C35 /* Detail */,
-				91C5EE6E243CA8E400516C35 /* Diagram */,
-				91C5EE72243CA92E00516C35 /* Visualization */,
-				91C5EE76243CA9C700516C35 /* Protocols */,
-				91C5EE7D243CAAA600516C35 /* Managers */,
+				916CD7B424483D3700812760 /* MVC */,
+				916CD7B324483D1900812760 /* Classes */,
 				91C5EE3F243CA39600516C35 /* Application */,
 				91C5EE42243CA40800516C35 /* SupportingFiles */,
 			);
@@ -249,7 +253,7 @@
 		91C5EE59243CA73A00516C35 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE84243CABBD00516C35 /* NewSchedule.storyboard */,
+				91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -349,8 +353,6 @@
 		DB85E2961235EC41ECCD295C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */,
-				7EC5D5B9AE74923AE7BD0F68 /* Pods-CigPillsPlanner.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -362,17 +364,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 91C5EE38243CA2CD00516C35 /* Build configuration list for PBXNativeTarget "CigPillsPlanner" */;
 			buildPhases = (
-				B91B07F4A0BC2410002340D4 /* [CP] Check Pods Manifest.lock */,
 				91C5EE20243CA2CC00516C35 /* Sources */,
 				91C5EE21243CA2CC00516C35 /* Frameworks */,
 				91C5EE22243CA2CC00516C35 /* Resources */,
-				3626794169A63DFDDA25CEB4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = CigPillsPlanner;
+			packageProductDependencies = (
+				91CDFCC924484CEB0078F4C1 /* SwiftPackageProductDependency */,
+			);
 			productName = "Cig'n'Pills Planner";
 			productReference = 91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */;
 			productType = "com.apple.product-type.application";
@@ -401,6 +404,9 @@
 				Base,
 			);
 			mainGroup = 91C5EE1B243CA2CB00516C35;
+			packageReferences = (
+				91CDFCC824484CEB0078F4C1 /* RemoteSwiftPackageReference */,
+			);
 			productRefGroup = 91C5EE25243CA2CC00516C35 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -415,55 +421,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91C5EE85243CABBD00516C35 /* NewSchedule.storyboard in Resources */,
+				91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */,
 				91C5EE31243CA2CD00516C35 /* Assets.xcassets in Resources */,
 				91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		3626794169A63DFDDA25CEB4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CigPillsPlanner/Pods-CigPillsPlanner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B91B07F4A0BC2410002340D4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CigPillsPlanner-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		91C5EE20243CA2CC00516C35 /* Sources */ = {
@@ -611,7 +575,6 @@
 		};
 		91C5EE39243CA2CD00516C35 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CAAA39CFA5BD523CE3A8C631 /* Pods-CigPillsPlanner.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -631,7 +594,6 @@
 		};
 		91C5EE3A243CA2CD00516C35 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7EC5D5B9AE74923AE7BD0F68 /* Pods-CigPillsPlanner.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -671,6 +633,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		91CDFCC824484CEB0078F4C1 /* RemoteSwiftPackageReference */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		91CDFCC924484CEB0078F4C1 /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91CDFCC824484CEB0078F4C1 /* RemoteSwiftPackageReference */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 91C5EE1C243CA2CB00516C35 /* Project object */;
 }

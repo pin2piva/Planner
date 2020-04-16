@@ -199,7 +199,6 @@ class NewScheduleTableViewController: UITableViewController {
     // MARK: - Delegate
     
     weak var delegate: NewScheduleDelegate?
-    var count = 0
     
     // MARK: - Life cycle
     
@@ -218,66 +217,6 @@ class NewScheduleTableViewController: UITableViewController {
         saveButton.isEnabled = hasChanges
     }
     
-    
-    // MARK: - Table view delegate
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 1:
-            return getHeightForRow(limitSwitch, cell: limitCellIsSelect, row: indexPath.row)
-        case 2:
-            return getHeightForRow(intervalSwitch, cell: intervalCellIsSelect, row: indexPath.row)
-        case 3:
-            return getHeightForRow(reduceSwitch, cell: reduceCellIsSelect, row: indexPath.row)
-        default:
-            return 50
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        setSelectionStyle(to: cell, style: .none)
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        setSelectionStyle(to: cell, style: .gray)
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 1:
-            switch indexPath.row {
-            case 2:
-                setHideTo(cell: limitCell, when: &limitCellIsSelect, colorFor: limitLabels)
-            default:
-                break
-            }
-        case 2:
-            switch indexPath.row {
-            case 2:
-                setHideTo(cell: intervalCell, when: &intervalCellIsSelect, colorFor: intervalLabels)
-                scrollToUnhidePicker(indexPath: indexPath)
-            default:
-                break
-            }
-        case 3:
-            switch indexPath.row {
-            case 2:
-                reduceCell.selectionStyle = .default
-                setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
-                scrollToUnhidePicker(indexPath: indexPath)
-            default:
-                break
-            }
-        default:
-            break
-        }
-        view.endEditing(true)
-        tableUpdates()
-    }
     
     // MARK: - IBActions
     
@@ -305,6 +244,14 @@ class NewScheduleTableViewController: UITableViewController {
         }
         view.endEditing(true)
         tableUpdates()
+    }
+    
+    
+    // MARK: - Static methods
+    
+    static func stodyboardInstance() -> NewScheduleTableViewController? {
+        let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
+        return storyboard.instantiateViewController(identifier: String(describing: self)) as? NewScheduleTableViewController
     }
     
     
@@ -492,8 +439,6 @@ class NewScheduleTableViewController: UITableViewController {
     
     @objc private func save() {
         saveNewShedule()
-        print("price = \(editedPrice)")
-        print("size = \(editedPackSize)")
     }
     
     @objc private func clearAllFields() {
@@ -516,7 +461,6 @@ class NewScheduleTableViewController: UITableViewController {
         case 0:
             editedMark = text
         case 1:
-            print(text)
             guard text != "" || text.first != "." || text.last != "." || text.filter({ $0 == "." }).count <= 1 else {
                 editedPrice = 0.0
                 return
@@ -734,5 +678,69 @@ extension NewScheduleTableViewController: UIAdaptivePresentationControllerDelega
             let continueAction = UIAlertAction(title: "Продолжить", style: .cancel, handler: nil)
             return [discardAction, continueAction]
         }
+    }
+}
+
+
+// MARK: - Table view delegate
+
+extension NewScheduleTableViewController {
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 1:
+            return getHeightForRow(limitSwitch, cell: limitCellIsSelect, row: indexPath.row)
+        case 2:
+            return getHeightForRow(intervalSwitch, cell: intervalCellIsSelect, row: indexPath.row)
+        case 3:
+            return getHeightForRow(reduceSwitch, cell: reduceCellIsSelect, row: indexPath.row)
+        default:
+            return 50
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        setSelectionStyle(to: cell, style: .none)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        setSelectionStyle(to: cell, style: .gray)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 1:
+            switch indexPath.row {
+            case 2:
+                setHideTo(cell: limitCell, when: &limitCellIsSelect, colorFor: limitLabels)
+            default:
+                break
+            }
+        case 2:
+            switch indexPath.row {
+            case 2:
+                setHideTo(cell: intervalCell, when: &intervalCellIsSelect, colorFor: intervalLabels)
+                scrollToUnhidePicker(indexPath: indexPath)
+            default:
+                break
+            }
+        case 3:
+            switch indexPath.row {
+            case 2:
+                reduceCell.selectionStyle = .default
+                setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
+                scrollToUnhidePicker(indexPath: indexPath)
+            default:
+                break
+            }
+        default:
+            break
+        }
+        view.endEditing(true)
+        tableUpdates()
     }
 }

@@ -45,9 +45,9 @@ class RootViewController: UIViewController {
     }
     
     func addFirstSchedule() {
-        let storyboard = UIStoryboard(name: "NewSchedule", bundle: nil)
-        let addNewShedule = storyboard.instantiateViewController(identifier: "NewScheduleTableViewController") as! NewScheduleTableViewController
-        navController = UINavigationController(rootViewController: addNewShedule)
+        let newSchedule = NewScheduleTableViewController.stodyboardInstance()
+        guard let addNewSchedule = newSchedule else { return }
+        navController = UINavigationController(rootViewController: addNewSchedule)
         addNewChild(navController)
         removeOldChild(navController)
     }
@@ -62,13 +62,13 @@ class RootViewController: UIViewController {
     }
     
     func showAddNewSheduleController(_ currentSchedule: CigaretteScheduleModel?) {
-        let storyboard = UIStoryboard(name: "NewSchedule", bundle: nil)
-        let addNewShedule = storyboard.instantiateViewController(identifier: "NewScheduleTableViewController") as! NewScheduleTableViewController
-        let new = UINavigationController(rootViewController: addNewShedule)
-        new.presentationController?.delegate = (addNewShedule as UIAdaptivePresentationControllerDelegate)
-        addNewShedule.delegate = self
+        let newSchedule = NewScheduleTableViewController.stodyboardInstance()
+        guard let addNewSchedule = newSchedule else { return }
+        let new = UINavigationController(rootViewController: addNewSchedule)
+        new.presentationController?.delegate = (addNewSchedule as UIAdaptivePresentationControllerDelegate)
+        addNewSchedule.delegate = self
         if let currentSchedule = currentSchedule {
-            addNewShedule.setVaulesToOriginalProperties(from: currentSchedule)
+            addNewSchedule.setVaulesToOriginalProperties(from: currentSchedule)
         }
         navController.modalPresentationStyle = .automatic
         navController.present(new, animated: true, completion: nil)
