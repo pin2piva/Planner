@@ -204,6 +204,8 @@ class NewScheduleTableViewController: UITableViewController {
         setupBarButtonItems()
         setValuesToFields()
         
+        
+        
         title = "Add New Shedule"
     }
     
@@ -263,9 +265,7 @@ class NewScheduleTableViewController: UITableViewController {
             limitLabels[1].text = String(limit)
         }
         if let interval = originalInterval {
-            let currentDate = Date()
-            let dateWithInterval = Date(timeIntervalSinceNow: interval)
-            intervalLabels[1].text = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute], currentDate, and: dateWithInterval) {"HH:mm"}
+            intervalLabels[1].text = getTimeFrom(interval)
         }
         if let reduceCig = originalReduceCig {
             reduceLabels[0].text = String(reduceCig)
@@ -273,6 +273,13 @@ class NewScheduleTableViewController: UITableViewController {
         if let reducePerDay = originalReducePerDay {
             reduceLabels[3].text = String(reducePerDay)
         }
+    }
+    
+    private func getTimeFrom(_ timeInterval: Double) -> String? {
+        let currentDate = Date()
+        let dateWithInterval = Date(timeIntervalSinceNow: timeInterval)
+        let stringInterval = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute], currentDate, and: dateWithInterval) {"HH:mm"}
+        return stringInterval
     }
     
     private func checkChangesInPickerValue() {
@@ -396,6 +403,7 @@ class NewScheduleTableViewController: UITableViewController {
         guard let dateString = intervalLabels[1].text else { return }
         guard let date = DateManager.shared.getDate(from: dateString, {"HH:mm"}) else { return }
         intervalPicker.setDate(date, animated: false)
+        timerInputAction(sender: intervalPicker)
     }
     
     private func setValueToPicker(row first: String?, second: String? = nil) {
@@ -408,6 +416,7 @@ class NewScheduleTableViewController: UITableViewController {
         guard let secondRow = Int(second) else { return }
         reducePicker.selectRow(firstRow - 1, inComponent: 0, animated: false)
         reducePicker.selectRow(secondRow - 1, inComponent: 1, animated: false)
+        
     }
     
     private func saveNewShedule() {

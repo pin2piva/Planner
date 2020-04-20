@@ -15,13 +15,16 @@ class DateManager {
     let dateFormatter = DateFormatter()
     
     func getStringDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date, _ completion: () -> String?) -> String? {
-        let components = Calendar.current.dateComponents(components, from: from, to: to)
+        guard let date = getDateDifferenceBetween(components: components, from, and: to) else { return nil }
         dateFormatter.dateFormat = completion()
-        let date = Calendar(identifier: .gregorian).date(from: components)
-        return dateFormatter.string(from: date!)
+        return dateFormatter.string(from: date)
     }
     
-    
+    func getDateDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date) -> Date? {
+        let components = Calendar.current.dateComponents(components, from: from, to: to)
+        let date = Calendar(identifier: .gregorian).date(from: components)
+        return date
+    }
     
     func getStringDate(date: Date, _ completion: () -> String?) -> String {
         dateFormatter.dateFormat = completion()
@@ -33,7 +36,16 @@ class DateManager {
         return dateFormatter.date(from: string)
     }
     
-
+    func getStringTimeFrom(timeInterval: Double) -> String? {
+        let currentDate = Date()
+        let dateWithInterval = Date(timeIntervalSinceNow: timeInterval)
+        let stringInterval = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], currentDate, and: dateWithInterval) {"HH:mm:ss"}
+        return stringInterval
+    }
+    
+    func getDateWithInterval(interval: Double, from date: Date) -> Date {
+        return Date(timeInterval: interval, since: date)
+    }
     
     
 }

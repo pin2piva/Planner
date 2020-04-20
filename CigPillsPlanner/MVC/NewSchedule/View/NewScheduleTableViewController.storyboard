@@ -264,7 +264,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="300" minuteInterval="5" style="wheels" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpk-Hm-ldz">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="60" minuteInterval="1" style="wheels" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpk-Hm-ldz">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="140" id="Y0C-9b-MfZ"/>

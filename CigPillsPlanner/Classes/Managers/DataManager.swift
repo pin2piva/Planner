@@ -57,6 +57,19 @@ class DataManager {
         add(schedule)
     }
     
+//    func writeCurrentIntervalValue(_ schedule: CigaretteScheduleModel, interval: Double) {
+//        try! realm.write {
+//            schedule.currentInterval = interval
+//        }
+//    }
+    
+//    func deincrementCurrentInterval(_ schedule: CigaretteScheduleModel) {
+//        try! realm.write {
+//            guard schedule.currentInterval != 0 else { return }
+//            schedule.currentInterval -= 1
+//        }
+//    }
+    
     func deleteYesterdaySchedule(_ schedule: CigaretteScheduleModel) {
         try! realm.write {
             realm.delete(schedule)
@@ -73,10 +86,9 @@ class DataManager {
         }
     }
     
-    func increaceTodayCount(for schedule: CigaretteScheduleModel) {
+    func setLastTime(for schedule: CigaretteScheduleModel) {
         try! realm.write {
             schedule.lastTimeSmoke = Date()
-            schedule.todayScheduleCount += 1
         }
     }
     

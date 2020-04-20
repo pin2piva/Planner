@@ -11,11 +11,19 @@ import RealmSwift
 
 class MainTableViewController: UITableViewController {
     
+    
     private var schedules: Results<CigaretteScheduleModel>!
     private var markCounter: MarkCounter?
     private var breakingButton: UIButton!
     private var timer: Timer?
     private var count = 0
+    private var titleFor: String? {
+        didSet {
+            if let titleFor = titleFor {
+                title = titleFor
+            }
+        }
+    }
     
     
     // MARK: - Life cycle
@@ -26,7 +34,6 @@ class MainTableViewController: UITableViewController {
         registerCell()
         setupNavigationItem()
         createButton()
-        
         
         tableView.tableFooterView = UIView()
         self.view.backgroundColor = .systemGray5
@@ -51,11 +58,21 @@ class MainTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CigaretteAccountingCell
-        let reve = schedules.sorted(byKeyPath: "currentStringDate", ascending: false)
-        cell.setValues(reve[indexPath.row])
-        
-        return cell
+//        let schedulesSorted = schedules.sorted(byKeyPath: "currentStringDate", ascending: false)
+        let schedule = schedules[indexPath.row]
+        let scenario = Scenario.getScenarioCase(from: schedule.scenario)
+        var cell: CellProtocol
+        switch scenario {
+        case .accountingOnly:
+            cell = tableView.dequeueReusableCell(withIdentifier: "accounting", for: indexPath) as! CigaretteAccountingCell
+        case .withInterval:
+            cell = tableView.dequeueReusableCell(withIdentifier: "interval", for: indexPath) as! CigaretteIntervalCell
+        default:
+            cell = tableView.dequeueReusableCell(withIdentifier: "limit", for: indexPath) as! CigaretteLimitCell
+        }
+        cell.setValues(schedule)
+        titleFor = schedule.overLimit()
+        return cell as! UITableViewCell
     }
     
     
@@ -83,9 +100,30 @@ class MainTableViewController: UITableViewController {
     
     // MARK: - Private methods
     
+    
+    private func setupViewGradient() {
+        let gradient = CAGradientLayer()
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 0, y: 1)
+        gradient.colors = [UIColor.systemGray6.cgColor,
+                           UIColor.systemGray.cgColor]
+        
+        let backgroundView = UIView(frame: CGRect(x: view.bounds.origin.x,
+                                                  y: view.bounds.origin.y,
+                                                  width: view.bounds.width,
+                                                  height: view.bounds.height + 50))
+        gradient.frame = backgroundView.bounds
+        backgroundView.layer.addSublayer(gradient)
+        self.tableView.backgroundView = backgroundView
+    }
+    
     private func registerCell() {
-        let cell = UINib(nibName: "CigaretteAccountingCell", bundle: nil)
-        tableView.register(cell, forCellReuseIdentifier: "Cell")
+        let accountingCell = UINib(nibName: "CigaretteAccountingCell", bundle: nil)
+        tableView.register(accountingCell, forCellReuseIdentifier: "accounting")
+        let limitCell = UINib(nibName: "CigaretteLimitCell", bundle: nil)
+        tableView.register(limitCell, forCellReuseIdentifier: "limit")
+        let intervalCell = UINib(nibName: "CigaretteIntervalCell", bundle: nil)
+        tableView.register(intervalCell, forCellReuseIdentifier: "interval")
     }
     
     private func setupNavigationItem() {
@@ -183,7 +221,7 @@ class MainTableViewController: UITableViewController {
     @objc private func increaceCount() {
         let current = getCurrentSchedule()
         guard let currentSchedule = current else { return }
-        DataManager.shared.increaceTodayCount(for: currentSchedule)
+        DataManager.shared.setLastTime(for: currentSchedule)
         DataManager.shared.increaceMarkCount(for: currentSchedule)
         DataManager.shared.increaceDayliCount(for: currentSchedule)
         tableView.reloadData()
