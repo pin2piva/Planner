@@ -12,38 +12,25 @@ class CigaretteIntervalCell: UITableViewCell, CellProtocol {
     
     @IBOutlet weak var markLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var todayCountLabel: UILabel!
-    @IBOutlet weak var totalCountLabel: UILabel!
-    @IBOutlet weak var lastBreakTimeLabel: UILabel!
-    @IBOutlet weak var lastBreakLabel: UILabel!
-    @IBOutlet weak var nextBreakTimeLabel: UILabel!
+    @IBOutlet weak var todayLabel: UILabel!
+    @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var lastLabel: UILabel!
+    @IBOutlet weak var nextLabel: UILabel!
     
     private var timer: Timer?
     private var intervalTimer: Timer?
         
     override func awakeFromNib() {
         super.awakeFromNib()
-        setupLayer()
     }
-    
-    
-    private func setupLayer() {
-        self.clipsToBounds = true
-        self.layer.cornerRadius = 15
-        self.layer.borderColor = UIColor.systemGray5.cgColor
-        self.layer.borderWidth = 5
-    }
-    
     
     func setValues(_ schedule: CigaretteScheduleModel) {
         let totalCount = DataManager.shared.getTotalCountBeforeCurrent(date: schedule.currentStringDate)
         let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)
         markLabel.text = schedule.mark
         priceLabel.text = "\(String(describing: schedule.price))"
-        lastBreakLabel.text = "Last smoke break"
-        todayCountLabel.text = "\(dayliCount)"
-        totalCountLabel.text = "\(totalCount)"
-        nextBreakTimeLabel.text = getDefaultInterval(schedule)
+        todayLabel.text = "\(dayliCount)"
+        totalLabel.text = "\(totalCount)"
         lastTime(schedule)
         makeIntervalTimer(schedule)
     }
@@ -51,42 +38,40 @@ class CigaretteIntervalCell: UITableViewCell, CellProtocol {
     
     private func lastTime(_ schedule: CigaretteScheduleModel) {
         timer?.invalidate()
-        if schedule.isToday {
-            guard let date = schedule.lastTimeSmoke else {
-                lastBreakTimeLabel.text = "00:00:00"
-                timer?.invalidate()
-                return
-            }
-            lastBreakTimeLabel.text = getTimeDifference(date, Date())
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (_) in
-                self?.lastBreakTimeLabel.text = self?.getTimeDifference(date, Date())
-            }
-        } else {
-            guard let date = schedule.lastTimeSmoke else {
-                lastBreakLabel.text = "Did not smoke"
-                lastBreakTimeLabel.text = "\(schedule.currentStringDate)"
-                return
-            }
-            lastBreakTimeLabel.text = DateManager.shared.getStringDate(date: date) { "EE, MM-dd-yyyy HH:mm" }
+        guard let date = schedule.lastTimeSmoke else {
+            lastLabel.text = "00:00:00"
+            timer?.invalidate()
+            return
+        }
+        setLastSmokeTimeDifference(date)
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (_) in
+            self?.setLastSmokeTimeDifference(date)
         }
     }
     
     
+    private func setLastSmokeTimeDifference(_ date: Date) {
+        let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], date, and: Date()) { "HH:mm:ss" }
+        lastLabel.text = lastTimeString
+    }
+    
     private func makeIntervalTimer(_ schedule: CigaretteScheduleModel) {
-        guard schedule.isToday else { return }
-        guard let lastTimeSmoke = schedule.lastTimeSmoke else { return }
         guard let timeInterval = schedule.interval.value else { return }
+        guard let lastTimeSmoke = schedule.lastTimeSmoke else {
+            nextLabel.text = DateManager.shared.getStringTimeFrom(timeInterval: timeInterval)
+            return
+        }
         intervalTimer?.invalidate()
         let nextTime = DateManager.shared.getDateWithInterval(interval: timeInterval + 1, from: lastTimeSmoke)
         let date = Date()
-        nextBreakTimeLabel.text = getTimeDifference(date, nextTime)
+        nextLabel.text = getTimeDifference(date, nextTime)
         intervalTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (timer) in
             let date = DateManager.shared.getDateWithInterval(interval: 0, from: Date())
-            self?.nextBreakTimeLabel.text = self?.getTimeDifference(date, nextTime)
+            self?.nextLabel.text = self?.getTimeDifference(date, nextTime)
             if date >= nextTime {
                 timer.invalidate()
                 let next = DateManager.shared.getDateWithInterval(interval: timeInterval, from: Date())
-                self?.nextBreakTimeLabel.text = self?.getTimeDifference(date, next)
+                self?.nextLabel.text = self?.getTimeDifference(date, next)
             }
         }
     }
@@ -94,11 +79,6 @@ class CigaretteIntervalCell: UITableViewCell, CellProtocol {
     private func getTimeDifference(_ first: Date, _ second: Date) -> String? {
         let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], first, and: second) { "HH:mm:ss" }
         return lastTimeString
-    }
-    
-    private func getDefaultInterval(_ schedule: CigaretteScheduleModel) -> String? {
-        guard let timeInterval = schedule.interval.value else { return nil }
-        return DateManager.shared.getStringTimeFrom(timeInterval: timeInterval)
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  CigaretteLimitIntervalCell.swift
+//  CigaretteLimitReduceCell.swift
 //  CigPillsPlanner
 //
 //  Created by Artsiom Habruseu on 4/20/20.
@@ -8,15 +8,15 @@
 
 import UIKit
 
-class CigaretteLimitIntervalCell: UITableViewCell {
+class CigaretteLimitReduceCell: UITableViewCell {
     
     @IBOutlet weak var markLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var balanceLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var reduceLabel: UILabel!
     @IBOutlet weak var lastLabel: UILabel!
-    @IBOutlet weak var nextLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

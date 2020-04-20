@@ -14,7 +14,11 @@
 		91B606E3244D9026005731B6 /* CigaretteLimitIntervalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606E1244D9026005731B6 /* CigaretteLimitIntervalCell.swift */; };
 		91B606E4244D9026005731B6 /* CigaretteLimitIntervalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91B606E2244D9026005731B6 /* CigaretteLimitIntervalCell.xib */; };
 		91B606EA244D90DE005731B6 /* NotTodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606E8244D90DE005731B6 /* NotTodayCell.swift */; };
-		91B606EB244D90DE005731B6 /* NotTodayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91B606E9244D90DE005731B6 /* NotTodayCell.xib */; };
+		91B606EE244DD4C1005731B6 /* NotTodayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91B606ED244DD4C1005731B6 /* NotTodayCell.xib */; };
+		91B606F1244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606EF244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.swift */; };
+		91B606F2244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91B606F0244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.xib */; };
+		91B606F6244DEDFD005731B6 /* CigaretteLimitReduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606F4244DEDFD005731B6 /* CigaretteLimitReduceCell.swift */; };
+		91B606F7244DEDFD005731B6 /* CigaretteLimitReduceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91B606F5244DEDFD005731B6 /* CigaretteLimitReduceCell.xib */; };
 		91C5EE28243CA2CC00516C35 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE27243CA2CC00516C35 /* AppDelegate.swift */; };
 		91C5EE31243CA2CD00516C35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE30243CA2CD00516C35 /* Assets.xcassets */; };
 		91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE3D243CA36E00516C35 /* RootViewController.swift */; };
@@ -48,7 +52,11 @@
 		91B606E1244D9026005731B6 /* CigaretteLimitIntervalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteLimitIntervalCell.swift; sourceTree = "<group>"; };
 		91B606E2244D9026005731B6 /* CigaretteLimitIntervalCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteLimitIntervalCell.xib; sourceTree = "<group>"; };
 		91B606E8244D90DE005731B6 /* NotTodayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotTodayCell.swift; sourceTree = "<group>"; };
-		91B606E9244D90DE005731B6 /* NotTodayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotTodayCell.xib; sourceTree = "<group>"; };
+		91B606ED244DD4C1005731B6 /* NotTodayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotTodayCell.xib; sourceTree = "<group>"; };
+		91B606EF244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteLimitIntervalReduceCell.swift; sourceTree = "<group>"; };
+		91B606F0244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteLimitIntervalReduceCell.xib; sourceTree = "<group>"; };
+		91B606F4244DEDFD005731B6 /* CigaretteLimitReduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteLimitReduceCell.swift; sourceTree = "<group>"; };
+		91B606F5244DEDFD005731B6 /* CigaretteLimitReduceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteLimitReduceCell.xib; sourceTree = "<group>"; };
 		91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CigPillsPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C5EE27243CA2CC00516C35 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C5EE30243CA2CD00516C35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -133,9 +141,27 @@
 			isa = PBXGroup;
 			children = (
 				91B606E8244D90DE005731B6 /* NotTodayCell.swift */,
-				91B606E9244D90DE005731B6 /* NotTodayCell.xib */,
+				91B606ED244DD4C1005731B6 /* NotTodayCell.xib */,
 			);
 			path = NotTodayCell;
+			sourceTree = "<group>";
+		};
+		91B606F3244DEB79005731B6 /* CigaretteLimitIntervalReduceCell */ = {
+			isa = PBXGroup;
+			children = (
+				91B606EF244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.swift */,
+				91B606F0244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.xib */,
+			);
+			path = CigaretteLimitIntervalReduceCell;
+			sourceTree = "<group>";
+		};
+		91B606F8244DEE05005731B6 /* CigaretteLimitReduceCell */ = {
+			isa = PBXGroup;
+			children = (
+				91B606F4244DEDFD005731B6 /* CigaretteLimitReduceCell.swift */,
+				91B606F5244DEDFD005731B6 /* CigaretteLimitReduceCell.xib */,
+			);
+			path = CigaretteLimitReduceCell;
 			sourceTree = "<group>";
 		};
 		91C5EE1B243CA2CB00516C35 = {
@@ -265,6 +291,8 @@
 				91E537D02448A7980056E67A /* CigaretteLimitCell */,
 				9171B7CF2449E3B6005C3183 /* CigaretteIntervalCell */,
 				91B606E5244D902F005731B6 /* CigaretteLimitIntervalCell */,
+				91B606F3244DEB79005731B6 /* CigaretteLimitIntervalReduceCell */,
+				91B606F8244DEE05005731B6 /* CigaretteLimitReduceCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -469,10 +497,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91B606EB244D90DE005731B6 /* NotTodayCell.xib in Resources */,
+				91B606EE244DD4C1005731B6 /* NotTodayCell.xib in Resources */,
 				91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */,
+				91B606F7244DEDFD005731B6 /* CigaretteLimitReduceCell.xib in Resources */,
 				91C5EE31243CA2CD00516C35 /* Assets.xcassets in Resources */,
 				9171B7C42449B0E1005C3183 /* CigaretteLimitCell.xib in Resources */,
+				91B606F2244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.xib in Resources */,
 				9171B7CE2449E3B1005C3183 /* CigaretteIntervalCell.xib in Resources */,
 				91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */,
 				91B606E4244D9026005731B6 /* CigaretteLimitIntervalCell.xib in Resources */,
@@ -486,10 +516,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91B606F1244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.swift in Sources */,
 				91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */,
 				91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */,
 				9171B7C32449B0E1005C3183 /* CigaretteLimitCell.swift in Sources */,
 				91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */,
+				91B606F6244DEDFD005731B6 /* CigaretteLimitReduceCell.swift in Sources */,
 				91B606E3244D9026005731B6 /* CigaretteLimitIntervalCell.swift in Sources */,
 				91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */,
 				91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */,

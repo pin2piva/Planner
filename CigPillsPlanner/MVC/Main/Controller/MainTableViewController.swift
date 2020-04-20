@@ -58,17 +58,21 @@ class MainTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let schedulesSorted = schedules.sorted(byKeyPath: "currentStringDate", ascending: false)
+        //        let schedulesSorted = schedules.sorted(byKeyPath: "currentStringDate", ascending: false)
         let schedule = schedules[indexPath.row]
         let scenario = Scenario.getScenarioCase(from: schedule.scenario)
         var cell: CellProtocol
-        switch scenario {
-        case .accountingOnly:
-            cell = tableView.dequeueReusableCell(withIdentifier: "accounting", for: indexPath) as! CigaretteAccountingCell
-        case .withInterval:
-            cell = tableView.dequeueReusableCell(withIdentifier: "interval", for: indexPath) as! CigaretteIntervalCell
-        default:
-            cell = tableView.dequeueReusableCell(withIdentifier: "limit", for: indexPath) as! CigaretteLimitCell
+        if schedule.isToday {
+            switch scenario {
+            case .accountingOnly:
+                cell = tableView.dequeueReusableCell(withIdentifier: "accounting", for: indexPath) as! CigaretteAccountingCell
+            case .withInterval:
+                cell = tableView.dequeueReusableCell(withIdentifier: "interval", for: indexPath) as! CigaretteIntervalCell
+            default:
+                cell = tableView.dequeueReusableCell(withIdentifier: "limit", for: indexPath) as! CigaretteLimitCell
+            }
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: "notToday", for: indexPath) as! NotTodayCell
         }
         cell.setValues(schedule)
         titleFor = schedule.overLimit()
@@ -97,7 +101,6 @@ class MainTableViewController: UITableViewController {
         }
     }
     
-    
     // MARK: - Private methods
     
     
@@ -118,6 +121,8 @@ class MainTableViewController: UITableViewController {
     }
     
     private func registerCell() {
+        let notTodayCell = UINib(nibName: "NotTodayCell", bundle: nil)
+        tableView.register(notTodayCell, forCellReuseIdentifier: "notToday")
         let accountingCell = UINib(nibName: "CigaretteAccountingCell", bundle: nil)
         tableView.register(accountingCell, forCellReuseIdentifier: "accounting")
         let limitCell = UINib(nibName: "CigaretteLimitCell", bundle: nil)
@@ -159,12 +164,11 @@ class MainTableViewController: UITableViewController {
     
     private func checkTodaySchedule() {
         let currentDateString = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
-        if let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString {
-            DataManager.shared.updateToYesterday(schedule: lastShedule)
-            createCurrentScheduleWithLastProperties(from: lastShedule)
-            schedules = DataManager.shared.getDescendingSortedSchedules()
-            tableView.reloadData()
-        }
+        guard let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString else { return }
+        DataManager.shared.updateToYesterday(schedule: lastShedule)
+        createCurrentScheduleWithLastProperties(from: lastShedule)
+        schedules = DataManager.shared.getDescendingSortedSchedules()
+        tableView.reloadData()
     }
     
     private func checkTodayScheduleWhenAppRun() {
@@ -175,6 +179,7 @@ class MainTableViewController: UITableViewController {
     }
     
     private func createCurrentScheduleWithLastProperties(from lastSchedule: CigaretteScheduleModel) {
+        
         DataManager.shared.createNewSchedule(mark: lastSchedule.mark,
                                           price: lastSchedule.price,
                                           packSize: lastSchedule.packSize,
@@ -182,7 +187,8 @@ class MainTableViewController: UITableViewController {
                                           limit: lastSchedule.limit.value,
                                           interval: lastSchedule.interval.value,
                                           reduceCig: lastSchedule.reduceCig.value,
-                                          reducePerDay: lastSchedule.reducePerDay.value)
+                                          reducePerDay: lastSchedule.reducePerDay.value,
+                                          lastTimeSmoke: lastSchedule.lastTimeSmoke)
     }
     
     private func getCurrentSchedule() -> CigaretteScheduleModel? {

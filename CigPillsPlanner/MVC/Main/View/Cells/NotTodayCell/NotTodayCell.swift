@@ -8,17 +8,29 @@
 
 import UIKit
 
-class NotTodayCell: UITableViewCell {
-
+class NotTodayCell: UITableViewCell, CellProtocol {
+    
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var smokedLabel: UILabel!
+    @IBOutlet weak var lastLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    func setValues(_ schedule: CigaretteScheduleModel) {
+        dateLabel.text = schedule.currentStringDate
+        smokedLabel.text = "\(getDayliCount(schedule))"
+        lastTime(schedule)
+    }
+    
+    func getDayliCount(_ schedule: CigaretteScheduleModel) -> Int {
+        DataManager.shared.getDayliCount(for: schedule.currentStringDate)
+    }
+    
+    private func lastTime(_ schedule: CigaretteScheduleModel) {
+        guard let date = schedule.lastTimeSmoke else { return }
+        lastLabel.text = DateManager.shared.getStringDate(date: date) { "HH:mm" }
     }
     
 }
