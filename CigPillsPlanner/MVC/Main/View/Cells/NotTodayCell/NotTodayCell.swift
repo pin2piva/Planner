@@ -29,8 +29,11 @@ class NotTodayCell: UITableViewCell, CellProtocol {
     }
     
     private func lastTime(_ schedule: CigaretteScheduleModel) {
-        guard let date = schedule.lastTimeSmoke else { return }
-        lastLabel.text = DateManager.shared.getStringDate(date: date) { "HH:mm" }
+        if let date = schedule.lastTimeSmoke {
+            lastLabel.text = DateManager.shared.getStringDate(date: date) { "HH:mm:ss" }
+        } else {
+            lastLabel.text = "00:00"
+        }
     }
     
 }

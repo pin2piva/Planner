@@ -191,7 +191,7 @@ class NewScheduleTableViewController: UITableViewController {
         }
     }
     
-
+    
     // MARK: - Delegate
     
     weak var delegate: NewScheduleDelegate?
@@ -203,9 +203,6 @@ class NewScheduleTableViewController: UITableViewController {
         setSelectionToSwitches()
         setupBarButtonItems()
         setValuesToFields()
-        
-        
-        
         title = "Add New Shedule"
     }
     
@@ -245,7 +242,7 @@ class NewScheduleTableViewController: UITableViewController {
         let selection = Scenario.getCurrentSelection(schedule.scenario)
         setSelection(selection)
     }
-
+    
     
     // MARK: - Private methods
     
@@ -300,31 +297,51 @@ class NewScheduleTableViewController: UITableViewController {
         reduceSwitch.setOn(reduceIsOn, animated: true)
     }
     
+    private func checkLimitIsValid(_ limitIsOn: Bool) {
+        if limitIsOn {
+            editedLimit = limitPicker.selectedRow(inComponent: 0) + 1
+        } else {
+            editedLimit = originalLimit
+        }
+    }
+    
+    private func checkReduceIsValid(_ reduceIsOn: Bool) {
+        if reduceIsOn {
+            editedReduceCig = reducePicker.selectedRow(inComponent: 0) + 1
+            editedReducePerDay = reducePicker.selectedRow(inComponent: 1) + 1
+        } else {
+            editedReduceCig = originalReduceCig
+            editedReducePerDay = originalReducePerDay
+        }
+    }
+    
     private func switchAction(with sender: UISwitch) {
-         switch sender.tag {
-         case 0:
-             limitCellIsSelect = false
-             setColorToTextIn(limitLabels, limitCellIsSelect)
-             if !sender.isOn {
-                 reduceSwitch.setOn(false, animated: true)
-                 reduceCellIsSelect = true
-                 setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
-             }
-         case 1:
-             intervalCellIsSelect = false
-             setColorToTextIn(intervalLabels, intervalCellIsSelect)
-         case 2:
-             reduceCellIsSelect = false
-             setColorToTextIn(reduceLabels, reduceCellIsSelect)
-             if sender.isOn {
-                 limitSwitch.setOn(true, animated: true)
-             }
-         default:
-             return
-         }
-         view.endEditing(true)
-         tableUpdates()
-     }
+        switch sender.tag {
+        case 0:
+            limitCellIsSelect = false
+            setColorToTextIn(limitLabels, limitCellIsSelect)
+            checkLimitIsValid(sender.isOn)
+            if !sender.isOn {
+                reduceSwitch.setOn(false, animated: true)
+                reduceCellIsSelect = true
+                setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
+            }
+        case 1:
+            intervalCellIsSelect = false
+            setColorToTextIn(intervalLabels, intervalCellIsSelect)
+        case 2:
+            reduceCellIsSelect = false
+            setColorToTextIn(reduceLabels, reduceCellIsSelect)
+            checkReduceIsValid(sender.isOn)
+            if sender.isOn {
+                limitSwitch.setOn(true, animated: true)
+            }
+        default:
+            return
+        }
+        view.endEditing(true)
+        tableUpdates()
+    }
     
     private func setupBarButtonItems() {
         saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
@@ -727,4 +744,5 @@ extension NewScheduleTableViewController {
         view.endEditing(true)
         tableUpdates()
     }
+    
 }

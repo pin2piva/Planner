@@ -11,7 +11,6 @@ import RealmSwift
 
 class MainTableViewController: UITableViewController {
     
-    
     private var schedules: Results<CigaretteScheduleModel>!
     private var markCounter: MarkCounter?
     private var breakingButton: UIButton!
@@ -19,9 +18,7 @@ class MainTableViewController: UITableViewController {
     private var count = 0
     private var titleFor: String? {
         didSet {
-            if let titleFor = titleFor {
-                title = titleFor
-            }
+            title = titleFor
         }
     }
     
@@ -34,16 +31,12 @@ class MainTableViewController: UITableViewController {
         registerCell()
         setupNavigationItem()
         createButton()
-        
         tableView.tableFooterView = UIView()
-        self.view.backgroundColor = .systemGray5
     }
     
     override func viewWillLayoutSubviews() {
         breakingButtonEnabling()
-        
-        checkAndCreateMarkCounterFor(currentSchedule: getCurrentSchedule())
-        checkAndCreateDayliCounterFor(currentSchedule: getCurrentSchedule())
+        checkAndCreateCountersFor(currentSchedule: getCurrentSchedule())
     }
     
     
@@ -58,7 +51,6 @@ class MainTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //        let schedulesSorted = schedules.sorted(byKeyPath: "currentStringDate", ascending: false)
         let schedule = schedules[indexPath.row]
         let scenario = Scenario.getScenarioCase(from: schedule.scenario)
         var cell: CellProtocol
@@ -68,14 +60,20 @@ class MainTableViewController: UITableViewController {
                 cell = tableView.dequeueReusableCell(withIdentifier: "accounting", for: indexPath) as! CigaretteAccountingCell
             case .withInterval:
                 cell = tableView.dequeueReusableCell(withIdentifier: "interval", for: indexPath) as! CigaretteIntervalCell
-            default:
+            case .withLimit:
                 cell = tableView.dequeueReusableCell(withIdentifier: "limit", for: indexPath) as! CigaretteLimitCell
+            case .withLimitAndInterval:
+                cell = tableView.dequeueReusableCell(withIdentifier: "limitInterval", for: indexPath) as! CigaretteLimitIntervalCell
+            case .withLimitAndReduce:
+                cell = tableView.dequeueReusableCell(withIdentifier: "limitReduce", for: indexPath) as! CigaretteLimitReduceCell
+            case .withLimitAndIntervalAndReduce:
+                cell = tableView.dequeueReusableCell(withIdentifier: "limitIntervalReduce", for: indexPath) as! CigaretteLimitIntervalReduceCell
             }
+            titleFor = schedule.overLimit()
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "notToday", for: indexPath) as! NotTodayCell
         }
         cell.setValues(schedule)
-        titleFor = schedule.overLimit()
         return cell as! UITableViewCell
     }
     
@@ -96,7 +94,7 @@ class MainTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let schedule = schedules[indexPath.row]
-            DataManager.shared.deleteYesterdaySchedule(schedule)
+            DataManager.shared.deleteSchedule(schedule)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
@@ -129,6 +127,12 @@ class MainTableViewController: UITableViewController {
         tableView.register(limitCell, forCellReuseIdentifier: "limit")
         let intervalCell = UINib(nibName: "CigaretteIntervalCell", bundle: nil)
         tableView.register(intervalCell, forCellReuseIdentifier: "interval")
+        let limitIntervalCell = UINib(nibName: "CigaretteLimitIntervalCell", bundle: nil)
+        tableView.register(limitIntervalCell, forCellReuseIdentifier: "limitInterval")
+        let limitReduceCell = UINib(nibName: "CigaretteLimitReduceCell", bundle: nil)
+        tableView.register(limitReduceCell, forCellReuseIdentifier: "limitReduce")
+        let limitIntervalReduceCell = UINib(nibName: "CigaretteLimitIntervalReduceCell", bundle: nil)
+        tableView.register(limitIntervalReduceCell, forCellReuseIdentifier: "limitIntervalReduce")
     }
     
     private func setupNavigationItem() {
@@ -167,8 +171,17 @@ class MainTableViewController: UITableViewController {
         guard let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString else { return }
         DataManager.shared.updateToYesterday(schedule: lastShedule)
         createCurrentScheduleWithLastProperties(from: lastShedule)
+        checkDayliCount()
         schedules = DataManager.shared.getDescendingSortedSchedules()
+        titleFor = schedules[0].overLimit()
         tableView.reloadData()
+    }
+    
+    private func checkDayliCount() {
+        let schedules = DataManager.shared.getDescendingSortedSchedules()
+        let preLastSchedule = schedules[1]
+        guard DataManager.shared.getDayliCount(for: preLastSchedule.currentStringDate) == 0 else { return }
+        DataManager.shared.deleteSchedule(preLastSchedule)
     }
     
     private func checkTodayScheduleWhenAppRun() {
@@ -179,16 +192,16 @@ class MainTableViewController: UITableViewController {
     }
     
     private func createCurrentScheduleWithLastProperties(from lastSchedule: CigaretteScheduleModel) {
-        
         DataManager.shared.createNewSchedule(mark: lastSchedule.mark,
-                                          price: lastSchedule.price,
-                                          packSize: lastSchedule.packSize,
-                                          scenario: lastSchedule.scenario,
-                                          limit: lastSchedule.limit.value,
-                                          interval: lastSchedule.interval.value,
-                                          reduceCig: lastSchedule.reduceCig.value,
-                                          reducePerDay: lastSchedule.reducePerDay.value,
-                                          lastTimeSmoke: lastSchedule.lastTimeSmoke)
+                                             price: lastSchedule.price,
+                                             packSize: lastSchedule.packSize,
+                                             scenario: lastSchedule.scenario,
+                                             limit: lastSchedule.limit.value,
+                                             interval: lastSchedule.interval.value,
+                                             reduceCig: lastSchedule.reduceCig.value,
+                                             reducePerDay: lastSchedule.reducePerDay.value,
+                                             nextReduce: lastSchedule.nextReduceStringDate,
+                                             lastTimeSmoke: lastSchedule.lastTimeSmoke)
     }
     
     private func getCurrentSchedule() -> CigaretteScheduleModel? {
@@ -197,22 +210,16 @@ class MainTableViewController: UITableViewController {
         return currentSchedule
     }
     
-    private func checkAndCreateMarkCounterFor(currentSchedule: CigaretteScheduleModel?) {
-        guard let currentSchedule = currentSchedule else { return }
-        let mark = currentSchedule.mark
-        let price = currentSchedule.price
-        if DataManager.shared.getMarkCounter(for: mark) == nil {
-            DataManager.shared.createMarkCounter(with: mark, price)
-        }
-    }
-    
-    private func checkAndCreateDayliCounterFor(currentSchedule: CigaretteScheduleModel?) {
+    private func checkAndCreateCountersFor(currentSchedule: CigaretteScheduleModel?) {
         guard let currentSchedule = currentSchedule else { return }
         let mark = currentSchedule.mark
         let price = currentSchedule.price
         let dateString = currentSchedule.currentStringDate
         if DataManager.shared.getDayliCounter(for: dateString) == nil {
             DataManager.shared.createDayliCounter(dateString, mark, price)
+        }
+        if DataManager.shared.getMarkCounter(for: mark) == nil {
+            DataManager.shared.createMarkCounter(with: mark, price)
         }
     }
     

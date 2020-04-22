@@ -34,43 +34,55 @@ class DataManager {
                            interval: TimeInterval?,
                            reduceCig: Int?,
                            reducePerDay: Int?,
+                           nextReduce: String? = nil,
                            lastTimeSmoke: Date? = nil) {
         let schedule = CigaretteScheduleModel()
         schedule.mark = mark
         schedule.price = price
         schedule.packSize = packSize
         schedule.scenario = scenario
-        if let limit = limit {
+        schedule.lastTimeSmoke = lastTimeSmoke
+        schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
+        schedule.nextReduceStringDate = nextReduce
+        if var limit = limit {
+            if let reduceCig = reduceCig, let reducePerDay = reducePerDay  {
+                schedule.reduceCig = RealmOptional(reduceCig)
+                schedule.reducePerDay = RealmOptional(reducePerDay)
+                let nextReduceString = DateManager.shared.getNextReduceStringDate(perDay: reducePerDay) { "yyyy-MM-dd HH:mm" }
+                if  schedule.nextReduceStringDate != nil &&
+                    schedule.currentStringDate >= schedule.nextReduceStringDate! {
+                    if limit > 0 {
+                        limit = get(limit: limit, after: reduceCig)
+                        print("Уже пора бы и бросить! \(#function)")
+                    }
+                    schedule.nextReduceStringDate = nextReduceString
+                } else if schedule.nextReduceStringDate == nil {
+                    schedule.nextReduceStringDate = nextReduceString
+                }
+            } else {
+                schedule.nextReduceStringDate = nil
+            }
             schedule.limit = RealmOptional(limit)
         }
         if let interval = interval {
             schedule.interval = RealmOptional(interval)
         }
-        if let reduceCig = reduceCig {
-            schedule.reduceCig = RealmOptional(reduceCig)
-        }
-        if let reducePerDay = reducePerDay {
-            schedule.reducePerDay = RealmOptional(reducePerDay)
-        }
-        schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
-        schedule.lastTimeSmoke = lastTimeSmoke
         add(schedule)
     }
     
-//    func writeCurrentIntervalValue(_ schedule: CigaretteScheduleModel, interval: Double) {
-//        try! realm.write {
-//            schedule.currentInterval = interval
-//        }
-//    }
+    private func get(limit: Int, after reduce: Int) -> Int {
+        var newLimit = limit
+        for _ in 0..<reduce {
+            if newLimit > 1 {
+                newLimit -= 1
+            } else {
+                break
+            }
+        }
+        return newLimit
+    }
     
-//    func deincrementCurrentInterval(_ schedule: CigaretteScheduleModel) {
-//        try! realm.write {
-//            guard schedule.currentInterval != 0 else { return }
-//            schedule.currentInterval -= 1
-//        }
-//    }
-    
-    func deleteYesterdaySchedule(_ schedule: CigaretteScheduleModel) {
+    func deleteSchedule(_ schedule: CigaretteScheduleModel) {
         try! realm.write {
             realm.delete(schedule)
         }

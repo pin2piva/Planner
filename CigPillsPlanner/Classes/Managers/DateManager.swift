@@ -12,7 +12,7 @@ class DateManager {
     
     static let shared = DateManager()
     
-    let dateFormatter = DateFormatter()
+    private let dateFormatter = DateFormatter()
     
     func getStringDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date, _ completion: () -> String?) -> String? {
         guard let date = getDateDifferenceBetween(components: components, from, and: to) else { return nil }
@@ -47,5 +47,12 @@ class DateManager {
         return Date(timeInterval: interval, since: date)
     }
     
+    func getNextReduceStringDate(perDay: Int, _ completion: () -> String) -> String {
+        let interval: Double = 60 * Double(perDay)
+        let date = Date()
+        let nextReduceDate = Date(timeInterval: interval, since: date)
+        let nextReduceStringDate = getStringDate(date: nextReduceDate, completion)
+        return nextReduceStringDate
+    }
     
 }

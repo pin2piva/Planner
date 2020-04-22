@@ -26,6 +26,7 @@ class CigaretteScheduleModel: Object {
     
     var reduceCig = RealmOptional<Int>()
     var reducePerDay = RealmOptional<Int>()
+    @objc dynamic var nextReduceStringDate: String? = nil
         
     @objc dynamic var isToday = true
     @objc dynamic var currentStringDate: String = ""
@@ -38,7 +39,7 @@ class CigaretteScheduleModel: Object {
         guard let limit = limit.value else { return nil }
         let dayliCount = DataManager.shared.getDayliCount(for: currentStringDate)
         guard limit < dayliCount else { return nil }
-        return "Лимит превышен"
+        return "Limit exceeded"
     }
     
     
