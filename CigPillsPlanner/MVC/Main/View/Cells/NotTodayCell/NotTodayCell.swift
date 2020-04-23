@@ -9,31 +9,32 @@
 import UIKit
 
 class NotTodayCell: UITableViewCell, CellProtocol {
-    
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var smokedLabel: UILabel!
-    @IBOutlet weak var lastLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
+  
+  @IBOutlet weak var dateLabel: UILabel!
+  @IBOutlet weak var smokedLabel: UILabel!
+  @IBOutlet weak var lastLabel: UILabel!
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+  }
+  
+  func setValues(_ schedule: CigaretteScheduleModel) {
+    dateLabel.text = schedule.currentStringDate
+    smokedLabel.text = "\(getDayliCount(schedule))"
+    lastTime(schedule)
+  }
+  
+  func getDayliCount(_ schedule: CigaretteScheduleModel) -> Int {
+    DataManager.shared.getDayliCount(for: schedule.currentStringDate)
+  }
+  
+  // TODO: - исправить на "HH:mm"
+  private func lastTime(_ schedule: CigaretteScheduleModel) {
+    if let date = schedule.lastTimeSmoke {
+      lastLabel.text = DateManager.shared.getStringDate(date: date) { "HH:mm:ss" } // исправить на HH:mm
+    } else {
+      lastLabel.text = "00:00"
     }
-    
-    func setValues(_ schedule: CigaretteScheduleModel) {
-        dateLabel.text = schedule.currentStringDate
-        smokedLabel.text = "\(getDayliCount(schedule))"
-        lastTime(schedule)
-    }
-    
-    func getDayliCount(_ schedule: CigaretteScheduleModel) -> Int {
-        DataManager.shared.getDayliCount(for: schedule.currentStringDate)
-    }
-    
-    private func lastTime(_ schedule: CigaretteScheduleModel) {
-        if let date = schedule.lastTimeSmoke {
-            lastLabel.text = DateManager.shared.getStringDate(date: date) { "HH:mm:ss" }
-        } else {
-            lastLabel.text = "00:00"
-        }
-    }
-    
+  }
+  
 }

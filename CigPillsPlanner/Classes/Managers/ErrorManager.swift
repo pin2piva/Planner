@@ -9,13 +9,13 @@
 import Foundation
 
 enum Errors: String, Error {
-    case haveNoMark = "Вы не ввели марку сигарет"
-    case wrongPrice = "Неправильно введена сумма"
-    case haveNoPackSize = "Не введен размер пачки"
+  case haveNoMark = "Вы не ввели марку сигарет"
+  case wrongPrice = "Неправильно введена сумма"
+  case haveNoPackSize = "Не введен размер пачки"
 }
 
 extension Errors: LocalizedError {
-    var errorDescription: String? {
-        return NSLocalizedString(rawValue, comment: "")
-    }
+  var errorDescription: String? {
+    return NSLocalizedString(rawValue, comment: "")
+  }
 }
