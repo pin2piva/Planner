@@ -13,6 +13,8 @@
 		9171B7CE2449E3B1005C3183 /* CigaretteIntervalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9171B7CC2449E3B1005C3183 /* CigaretteIntervalCell.xib */; };
 		918C8780244ED3CB00BD2640 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918C877F244ED3CB00BD2640 /* TimerManager.swift */; };
 		918C8782244F0D9600BD2640 /* CellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918C8781244F0D9600BD2640 /* CellProtocol.swift */; };
+		918C87CF245099E200BD2640 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 918C87CE245099E200BD2640 /* Realm */; };
+		918C87D1245099E200BD2640 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 918C87D0245099E200BD2640 /* RealmSwift */; };
 		91B606E3244D9026005731B6 /* CigaretteLimitIntervalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606E1244D9026005731B6 /* CigaretteLimitIntervalCell.swift */; };
 		91B606E4244D9026005731B6 /* CigaretteLimitIntervalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91B606E2244D9026005731B6 /* CigaretteLimitIntervalCell.xib */; };
 		91B606EA244D90DE005731B6 /* NotTodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606E8244D90DE005731B6 /* NotTodayCell.swift */; };
@@ -41,7 +43,6 @@
 		91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */; };
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
 		91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */; };
-		91CDFCCA24484CEB0078F4C1 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 91CDFCC924484CEB0078F4C1 /* RealmSwift */; };
 		91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DataManager.swift */; };
 		91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1574243F0C0700B5E75D /* DayliCounter.swift */; };
 /* End PBXBuildFile section */
@@ -107,7 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91CDFCCA24484CEB0078F4C1 /* RealmSwift in Frameworks */,
+				918C87D1245099E200BD2640 /* RealmSwift in Frameworks */,
+				918C87CF245099E200BD2640 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,7 +484,8 @@
 			);
 			name = CigPillsPlanner;
 			packageProductDependencies = (
-				91CDFCC924484CEB0078F4C1 /* RealmSwift */,
+				918C87CE245099E200BD2640 /* Realm */,
+				918C87D0245099E200BD2640 /* RealmSwift */,
 			);
 			productName = "Cig'n'Pills Planner";
 			productReference = 91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */;
@@ -513,7 +516,7 @@
 			);
 			mainGroup = 91C5EE1B243CA2CB00516C35;
 			packageReferences = (
-				91CDFCC824484CEB0078F4C1 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				918C87CD245099E200BD2640 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = 91C5EE25243CA2CC00516C35 /* Products */;
 			projectDirPath = "";
@@ -698,7 +701,6 @@
 		91C5EE39243CA2CD00516C35 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CigPillsPlanner/CigPillsPlanner.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -719,7 +721,6 @@
 		91C5EE3A243CA2CD00516C35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CigPillsPlanner/CigPillsPlanner.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -761,20 +762,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		91CDFCC824484CEB0078F4C1 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+		918C87CD245099E200BD2640 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			repositoryURL = "https://github.com/realm/realm-cocoa";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.4.0;
+				minimumVersion = 4.4.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		91CDFCC924484CEB0078F4C1 /* RealmSwift */ = {
+		918C87CE245099E200BD2640 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91CDFCC824484CEB0078F4C1 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			package = 918C87CD245099E200BD2640 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		918C87D0245099E200BD2640 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 918C87CD245099E200BD2640 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

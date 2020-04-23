@@ -82,6 +82,10 @@ class DataManager {
         return newLimit
     }
     
+    private func check() {
+        
+    }
+    
     func deleteSchedule(_ schedule: CigaretteScheduleModel) {
         try! realm.write {
             realm.delete(schedule)
