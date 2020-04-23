@@ -9,38 +9,38 @@
 import UIKit
 
 class SplashViewController: UIViewController {
-    
-// MARK: - Private properties
-    
-    private let actitvityIndicator = UIActivityIndicatorView(style: .large)
-    
-// MARK: - Life cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        initialSetup()
-        makeServiceCall()
+  
+  // MARK: - Private properties
+  
+  private let actitvityIndicator = UIActivityIndicatorView(style: .large)
+  
+  // MARK: - Life cycle
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    initialSetup()
+    makeServiceCall()
+  }
+  
+  // MARK: - Private Methods
+  
+  private func initialSetup() {
+    actitvityIndicator.color = .white
+    view.backgroundColor = .black
+    view.addSubview(actitvityIndicator)
+    actitvityIndicator.center = view.center
+  }
+  
+  private func makeServiceCall() {
+    actitvityIndicator.startAnimating()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [unowned self] in
+      self.actitvityIndicator.stopAnimating()
+      if UserDefaults.standard.bool(forKey: "NOTfirstTime") {
+        AppDelegate.shared.rootViewController.showMainTable()
+      } else {
+        AppDelegate.shared.rootViewController.addFirstSchedule()
+      }
     }
-    
-// MARK: - Private Methods
-    
-    private func initialSetup() {
-        actitvityIndicator.color = .white
-        view.backgroundColor = .black
-        view.addSubview(actitvityIndicator)
-        actitvityIndicator.center = view.center
-    }
-    
-    private func makeServiceCall() {
-        actitvityIndicator.startAnimating()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [unowned self] in
-            self.actitvityIndicator.stopAnimating()
-            if UserDefaults.standard.bool(forKey: "NOTfirstTime") {
-                AppDelegate.shared.rootViewController.showMainTable()
-            } else {
-                AppDelegate.shared.rootViewController.addFirstSchedule()
-            }
-        }
-    }
-
+  }
+  
 }

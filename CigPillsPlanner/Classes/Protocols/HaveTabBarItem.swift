@@ -9,5 +9,5 @@
 import Foundation
 
 protocol HaveTabBarItem {
-    var itemName: String { get }
+  var itemName: String { get }
 }

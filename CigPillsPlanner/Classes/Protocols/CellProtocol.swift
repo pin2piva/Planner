@@ -9,5 +9,5 @@
 import Foundation
 
 protocol CellProtocol {
-    func setValues(_ schedule: CigaretteScheduleModel)
+  func setValues(_ schedule: CigaretteScheduleModel)
 }
