@@ -16,6 +16,7 @@ class RootViewController: UIViewController {
   private var navController: UINavigationController!
   private var mainController: MainTableViewController!
   
+  
   // MARK: - Initialazators
   
   init() {
@@ -27,6 +28,7 @@ class RootViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  
   // MARK: - Life cycle
   
   override func viewDidLoad() {
@@ -35,7 +37,8 @@ class RootViewController: UIViewController {
     addNewChild(current)
   }
   
-  // MARK: - Methods
+  
+  // MARK: - Internal func
   
   func showMainTable() {
     mainController = MainTableViewController()
@@ -74,7 +77,7 @@ class RootViewController: UIViewController {
     navController.present(new, animated: true, completion: nil)
   }
   
-  // MARK: Private methods
+  // MARK: Private func
   
   private func addNewChild(_ controller: UIViewController) {
     addChild(controller)
@@ -93,7 +96,9 @@ class RootViewController: UIViewController {
 }
 
 
-extension RootViewController: NewScheduleDelegate {
+// MARK: - Extensions
+
+extension RootViewController: NewScheduleTableViewDelegate {
   
   func addDidFinish() {
     mainController.tableView.reloadData()

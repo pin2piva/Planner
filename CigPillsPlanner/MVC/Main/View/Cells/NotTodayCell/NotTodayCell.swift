@@ -10,13 +10,14 @@ import UIKit
 
 class NotTodayCell: UITableViewCell, CellProtocol {
   
-  @IBOutlet weak var dateLabel: UILabel!
-  @IBOutlet weak var smokedLabel: UILabel!
-  @IBOutlet weak var lastLabel: UILabel!
+  // MARK: - Outlets
   
-  override func awakeFromNib() {
-    super.awakeFromNib()
-  }
+  @IBOutlet private weak var dateLabel: UILabel!
+  @IBOutlet private weak var smokedLabel: UILabel!
+  @IBOutlet private weak var lastLabel: UILabel!
+ 
+  
+  // MARK: - Internal func
   
   func setValues(_ schedule: CigaretteScheduleModel) {
     dateLabel.text = schedule.currentStringDate
@@ -27,6 +28,9 @@ class NotTodayCell: UITableViewCell, CellProtocol {
   func getDayliCount(_ schedule: CigaretteScheduleModel) -> Int {
     DataManager.shared.getDayliCount(for: schedule.currentStringDate)
   }
+  
+  
+  // MARK: - Private func
   
   // TODO: - исправить на "HH:mm"
   private func lastTime(_ schedule: CigaretteScheduleModel) {

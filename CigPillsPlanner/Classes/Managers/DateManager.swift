@@ -10,9 +10,20 @@ import Foundation
 
 class DateManager {
   
+  // MARK: - Static properties
+  
   static let shared = DateManager()
   
+  // TODO: исправить на день!!!
+  static let dateStringFormat = "yyyy-MM-dd HH:mm"
+  
+  
+  // MARK: - Private properties
+  
   private let dateFormatter = DateFormatter()
+  
+  
+  // MARK: - Internal func
   
   func getStringDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date, _ completion: () -> String?) -> String? {
     guard let date = getDateDifferenceBetween(components: components, from, and: to) else { return nil }
@@ -30,10 +41,10 @@ class DateManager {
   
   func checkReduce(from begin: Date?, reducePerDay: Int, limit: Int) -> Int? {
     guard let begin = begin else { return nil }
-    let date1 = Date().zeroSeconds
-    guard let date = date1 else { return nil }
-    let minuteComponent = Calendar.current.dateComponents([.minute], from: begin, to: date) // испавить на день
-    guard let days = minuteComponent.minute else { return nil } // исправить на день
+    let zeroHourDate = Date().zeroSeconds // исправить на день
+    guard let date = zeroHourDate else { return nil }
+    let dayComponent = Calendar.current.dateComponents([.minute], from: begin, to: date) // испавить на день
+    guard let days = dayComponent.minute else { return nil } // исправить на день
     print("minute difference - \(days)")
     return days / reducePerDay
   }
@@ -51,12 +62,8 @@ class DateManager {
   func getStringTimeFrom(timeInterval: Double) -> String? {
     let currentDate = Date()
     let dateWithInterval = Date(timeIntervalSinceNow: timeInterval)
-    let stringInterval = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], currentDate, and: dateWithInterval) { "HH:mm:ss" }
+    let stringInterval = getStringDifferenceBetween(components: [.hour, .minute, .second], currentDate, and: dateWithInterval) { "HH:mm:ss" }
     return stringInterval
-  }
-  
-  func getDateWithInterval(interval: Double, from date: Date) -> Date {
-    return Date(timeInterval: interval, since: date)
   }
   
 }

@@ -11,6 +11,8 @@ import RealmSwift
 
 class MainTableViewController: UITableViewController {
   
+  // MARK: - Private properties
+  
   private var schedules: Results<CigaretteScheduleModel>!
   private var markCounter: MarkCounter?
   private var breakingButton: UIButton!
@@ -21,7 +23,6 @@ class MainTableViewController: UITableViewController {
       title = titleFor
     }
   }
-  
   
   // MARK: - Life cycle
   
@@ -36,7 +37,7 @@ class MainTableViewController: UITableViewController {
   
   override func viewWillLayoutSubviews() {
     breakingButtonEnabling()
-    checkAndCreateCountersFor(currentSchedule: getCurrentSchedule())
+    checkAndCreateCountersFor(currentSchedule: schedules.first)
   }
   
   
@@ -99,8 +100,8 @@ class MainTableViewController: UITableViewController {
     }
   }
   
-  // MARK: - Private methods
   
+  // MARK: - Private func
   
   private func setupViewGradient() {
     let gradient = CAGradientLayer()
@@ -165,14 +166,12 @@ class MainTableViewController: UITableViewController {
     checkTodaySchedule()
     checkTodayScheduleWhenAppRun()
   }
-  
-  // TODO: - исправить на день!!!
-  
+    
   private func checkTodaySchedule() {
-    let currentDateString = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" } // исправить на день
+    let currentDateString = DateManager.shared.getStringDate(date: Date()) { DateManager.dateStringFormat }
     guard let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString else { return }
-    DataManager.shared.updateToYesterday(schedule: lastShedule)
     createCurrentScheduleWithLastProperties(from: lastShedule)
+    DataManager.shared.updateToYesterday(schedule: schedules[1])
     checkDayliCount()
     schedules = DataManager.shared.getDescendingSortedSchedules()
     titleFor = schedules[0].overLimit()
@@ -204,14 +203,7 @@ class MainTableViewController: UITableViewController {
                                          reducePerDay: lastSchedule.reducePerDay.value,
                                          beginReduceDate: lastSchedule.beginReduceDate,
                                          lastTimeSmoke: lastSchedule.lastTimeSmoke)
-  }
-  
-  // TODO: - исправить на день!!!
-  
-  private func getCurrentSchedule() -> CigaretteScheduleModel? {
-    let currentDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" }
-    let currentSchedule = schedules.filter({ $0.currentStringDate == currentDate }).first
-    return currentSchedule
+    print("\(#function) = \(lastSchedule.timerIsActive)")
   }
   
   private func checkAndCreateCountersFor(currentSchedule: CigaretteScheduleModel?) {
@@ -228,19 +220,19 @@ class MainTableViewController: UITableViewController {
   }
   
   
-  // MARK: - @obcj private methods
+  // MARK: - @obcj private func
   
   @objc private func editCurrentSchedule() {
-    let currentSchedule = getCurrentSchedule()
+    let currentSchedule = schedules.first
     AppDelegate.shared.rootViewController.showAddNewSheduleController(currentSchedule)
   }
   
   @objc private func increaceCount() {
-    let current = getCurrentSchedule()
+    let current = schedules.first
     guard let currentSchedule = current else { return }
-    DataManager.shared.setLastTime(for: currentSchedule)
-    DataManager.shared.increaceMarkCount(for: currentSchedule)
-    DataManager.shared.increaceDayliCount(for: currentSchedule)
+    currentSchedule.getLastTime()
+    currentSchedule.getTimer(isActive: true)
+    currentSchedule.incrementCount()
     tableView.reloadData()
   }
   

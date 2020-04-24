@@ -8,13 +8,7 @@
 
 import UIKit
 
-protocol NewScheduleDelegate: class {
-  func addDidFinish()
-  func addDidCancel()
-}
-
 class NewScheduleTableViewController: UITableViewController {
-  
   
   // MARK: - Text field section
   
@@ -70,8 +64,8 @@ class NewScheduleTableViewController: UITableViewController {
     Scenario.getScenario(limitSwitch.isOn, intervalSwitch.isOn, reduceSwitch.isOn)
   }
   
-  // MARK: - Bool private properties
   
+  // MARK: - Bool private properties
   
   private var limitIsOn = false {
     willSet {
@@ -194,7 +188,7 @@ class NewScheduleTableViewController: UITableViewController {
   
   // MARK: - Delegate
   
-  weak var delegate: NewScheduleDelegate?
+  weak var delegate: NewScheduleTableViewDelegate?
   
   // MARK: - Life cycle
   
@@ -220,7 +214,7 @@ class NewScheduleTableViewController: UITableViewController {
   }
   
   
-  // MARK: - Static methods
+  // MARK: - Static func
   
   static func stodyboardInstance() -> NewScheduleTableViewController? {
     let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
@@ -228,7 +222,7 @@ class NewScheduleTableViewController: UITableViewController {
   }
   
   
-  // MARK: - Internal methods
+  // MARK: - Internal func
   
   func setVaulesToOriginalProperties(from schedule: CigaretteScheduleModel) {
     originalMark            = schedule.mark
@@ -244,7 +238,7 @@ class NewScheduleTableViewController: UITableViewController {
   }
   
   
-  // MARK: - Private methods
+  // MARK: - Private func
   
   private func setValuesToFields() {
     textFields[0].text = originalMark
@@ -315,6 +309,14 @@ class NewScheduleTableViewController: UITableViewController {
     }
   }
   
+  private func checkIntervalIsValid(_ intervalIsOn: Bool) {
+    if intervalIsOn {
+      editedInterval = intervalPicker.countDownDuration
+    } else {
+      editedInterval = nil
+    }
+  }
+  
   private func switchAction(with sender: UISwitch) {
     switch sender.tag {
     case 0:
@@ -329,6 +331,7 @@ class NewScheduleTableViewController: UITableViewController {
     case 1:
       intervalCellIsSelect = false
       setColorToTextIn(intervalLabels, intervalCellIsSelect)
+      checkIntervalIsValid(sender.isOn)
     case 2:
       reduceCellIsSelect = false
       setColorToTextIn(reduceLabels, reduceCellIsSelect)
@@ -440,7 +443,7 @@ class NewScheduleTableViewController: UITableViewController {
     getShedule()
   }
   
-  // MARK: - objc private methods
+  // MARK: - objc private func
   
   @objc private func save() {
     saveNewShedule()
@@ -580,7 +583,7 @@ extension NewScheduleTableViewController {
 }
 
 
-// MARK: - Text Field Delegate
+// MARK: - TextField Delegate
 
 extension NewScheduleTableViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -591,7 +594,7 @@ extension NewScheduleTableViewController: UITextFieldDelegate {
 }
 
 
-// MARK: - Picker view data source
+// MARK: - PickerView data source
 
 extension NewScheduleTableViewController: UIPickerViewDataSource {
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -608,13 +611,13 @@ extension NewScheduleTableViewController: UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     switch pickerView.tag {
     case 0:
-      return 40
+      return 80
     case 1:
       switch component {
       case 0:
-        return 10
+        return 40
       case 1:
-        return 10
+        return 40
       default:
         return 0
       }
@@ -626,7 +629,7 @@ extension NewScheduleTableViewController: UIPickerViewDataSource {
 }
 
 
-// MARK: - Picker view delegate
+// MARK: - PickerView delegate
 
 extension NewScheduleTableViewController: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -683,7 +686,7 @@ extension NewScheduleTableViewController: UIAdaptivePresentationControllerDelega
 }
 
 
-// MARK: - Table view delegate
+// MARK: - TableView delegate
 
 extension NewScheduleTableViewController {
   

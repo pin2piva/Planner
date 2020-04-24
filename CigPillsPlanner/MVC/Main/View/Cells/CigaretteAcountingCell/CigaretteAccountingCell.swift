@@ -10,11 +10,16 @@ import UIKit
 
 class CigaretteAccountingCell: UITableViewCell, CellProtocol {
   
-  @IBOutlet weak var markLabel: UILabel!
-  @IBOutlet weak var priceLabel: UILabel!
-  @IBOutlet weak var todayLabel: UILabel!
-  @IBOutlet weak var totalLabel: UILabel!
-  @IBOutlet weak var lastLabel: UILabel!
+  // MARK: - Outlets
+  
+  @IBOutlet private weak var markLabel: UILabel!
+  @IBOutlet private weak var priceLabel: UILabel!
+  @IBOutlet private weak var todayLabel: UILabel!
+  @IBOutlet private weak var totalLabel: UILabel!
+  @IBOutlet private weak var lastLabel: UILabel!
+  
+  
+  // MARK: - Internal func
   
   func setValues(_ schedule: CigaretteScheduleModel) {
     let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)

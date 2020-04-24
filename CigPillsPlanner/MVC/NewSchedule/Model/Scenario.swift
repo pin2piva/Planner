@@ -9,12 +9,18 @@
 import Foundation
 
 enum Scenario: String {
+  
+  // MARK: - Cases
+  
   case accountingOnly = "Accounting only" // только учет
   case withLimitAndReduce = "Accounting with limit and reduce" // фиксированное количество
   case withInterval = "Accounting with interval" // через заданные промежутки времени
   case withLimit = "Accounting with limit"
   case withLimitAndInterval = "Accounting with limit and interval"
   case withLimitAndIntervalAndReduce = "Accounting with limit, interval and reduce"
+  
+  
+  // MARK: - Static func
   
   static func getScenarioCase(from stringScenario: String) -> Scenario {
     switch stringScenario {
@@ -67,6 +73,5 @@ enum Scenario: String {
       return Scenario.withLimitAndIntervalAndReduce.rawValue
     }
   }
-  
   
 }

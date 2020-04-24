@@ -14,6 +14,7 @@ class SplashViewController: UIViewController {
   
   private let actitvityIndicator = UIActivityIndicatorView(style: .large)
   
+  
   // MARK: - Life cycle
   
   override func viewDidLoad() {
@@ -22,7 +23,8 @@ class SplashViewController: UIViewController {
     makeServiceCall()
   }
   
-  // MARK: - Private Methods
+  
+  // MARK: - Private func
   
   private func initialSetup() {
     actitvityIndicator.color = .white
