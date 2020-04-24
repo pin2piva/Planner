@@ -10,10 +10,18 @@ import Foundation
 
 class TimerManager {
   
+  // MARK: - Static properties
+  
   static let shared = TimerManager()
+  
+  
+  // MARK: Private properties
   
   private var timer: Timer?
   private var intervalTimer: Timer?
+  
+  
+  // MARK: - Internal properties
   
   func lastTime(_ schedule: CigaretteScheduleModel, _ completion: @escaping (String?) -> Void) {
     timer?.invalidate()
@@ -28,11 +36,6 @@ class TimerManager {
     }
   }
   
-  private func setLastSmokeTimeDifference(_ date: Date) -> String? {
-    let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], date, and: Date()) { "HH:mm:ss" }
-    return lastTimeString
-  }
-  
   func makeIntervalTimer(_ schedule: CigaretteScheduleModel, _ completion: @escaping (String?) -> Void) {
     guard let timeInterval = schedule.interval.value else { return }
     guard let lastTimeSmoke = schedule.lastTimeSmoke else {
@@ -40,25 +43,44 @@ class TimerManager {
       return
     }
     intervalTimer?.invalidate()
-    let nextTime = DateManager.shared.getDateWithInterval(interval: timeInterval + 1, from: lastTimeSmoke)
+    let nextTime = Date(timeInterval: timeInterval + 1, since: lastTimeSmoke)
     let date = Date()
+    let timerIsActive = schedule.timerIsActive
     completion(getTimeDifference(date, nextTime))
-    intervalTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (timer) in
-      let date = DateManager.shared.getDateWithInterval(interval: 0, from: Date())
-      completion(self?.getTimeDifference(date, nextTime))
-      if date >= nextTime {
-        let next = DateManager.shared.getDateWithInterval(interval: timeInterval, from: Date())
-        completion(self?.getTimeDifference(date, next))
-        timer.invalidate()
+    if timerIsActive {
+      intervalTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (timer) in
+        let date = Date()
+        completion(self?.getTimeDifference(date, nextTime))
+        if date >= nextTime {
+          let next = Date(timeInterval: timeInterval, since: Date())
+          completion(self?.getTimeDifference(date, next))
+          self?.deactivateTimer()
+          print("дилинь-дилинь")
+          timer.invalidate()
+        }
       }
+    } else {
+      let next = Date(timeInterval: timeInterval, since: Date())
+      completion(getTimeDifference(date, next))
     }
   }
   
+  
+  // MARK: - Private properties
+  
+  private func deactivateTimer() {
+    let currentSchedule = DataManager.shared.getDescendingSortedSchedules().first!
+    DataManager.shared.timer(activate: false, for: currentSchedule)
+  }
+
   private func getTimeDifference(_ first: Date, _ second: Date) -> String? {
     let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], first, and: second) { "HH:mm:ss" }
     return lastTimeString
   }
   
-  
+  private func setLastSmokeTimeDifference(_ date: Date) -> String? {
+    let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.hour, .minute, .second], date, and: Date()) { "HH:mm:ss" }
+    return lastTimeString
+  }
   
 }

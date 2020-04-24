@@ -13,6 +13,7 @@ class CigaretteScheduleModel: Object {
   
   
   // MARK: - Properties
+  
   @objc dynamic var mark: String = ""
   @objc dynamic var price: Float = 0
   @objc dynamic var packSize: Int = 0
@@ -22,18 +23,19 @@ class CigaretteScheduleModel: Object {
   var limit = RealmOptional<Int>()
   
   var interval = RealmOptional<Double>()
-  @objc dynamic var currentInterval: Double = 0
+  @objc dynamic var timerIsActive: Bool = false
   
   var reduceCig = RealmOptional<Int>()
   var reducePerDay = RealmOptional<Int>()
-  //    @objc dynamic var nextReduceStringDate: String? = nil
   @objc dynamic var beginReduceDate: Date? = nil
   
-  @objc dynamic var isToday = true
+  @objc dynamic var isToday: Bool = true
   @objc dynamic var currentStringDate: String = ""
   
   @objc dynamic var lastTimeSmoke: Date? = nil
   
+  
+  // MARK: - Internal func
   
   func overLimit() -> String? {
     guard isToday else { return nil }
@@ -43,6 +45,18 @@ class CigaretteScheduleModel: Object {
     return "Limit exceeded"
   }
   
+  func getTimer(isActive: Bool) {
+    DataManager.shared.timer(activate: isActive, for: self)
+  }
+  
+  func getLastTime() {
+    DataManager.shared.setLastTime(for: self)
+  }
+  
+  func incrementCount() {
+    DataManager.shared.increaceMarkCount(for: self)
+    DataManager.shared.increaceDayliCount(for: self)
+  }
   
   
   // MARK: - Primary Key

@@ -10,14 +10,22 @@ import UIKit
 
 class CigaretteLimitIntervalCell: UITableViewCell, CellProtocol {
   
-  @IBOutlet weak var markLabel: UILabel!
-  @IBOutlet weak var priceLabel: UILabel!
-  @IBOutlet weak var balanceLabel: UILabel!
-  @IBOutlet weak var totalLabel: UILabel!
-  @IBOutlet weak var lastLabel: UILabel!
-  @IBOutlet weak var nextLabel: UILabel!
+  // MARK: - Outlets
+  
+  @IBOutlet private weak var markLabel: UILabel!
+  @IBOutlet private weak var priceLabel: UILabel!
+  @IBOutlet private weak var balanceLabel: UILabel!
+  @IBOutlet private weak var totalLabel: UILabel!
+  @IBOutlet private weak var lastLabel: UILabel!
+  @IBOutlet private weak var nextLabel: UILabel!
+  
+  
+  // MARK: - Private properties
   
   private var intervalTimer: Timer?
+  
+  
+  // MARK: - Internal func
   
   func setValues(_ schedule: CigaretteScheduleModel) {
     let totalCount = DataManager.shared.getTotalCountBeforeCurrent(date: schedule.currentStringDate)

@@ -9,14 +9,19 @@
 import Foundation
 import RealmSwift
 
-
 class DataManager {
   
+  // MARK: - Static properties
+  
   static let shared = DataManager()
+  
+  
+  // MARK: - Private Properties
   
   private let realm = try! Realm()
   
   
+  // MARK: - Common private func
   
   private func add<T: Object>(_ object: T) {
     try! realm.write {
@@ -24,9 +29,8 @@ class DataManager {
     }
   }
   
-  // MARK: - CigaretteScheduleModel
   
-  // TODO: - Исправить на день!!!
+  // MARK: - Schedule internal func
   
   func createNewSchedule(mark: String,
                          price: Float,
@@ -44,7 +48,7 @@ class DataManager {
     schedule.packSize = packSize
     schedule.scenario = scenario
     schedule.lastTimeSmoke = lastTimeSmoke
-    schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { "yyyy-MM-dd HH:mm" } // исправить на день
+    schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { DateManager.dateStringFormat }
     schedule.beginReduceDate = beginReduceDate
     if var limit = limit {
       if let reduceCig = reduceCig, let reducePerDay = reducePerDay  {
@@ -66,9 +70,48 @@ class DataManager {
     }
     if let interval = interval {
       schedule.interval = RealmOptional(interval)
+      if let lastTime = lastTimeSmoke {
+        if Date() <= Date(timeInterval: interval, since: lastTime) {
+          schedule.timerIsActive = true
+        } else {
+          schedule.timerIsActive = false
+        }
+      }
     }
     add(schedule)
   }
+  
+  func timer(activate: Bool, for schedule: CigaretteScheduleModel) {
+    try! realm.write {
+      schedule.timerIsActive = activate
+    }
+  }
+  
+  func setLastTime(for schedule: CigaretteScheduleModel) {
+    try! realm.write {
+      schedule.lastTimeSmoke = Date()
+    }
+  }
+  
+  func deleteSchedule(_ schedule: CigaretteScheduleModel) {
+    try! realm.write {
+      realm.delete(schedule)
+    }
+  }
+  
+  func updateToYesterday(schedule: CigaretteScheduleModel) {
+    try! realm.write {
+      schedule.isToday = false
+      schedule.timerIsActive = false
+    }
+  }
+  
+  func getDescendingSortedSchedules() -> Results<CigaretteScheduleModel> {
+    return realm.objects(CigaretteScheduleModel.self).sorted(byKeyPath: "currentStringDate", ascending: false)
+  }
+  
+  
+  // MARK: - Schedule private func
   
   private func get(limit: Int, after reduce: Int) -> Int {
     var newLimit = limit
@@ -93,35 +136,7 @@ class DataManager {
   }
   
   
-  
-  func deleteSchedule(_ schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      realm.delete(schedule)
-    }
-  }
-  
-  func retrieveSchedulesFromDataBase() -> Results<CigaretteScheduleModel>? {
-    return realm.objects(CigaretteScheduleModel.self)
-  }
-  
-  func updateToYesterday(schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      schedule.isToday = false
-    }
-  }
-  
-  func setLastTime(for schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      schedule.lastTimeSmoke = Date()
-    }
-  }
-  
-  func getDescendingSortedSchedules() -> Results<CigaretteScheduleModel> {
-    return realm.objects(CigaretteScheduleModel.self).sorted(byKeyPath: "currentStringDate", ascending: false)
-  }
-  
-  
-  // MARK: - MarkCounter
+  // MARK: - MarkCounter internal func
   
   func createMarkCounter(with mark: String,
                          _ price: Float) {
@@ -162,7 +177,7 @@ class DataManager {
   }
   
   
-  // MARK: - DayliCouner
+  // MARK: - DayliCouner internal func
   
   private func createMarkDateCounter(with mark: String, and price: Float) -> MarkDateCounter {
     let markDateCounter = MarkDateCounter()
@@ -181,7 +196,6 @@ class DataManager {
     
     add(dayliCounter)
   }
-  
   
   func increaceDayliCount(for schedule: CigaretteScheduleModel) {
     try! realm.write {
