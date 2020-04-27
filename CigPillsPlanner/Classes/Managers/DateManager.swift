@@ -59,11 +59,31 @@ class DateManager {
     return dateFormatter.date(from: string)
   }
   
-  func getStringTimeFrom(timeInterval: Double) -> String? {
-    let currentDate = Date()
-    let dateWithInterval = Date(timeIntervalSinceNow: timeInterval)
-    let stringInterval = getStringDifferenceBetween(components: [.hour, .minute, .second], currentDate, and: dateWithInterval) { "HH:mm:ss" }
-    return stringInterval
+  func getTimeInterval(from date: Date, to secondDate: Date) -> TimeInterval? {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.second], from: date, to: secondDate)
+    let seconds = components.second
+    guard let secondInterval = seconds else { return nil }
+    let interval = Double(secondInterval)
+    return interval
+  }
+  
+  func getDateStringFormat(from interval: TimeInterval?) -> String? {
+    guard let timeInterval = interval else { return nil }
+    switch timeInterval {
+    case 0..<60:
+      return "ss"
+    case 60..<3600:
+      return "mm:ss"
+    case 3600..<86400:
+      return "HH:mm:ss"
+    case 86400..<2592000:
+      return "dd HH:mm:ss"
+    case 2592000..<31536000:
+      return "MM-dd HH:mm:ss"
+    default:
+      return "yy-MM-dd HH:mm:ss"
+    }
   }
   
 }
