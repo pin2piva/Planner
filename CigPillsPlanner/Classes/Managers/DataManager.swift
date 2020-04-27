@@ -19,6 +19,9 @@ class DataManager {
   // MARK: - Private Properties
   
   private let realm = try! Realm()
+  private var dayliCounters: Results<DayliCounter> {
+    realm.objects(DayliCounter.self)
+  }
   
   
   // MARK: - Common private func
@@ -33,7 +36,7 @@ class DataManager {
   // MARK: - Schedule internal func
   
   func createNewSchedule(mark: String,
-                         price: Float,
+                         price: Double,
                          packSize: Int,
                          scenario: String,
                          limit: Int?,
@@ -139,7 +142,7 @@ class DataManager {
   // MARK: - MarkCounter internal func
   
   func createMarkCounter(with mark: String,
-                         _ price: Float) {
+                         _ price: Double) {
     let markCounter = MarkCounter()
     markCounter.mark = mark.lowercased()
     let counter = PriceMarkCounter()
@@ -179,18 +182,19 @@ class DataManager {
   
   // MARK: - DayliCouner internal func
   
-  private func createMarkDateCounter(with mark: String, and price: Float) -> MarkDateCounter {
+  private func createMarkDateCounterWith(mark: String, price: Double, perPack: Int) -> MarkDateCounter {
     let markDateCounter = MarkDateCounter()
-    markDateCounter.mark = mark
+    markDateCounter.mark = mark.lowercased()
     markDateCounter.price = price
+    markDateCounter.perPack = perPack
     return markDateCounter
   }
   
-  func createDayliCounter(_ date: String, _ mark: String, _ price: Float) {
+  func createDayliCounter(date: String, mark: String, price: Double, perPack: Int) {
     let dayliCounter = DayliCounter()
     dayliCounter.dateString = date
     
-    let markDateCounter = createMarkDateCounter(with: mark, and: price)
+    let markDateCounter = createMarkDateCounterWith(mark: mark, price: price, perPack: perPack)
     
     dayliCounter.mark.append(markDateCounter)
     
@@ -200,10 +204,10 @@ class DataManager {
   func increaceDayliCount(for schedule: CigaretteScheduleModel) {
     try! realm.write {
       guard let dayliCounter = getDayliCounter(for: schedule.currentStringDate) else { return }
-      let markDateCounter: [MarkDateCounter] = dayliCounter.mark.filter({ $0.mark == schedule.mark })
+      let markDateCounter: [MarkDateCounter] = dayliCounter.mark.filter({ $0.mark == schedule.mark.lowercased() })
       guard let markDateCounerWithPrice = markDateCounter.filter({ $0.price == schedule.price }).first else {
-        let newMarkDateCounter = createMarkDateCounter(with: schedule.mark, and: schedule.price)
-        newMarkDateCounter.mark = schedule.mark
+        let newMarkDateCounter = createMarkDateCounterWith(mark: schedule.mark, price: schedule.price, perPack: schedule.packSize)
+        newMarkDateCounter.mark = schedule.mark.lowercased()
         newMarkDateCounter.price = schedule.price
         newMarkDateCounter.count += 1
         dayliCounter.mark.append(newMarkDateCounter)
@@ -225,10 +229,29 @@ class DataManager {
   }
   
   func getTotalCountBeforeCurrent(date: String) -> Int {
-    let dayliCounters = realm.objects(DayliCounter.self)
     let countersBeforeCurrentDate: [DayliCounter] = dayliCounters.filter({ $0.dateString <= date })
     let totalCount = countersBeforeCurrentDate.reduce(0, { $0 + $1.mark.reduce(0, { $0 + $1.count }) })
     return totalCount
+  }
+  
+  func getTotalCount() -> Int {
+    let totalCount = dayliCounters.reduce(0, { $0 + $1.mark.reduce(0, { $0 + $1.count }) })
+    return totalCount
+  }
+  
+  func getTotalPrice() -> Double {
+    let totalPrice = dayliCounters.reduce(0, { $0 + $1.mark.reduce(0, { $0 + ($1.price / Double($1.perPack) * Double($1.count)) }) })
+    return totalPrice
+  }
+  
+  func getTotalPriceFor(mark: String) -> Double {
+    let totalPriceForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark.lowercased() }).reduce(0, { $0 + ($1.price / Double($1.perPack) * Double($1.count)) }) })
+    return totalPriceForMark
+  }
+  
+  func getTotalCountFor(mark: String) -> Int {
+    let totalCountForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark.lowercased() }).reduce(0, { $0 + $1.count }) })
+    return totalCountForMark
   }
   
 }

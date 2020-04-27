@@ -24,6 +24,7 @@ class PriceMarkCounter: Object {
   
   @objc dynamic var price: String = ""
   @objc dynamic var markCount: Int = 0
+  @objc dynamic var perPack: Int = 0
   
 }
 

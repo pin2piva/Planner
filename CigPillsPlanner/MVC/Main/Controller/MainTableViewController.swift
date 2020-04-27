@@ -203,16 +203,17 @@ class MainTableViewController: UITableViewController {
                                          reducePerDay: lastSchedule.reducePerDay.value,
                                          beginReduceDate: lastSchedule.beginReduceDate,
                                          lastTimeSmoke: lastSchedule.lastTimeSmoke)
-    print("\(#function) = \(lastSchedule.timerIsActive)")
+//    print("\(#function) = \(lastSchedule.timerIsActive)")
   }
   
   private func checkAndCreateCountersFor(currentSchedule: CigaretteScheduleModel?) {
     guard let currentSchedule = currentSchedule else { return }
     let mark = currentSchedule.mark
     let price = currentSchedule.price
+    let packSize = currentSchedule.packSize
     let dateString = currentSchedule.currentStringDate
     if DataManager.shared.getDayliCounter(for: dateString) == nil {
-      DataManager.shared.createDayliCounter(dateString, mark, price)
+      DataManager.shared.createDayliCounter(date: dateString, mark: mark, price: price, perPack: packSize)
     }
     if DataManager.shared.getMarkCounter(for: mark) == nil {
       DataManager.shared.createMarkCounter(with: mark, price)

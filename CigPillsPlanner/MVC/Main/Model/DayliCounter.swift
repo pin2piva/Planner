@@ -23,6 +23,6 @@ class DayliCounter: Object {
 class MarkDateCounter: Object {
   @objc dynamic var mark: String = ""
   @objc dynamic var count: Int = 0
-  @objc dynamic var price: Float = 0
-  
+  @objc dynamic var price: Double = 0
+  @objc dynamic var perPack: Int = 0
 }

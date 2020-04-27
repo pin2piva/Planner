@@ -15,7 +15,7 @@ class CigaretteScheduleModel: Object {
   // MARK: - Properties
   
   @objc dynamic var mark: String = ""
-  @objc dynamic var price: Float = 0
+  @objc dynamic var price: Double = 0
   @objc dynamic var packSize: Int = 0
   
   @objc dynamic var scenario: String = "Accounting only"

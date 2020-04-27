@@ -115,7 +115,7 @@ class NewScheduleTableViewController: UITableViewController {
       editedMark = originalMark
     }
   }
-  private var originalPrice: Float = 0.0 {
+  private var originalPrice: Double = 0.0 {
     didSet {
       editedPrice = originalPrice
     }
@@ -154,7 +154,7 @@ class NewScheduleTableViewController: UITableViewController {
       viewIfLoaded?.layoutIfNeeded()
     }
   }
-  private var editedPrice: Float = 0.0 {
+  private var editedPrice: Double = 0.0 {
     didSet {
       viewIfLoaded?.layoutIfNeeded()
     }
@@ -473,7 +473,7 @@ class NewScheduleTableViewController: UITableViewController {
         editedPrice = 0.0
         return
       }
-      guard let price = Float(text) else { return }
+      guard let price = Double(text) else { return }
       editedPrice = price
     case 2:
       guard text != "" else {
