@@ -57,7 +57,10 @@ class RootViewController: UIViewController {
   
   func showTabBarViewController() {
     
-    let detail = DetailTableViewController(itemName: "Detail")
+//    let detail = DetailTableViewController(itemName: "Detail")
+    let detailStoryboard = UIStoryboard(name: "DetailTableViewController", bundle: nil)
+    let detail = detailStoryboard.instantiateViewController(identifier: "DetailTableViewController") as! DetailTableViewController
+    
     let diagram = DiagramTableViewController(itemName: "Diagram")
     let visualization = VisualizationTableViewController(itemName: "Visual")
     let tabBarController = TabBarViewController(viewControllers: [detail, diagram, visualization])

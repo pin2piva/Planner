@@ -321,20 +321,20 @@ class NewScheduleTableViewController: UITableViewController {
     switch sender.tag {
     case 0:
       limitCellIsSelect = false
-      setColorToTextIn(limitLabels, limitCellIsSelect)
+      StaticTableManager.shared.setColorToTextIn(limitLabels, limitCellIsSelect)
       checkLimitIsValid(sender.isOn)
       if !sender.isOn {
         reduceSwitch.setOn(false, animated: true)
         reduceCellIsSelect = true
-        setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
+        StaticTableManager.shared.setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
       }
     case 1:
       intervalCellIsSelect = false
-      setColorToTextIn(intervalLabels, intervalCellIsSelect)
+      StaticTableManager.shared.setColorToTextIn(intervalLabels, intervalCellIsSelect)
       checkIntervalIsValid(sender.isOn)
     case 2:
       reduceCellIsSelect = false
-      setColorToTextIn(reduceLabels, reduceCellIsSelect)
+      StaticTableManager.shared.setColorToTextIn(reduceLabels, reduceCellIsSelect)
       checkReduceIsValid(sender.isOn)
       if sender.isOn {
         limitSwitch.setOn(true, animated: true)
@@ -358,20 +358,6 @@ class NewScheduleTableViewController: UITableViewController {
   private func scrollToUnhidePicker(indexPath: IndexPath) {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [unowned self] in
       self.tableView.scrollToRow(at: IndexPath(row: indexPath.row + 1, section: indexPath.section), at: .middle, animated: true)
-    }
-  }
-  
-  private func setHideTo(cell: UITableViewCell!, when: inout Bool, colorFor labels: [UILabel]!) {
-    when.toggle()
-    cell.setSelected(false, animated: true)
-    setColorToTextIn(labels, when)
-  }
-  
-  private func setColorToTextIn(_ labels: [UILabel]!, _ when: Bool) {
-    if when {
-      labels.forEach({ $0.textColor = .systemBlue })
-    } else {
-      labels.forEach({ $0.textColor = .label })
     }
   }
   
@@ -720,14 +706,14 @@ extension NewScheduleTableViewController {
     case 1:
       switch indexPath.row {
       case 2:
-        setHideTo(cell: limitCell, when: &limitCellIsSelect, colorFor: limitLabels)
+        StaticTableManager.shared.setHideTo(cell: limitCell, when: &limitCellIsSelect, colorFor: limitLabels)
       default:
         break
       }
     case 2:
       switch indexPath.row {
       case 2:
-        setHideTo(cell: intervalCell, when: &intervalCellIsSelect, colorFor: intervalLabels)
+        StaticTableManager.shared.setHideTo(cell: intervalCell, when: &intervalCellIsSelect, colorFor: intervalLabels)
         scrollToUnhidePicker(indexPath: indexPath)
       default:
         break
@@ -735,8 +721,8 @@ extension NewScheduleTableViewController {
     case 3:
       switch indexPath.row {
       case 2:
-        reduceCell.selectionStyle = .default
-        setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
+//        reduceCell.selectionStyle = .default
+        StaticTableManager.shared.setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
         scrollToUnhidePicker(indexPath: indexPath)
       default:
         break
