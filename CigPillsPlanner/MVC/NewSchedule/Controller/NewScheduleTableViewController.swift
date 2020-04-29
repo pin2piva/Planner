@@ -12,6 +12,7 @@ class NewScheduleTableViewController: UITableViewController {
   
   // MARK: - Text field section
   
+  
   @IBOutlet private var textFields: [UITextField]! {
     didSet {
       textFields.forEach({ $0.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged) })
@@ -19,6 +20,7 @@ class NewScheduleTableViewController: UITableViewController {
   }
   
   // MARK: - Limit section
+  
   
   @IBOutlet private weak var limitSwitch: UISwitch!
   @IBOutlet private weak var limitCell: UITableViewCell!
@@ -30,8 +32,8 @@ class NewScheduleTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - Interval section
+  
   
   @IBOutlet private weak var intervalSwitch: UISwitch!
   @IBOutlet private weak var intervalCell: UITableViewCell!
@@ -42,8 +44,8 @@ class NewScheduleTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - Reduce section
+  
   
   @IBOutlet private weak var reduceSwitch: UISwitch!
   @IBOutlet private weak var reduceCell: UITableViewCell!
@@ -55,8 +57,8 @@ class NewScheduleTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - Private properties
+  
   
   private var saveButton: UIBarButtonItem!
   private var lastTimeSmoke: Date?
@@ -64,8 +66,8 @@ class NewScheduleTableViewController: UITableViewController {
     Scenario.getScenario(limitSwitch.isOn, intervalSwitch.isOn, reduceSwitch.isOn)
   }
   
-  
   // MARK: - Bool private properties
+  
   
   private var limitIsOn = false {
     willSet {
@@ -107,8 +109,8 @@ class NewScheduleTableViewController: UITableViewController {
     return fieldsHaveChanges()
   }
   
-  
   // MARK: - Original private properties
+  
   
   private var originalMark = "" {
     didSet {
@@ -146,8 +148,8 @@ class NewScheduleTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - Edited private properties
+  
   
   private var editedMark = "" {
     didSet {
@@ -185,12 +187,13 @@ class NewScheduleTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - Delegate
+  
   
   weak var delegate: NewScheduleTableViewDelegate?
   
   // MARK: - Life cycle
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -206,23 +209,23 @@ class NewScheduleTableViewController: UITableViewController {
     saveButton.isEnabled = hasChanges
   }
   
-  
   // MARK: - IBActions
+  
   
   @IBAction func switchesAction(_ sender: UISwitch) {
     switchAction(with: sender)
   }
   
-  
   // MARK: - Static func
+  
   
   static func stodyboardInstance() -> NewScheduleTableViewController? {
     let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
     return storyboard.instantiateViewController(identifier: String(describing: self)) as? NewScheduleTableViewController
   }
   
-  
   // MARK: - Internal func
+  
   
   func setVaulesToOriginalProperties(from schedule: CigaretteScheduleModel) {
     originalMark            = schedule.mark
@@ -237,8 +240,8 @@ class NewScheduleTableViewController: UITableViewController {
     setSelection(selection)
   }
   
-  
   // MARK: - Private func
+  
   
   private func setValuesToFields() {
     textFields[0].text = originalMark
@@ -431,6 +434,7 @@ class NewScheduleTableViewController: UITableViewController {
   
   // MARK: - objc private func
   
+  
   @objc private func save() {
     saveNewShedule()
   }
@@ -476,12 +480,12 @@ class NewScheduleTableViewController: UITableViewController {
   
 }
 
-
 // MARK: - extensions
 
 
 
 // MARK: - Get model
+
 
 extension NewScheduleTableViewController {
   private func getShedule() {
@@ -568,8 +572,8 @@ extension NewScheduleTableViewController {
   
 }
 
-
 // MARK: - TextField Delegate
+
 
 extension NewScheduleTableViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -579,8 +583,8 @@ extension NewScheduleTableViewController: UITextFieldDelegate {
   
 }
 
-
 // MARK: - PickerView data source
+
 
 extension NewScheduleTableViewController: UIPickerViewDataSource {
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -614,8 +618,8 @@ extension NewScheduleTableViewController: UIPickerViewDataSource {
   
 }
 
-
 // MARK: - PickerView delegate
+
 
 extension NewScheduleTableViewController: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -656,8 +660,8 @@ extension NewScheduleTableViewController: UIPickerViewDelegate {
   
 }
 
-
 // MARK: - Adaptive presentation controller delegate
+
 
 extension NewScheduleTableViewController: UIAdaptivePresentationControllerDelegate {
   func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
@@ -671,8 +675,8 @@ extension NewScheduleTableViewController: UIAdaptivePresentationControllerDelega
   }
 }
 
-
 // MARK: - TableView delegate
+
 
 extension NewScheduleTableViewController {
   
@@ -721,7 +725,6 @@ extension NewScheduleTableViewController {
     case 3:
       switch indexPath.row {
       case 2:
-//        reduceCell.selectionStyle = .default
         StaticTableManager.shared.setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
         scrollToUnhidePicker(indexPath: indexPath)
       default:

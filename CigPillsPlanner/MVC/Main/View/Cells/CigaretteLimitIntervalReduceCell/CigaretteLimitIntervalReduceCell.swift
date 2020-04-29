@@ -12,6 +12,7 @@ class CigaretteLimitIntervalReduceCell: UITableViewCell, CellProtocol {
   
   // MARK: - Outlets
   
+  
   @IBOutlet private weak var markLabel: UILabel!
   @IBOutlet private weak var priceLabel: UILabel!
   @IBOutlet private weak var balanceLabel: UILabel!
@@ -20,13 +21,13 @@ class CigaretteLimitIntervalReduceCell: UITableViewCell, CellProtocol {
   @IBOutlet private weak var lastLabel: UILabel!
   @IBOutlet private weak var nextLabel: UILabel!
   
-  
   // MARK: - Private properties
+  
   
   private var intervalTimer: Timer?
   
-  
   // MARK: - Internal func
+  
   
   func setValues(_ schedule: CigaretteScheduleModel) {
     let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)

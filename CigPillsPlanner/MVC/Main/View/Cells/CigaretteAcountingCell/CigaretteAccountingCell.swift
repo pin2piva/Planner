@@ -12,14 +12,15 @@ class CigaretteAccountingCell: UITableViewCell, CellProtocol {
   
   // MARK: - Outlets
   
+  
   @IBOutlet private weak var markLabel: UILabel!
   @IBOutlet private weak var priceLabel: UILabel!
   @IBOutlet private weak var todayLabel: UILabel!
   @IBOutlet private weak var totalLabel: UILabel!
   @IBOutlet private weak var lastLabel: UILabel!
   
-  
   // MARK: - Internal func
+  
   
   func setValues(_ schedule: CigaretteScheduleModel) {
     let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)

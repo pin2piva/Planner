@@ -12,12 +12,13 @@ class NotTodayCell: UITableViewCell, CellProtocol {
   
   // MARK: - Outlets
   
+  
   @IBOutlet private weak var dateLabel: UILabel!
   @IBOutlet private weak var smokedLabel: UILabel!
   @IBOutlet private weak var lastLabel: UILabel!
  
-  
   // MARK: - Internal func
+  
   
   func setValues(_ schedule: CigaretteScheduleModel) {
     dateLabel.text = schedule.currentStringDate
@@ -29,8 +30,8 @@ class NotTodayCell: UITableViewCell, CellProtocol {
     DataManager.shared.getDayliCount(for: schedule.currentStringDate)
   }
   
-  
   // MARK: - Private func
+  
   
   // TODO: - исправить на "HH:mm"
   private func lastTime(_ schedule: CigaretteScheduleModel) {

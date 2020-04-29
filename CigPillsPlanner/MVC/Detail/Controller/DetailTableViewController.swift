@@ -19,13 +19,12 @@ class DetailTableViewController: UITableViewController {
   @IBOutlet var leftConstraints: [NSLayoutConstraint]!
   @IBOutlet var rightConstraints: [NSLayoutConstraint]!
   
-  
   // MARK: - From date outlets
+  
   
   @IBOutlet var fromLabels: [UILabel]!
   @IBOutlet weak var fromCell: UITableViewCell!
   @IBOutlet weak var fromDatePicker: UIDatePicker!
-  
   
   // MARK: - To date outlets
   
@@ -34,27 +33,27 @@ class DetailTableViewController: UITableViewController {
   @IBOutlet weak var toCell: UITableViewCell!
   @IBOutlet weak var toDatePicker: UIDatePicker!
   
-  
   // MARK: - Mark outlets
+  
   
   @IBOutlet var markLabels: [UILabel]!
   @IBOutlet weak var markCell: UITableViewCell!
   @IBOutlet weak var markPicker: UIPickerView!
   
-  
   // MARK: - Price outlets
+  
   
   @IBOutlet var priceLabels: [UILabel]!
   @IBOutlet weak var priceCell: UITableViewCell!
   @IBOutlet weak var pricePicker: UIPickerView!
   
-  
   // MARK: - Internal properties
+  
   
   let itemName = "Detail"
   
-  
   // MARK: - Custom segment private properties
+  
   
   private var totalSelection = true {
     willSet {
@@ -87,8 +86,8 @@ class DetailTableViewController: UITableViewController {
     [fromCellIsSelected, toCellIsSelected, markCellIsSelected, priceCellIsSelected]
   }
   
-  
   // MARK: - Cell selection private properties
+  
   
   private var fromCellIsSelected = false {
     didSet {
@@ -110,17 +109,17 @@ class DetailTableViewController: UITableViewController {
       tableUpdates()
     }
   }
-
   
   // MARK: - Life cycle
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
   }
   
-  
   // MARK: - Private func
+  
   
   private func getCornerRadius(view: UIView) -> CGFloat {
     let height = view.bounds.height
@@ -242,8 +241,8 @@ class DetailTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - @IBActions
+  
   
   @IBAction func buttonsAction(_ sender: UIButton) {
     buttonTapped(sender.tag)
@@ -251,8 +250,12 @@ class DetailTableViewController: UITableViewController {
   
 }
 
+// MARK: - Extensions
+
+
 
 // MARK: - Table view delegate
+
 
 extension DetailTableViewController {
   

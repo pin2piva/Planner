@@ -13,18 +13,19 @@ class DataManager {
   
   // MARK: - Static properties
   
+  
   static let shared = DataManager()
   
-  
   // MARK: - Private Properties
+  
   
   private let realm = try! Realm()
   private var dayliCounters: Results<DayliCounter> {
     realm.objects(DayliCounter.self)
   }
   
-  
   // MARK: - Common private func
+  
   
   private func add<T: Object>(_ object: T) {
     try! realm.write {
@@ -32,8 +33,8 @@ class DataManager {
     }
   }
   
-  
   // MARK: - Schedule internal func
+  
   
   func createNewSchedule(mark: String,
                          price: Double,
@@ -113,8 +114,8 @@ class DataManager {
     return realm.objects(CigaretteScheduleModel.self).sorted(byKeyPath: "currentStringDate", ascending: false)
   }
   
-  
   // MARK: - Schedule private func
+  
   
   private func get(limit: Int, after reduce: Int) -> Int {
     var newLimit = limit
@@ -138,8 +139,8 @@ class DataManager {
     return newLimit
   }
   
-  
   // MARK: - MarkCounter internal func
+  
   
   func createMarkCounter(with mark: String,
                          _ price: Double) {
@@ -179,8 +180,8 @@ class DataManager {
     return totalCount
   }
   
-  
   // MARK: - DayliCouner internal func
+  
   
   private func createMarkDateCounterWith(mark: String, price: Double, perPack: Int) -> MarkDateCounter {
     let markDateCounter = MarkDateCounter()

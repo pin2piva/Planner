@@ -12,15 +12,17 @@ enum Scenario: String {
   
   // MARK: - Cases
   
-  case accountingOnly = "Accounting only" // только учет
-  case withLimitAndReduce = "Accounting with limit and reduce" // фиксированное количество
-  case withInterval = "Accounting with interval" // через заданные промежутки времени
+  
+  case accountingOnly = "Accounting only"
+  case withLimitAndReduce = "Accounting with limit and reduce"
+  case withInterval = "Accounting with interval"
   case withLimit = "Accounting with limit"
   case withLimitAndInterval = "Accounting with limit and interval"
   case withLimitAndIntervalAndReduce = "Accounting with limit, interval and reduce"
   
   
   // MARK: - Static func
+  
   
   static func getScenarioCase(from stringScenario: String) -> Scenario {
     switch stringScenario {

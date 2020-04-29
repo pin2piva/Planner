@@ -11,8 +11,8 @@ import RealmSwift
 
 class CigaretteScheduleModel: Object {
   
-  
   // MARK: - Properties
+  
   
   @objc dynamic var mark: String = ""
   @objc dynamic var price: Double = 0
@@ -34,8 +34,8 @@ class CigaretteScheduleModel: Object {
   
   @objc dynamic var lastTimeSmoke: Date? = nil
   
-  
   // MARK: - Internal func
+  
   
   func overLimit() -> String? {
     guard isToday else { return nil }
@@ -58,8 +58,8 @@ class CigaretteScheduleModel: Object {
     DataManager.shared.increaceDayliCount(for: self)
   }
   
-  
   // MARK: - Primary Key
+  
   
   override class func primaryKey() -> String? {
     return "currentStringDate"

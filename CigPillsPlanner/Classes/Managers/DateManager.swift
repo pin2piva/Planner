@@ -12,18 +12,19 @@ class DateManager {
   
   // MARK: - Static properties
   
+  
   static let shared = DateManager()
   
   // TODO: исправить на день!!!
   static let dateStringFormat = "yyyy-MM-dd HH:mm"
   
-  
   // MARK: - Private properties
+  
   
   private let dateFormatter = DateFormatter()
   
-  
   // MARK: - Internal func
+  
   
   func getStringDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date, _ completion: () -> String?) -> String? {
     guard let date = getDateDifferenceBetween(components: components, from, and: to) else { return nil }
@@ -38,7 +39,6 @@ class DateManager {
   }
   
   // TODO: - Исправить на день!!!
-  
   func checkReduce(from begin: Date?, reducePerDay: Int, limit: Int) -> Int? {
     guard let begin = begin else { return nil }
     let zeroHourDate = Date().zeroSeconds // исправить на день

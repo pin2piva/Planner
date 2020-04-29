@@ -12,12 +12,13 @@ class RootViewController: UIViewController {
   
   // MARK: - Private properties
   
+  
   private var current: UIViewController!
   private var navController: UINavigationController!
   private var mainController: MainTableViewController!
   
-  
   // MARK: - Initialazators
+  
   
   init() {
     self.current = SplashViewController()
@@ -28,8 +29,8 @@ class RootViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  
   // MARK: - Life cycle
+ 
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -37,8 +38,8 @@ class RootViewController: UIViewController {
     addNewChild(current)
   }
   
-  
   // MARK: - Internal func
+  
   
   func showMainTable() {
     mainController = MainTableViewController()
@@ -56,8 +57,6 @@ class RootViewController: UIViewController {
   }
   
   func showTabBarViewController() {
-    
-//    let detail = DetailTableViewController(itemName: "Detail")
     let detailStoryboard = UIStoryboard(name: "DetailTableViewController", bundle: nil)
     let detail = detailStoryboard.instantiateViewController(identifier: "DetailTableViewController") as! DetailTableViewController
     
@@ -81,6 +80,7 @@ class RootViewController: UIViewController {
   }
   
   // MARK: Private func
+ 
   
   private func addNewChild(_ controller: UIViewController) {
     addChild(controller)
@@ -98,8 +98,8 @@ class RootViewController: UIViewController {
   
 }
 
-
 // MARK: - Extensions
+
 
 extension RootViewController: NewScheduleTableViewDelegate {
   
@@ -112,6 +112,4 @@ extension RootViewController: NewScheduleTableViewDelegate {
     navController.dismiss(animated: true)
   }
   
-  
 }
-

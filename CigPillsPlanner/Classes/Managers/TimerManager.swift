@@ -12,16 +12,17 @@ class TimerManager {
   
   // MARK: - Static properties
   
+  
   static let shared = TimerManager()
   
-  
   // MARK: Private properties
+  
   
   private var timer: Timer?
   private var intervalTimer: Timer?
   
-  
   // MARK: - Internal properties
+  
   
   func lastTime(_ schedule: CigaretteScheduleModel, _ completion: @escaping (String?) -> Void) {
     timer?.invalidate()
@@ -66,8 +67,8 @@ class TimerManager {
     }
   }
   
-  
   // MARK: - Private properties
+  
   
   private func deactivateTimer() {
     let currentSchedule = DataManager.shared.getDescendingSortedSchedules().first!

@@ -13,6 +13,7 @@ class MainTableViewController: UITableViewController {
   
   // MARK: - Private properties
   
+  
   private var schedules: Results<CigaretteScheduleModel>!
   private var markCounter: MarkCounter?
   private var breakingButton: UIButton!
@@ -25,6 +26,7 @@ class MainTableViewController: UITableViewController {
   }
   
   // MARK: - Life cycle
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -40,8 +42,8 @@ class MainTableViewController: UITableViewController {
     checkAndCreateCountersFor(currentSchedule: schedules.first)
   }
   
-  
   // MARK: - Table view data source
+  
   
   override func numberOfSections(in tableView: UITableView) -> Int {
     return 1
@@ -78,8 +80,8 @@ class MainTableViewController: UITableViewController {
     return cell as! UITableViewCell
   }
   
-  
   // MARK: - Table view delegate
+  
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     AppDelegate.shared.rootViewController.showTabBarViewController()
@@ -100,8 +102,8 @@ class MainTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - Private func
+  
   
   private func setupViewGradient() {
     let gradient = CAGradientLayer()
@@ -203,7 +205,6 @@ class MainTableViewController: UITableViewController {
                                          reducePerDay: lastSchedule.reducePerDay.value,
                                          beginReduceDate: lastSchedule.beginReduceDate,
                                          lastTimeSmoke: lastSchedule.lastTimeSmoke)
-//    print("\(#function) = \(lastSchedule.timerIsActive)")
   }
   
   private func checkAndCreateCountersFor(currentSchedule: CigaretteScheduleModel?) {
@@ -220,8 +221,8 @@ class MainTableViewController: UITableViewController {
     }
   }
   
-  
   // MARK: - @obcj private func
+  
   
   @objc private func editCurrentSchedule() {
     let currentSchedule = schedules.first
@@ -238,4 +239,3 @@ class MainTableViewController: UITableViewController {
   }
   
 }
-

@@ -12,6 +12,7 @@ class AlertManager {
   
   // MARK: Enums
   
+  
   enum AlertTitles: String {
     case haveNoMark = "Вы не ввели марку сигарет"
     case wrongPrice = "Неправильно введена сумма"
@@ -32,8 +33,8 @@ class AlertManager {
     case continueWithDefaultValue = "Продолжить!"
   }
   
-  
   // MARK: - Static func
+  
   
   static func showAlert(title: AlertTitles, message: AlertMessages, style: UIAlertController.Style, presentIn view: UIViewController, completionHandler: (() -> [UIAlertAction])) {
     let alert = UIAlertController(title: title.rawValue, message: message.rawValue, preferredStyle: style)
