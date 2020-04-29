@@ -139,47 +139,6 @@ class DataManager {
     return newLimit
   }
   
-  // MARK: - MarkCounter internal func
-  
-  
-  func createMarkCounter(with mark: String,
-                         _ price: Double) {
-    let markCounter = MarkCounter()
-    markCounter.mark = mark.lowercased()
-    let counter = PriceMarkCounter()
-    counter.price = String(price)
-    markCounter.counter.append(counter)
-    
-    add(markCounter)
-  }
-  
-  func increaceMarkCount(for schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      guard let markCounter = getMarkCounter(for: schedule.mark) else { return }
-      let priceMarkCounters: [PriceMarkCounter] = markCounter.counter.filter({ $0.price == String(schedule.price) })
-      guard let priceMarkCounter = priceMarkCounters.first else {
-        let newPriceMarkCounter = PriceMarkCounter()
-        newPriceMarkCounter.price = String(schedule.price)
-        newPriceMarkCounter.markCount += 1
-        markCounter.counter.append(newPriceMarkCounter)
-        return
-      }
-      priceMarkCounter.markCount += 1
-    }
-  }
-  
-  func getMarkCounter(for mark: String) -> MarkCounter? {
-    let markCounter = realm.object(ofType: MarkCounter.self, forPrimaryKey: mark.lowercased())
-    return markCounter
-  }
-  
-  func getTotalCigCount() -> Int {
-    let markCounters = realm.objects(MarkCounter.self)
-    
-    let totalCount = markCounters.reduce([Int](), { $0 + $1.counter.map({ $0.markCount }) }).reduce(0, { $0 + $1 })
-    return totalCount
-  }
-  
   // MARK: - DayliCouner internal func
   
   
@@ -202,6 +161,7 @@ class DataManager {
     add(dayliCounter)
   }
   
+  
   func increaceDayliCount(for schedule: CigaretteScheduleModel) {
     try! realm.write {
       guard let dayliCounter = getDayliCounter(for: schedule.currentStringDate) else { return }
@@ -216,6 +176,10 @@ class DataManager {
       }
       markDateCounerWithPrice.count += 1
     }
+  }
+  
+  func getFirstDayliCounter() -> DayliCounter {
+    return dayliCounters.first!
   }
   
   func getDayliCounter(for date: String) -> DayliCounter? {

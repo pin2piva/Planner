@@ -8,6 +8,8 @@
 
 import UIKit
 
+// TODO: - Попробовать сделать сегментед как отделный файл
+
 class DetailTableViewController: UITableViewController {
   
   // MARK: - Custom segment outlets
@@ -24,14 +26,29 @@ class DetailTableViewController: UITableViewController {
   
   @IBOutlet var fromLabels: [UILabel]!
   @IBOutlet weak var fromCell: UITableViewCell!
-  @IBOutlet weak var fromDatePicker: UIDatePicker!
+  @IBOutlet weak var fromDatePicker: UIDatePicker! {
+    didSet {
+      fromDatePicker.minimumDate = getMinDate()
+      fromDatePicker.addTarget(self, action: #selector(getDateFromDatePicker(sender:)), for: .valueChanged)
+    }
+  }
+  
+  
+
+  
+
   
   // MARK: - To date outlets
   
   
   @IBOutlet var toLabels: [UILabel]!
   @IBOutlet weak var toCell: UITableViewCell!
-  @IBOutlet weak var toDatePicker: UIDatePicker!
+  @IBOutlet weak var toDatePicker: UIDatePicker! {
+    didSet {
+      toDatePicker.minimumDate = getMinDate()
+      toDatePicker.addTarget(self, action: #selector(getDateFromDatePicker(sender:)), for: .valueChanged)
+    }
+  }
   
   // MARK: - Mark outlets
   
@@ -46,6 +63,12 @@ class DetailTableViewController: UITableViewController {
   @IBOutlet var priceLabels: [UILabel]!
   @IBOutlet weak var priceCell: UITableViewCell!
   @IBOutlet weak var pricePicker: UIPickerView!
+  
+  // MARK: - Detail labels
+  
+  
+  @IBOutlet weak var countLabel: UILabel!
+  @IBOutlet weak var spentLabel: UILabel!
   
   // MARK: - Internal properties
   
@@ -110,15 +133,82 @@ class DetailTableViewController: UITableViewController {
     }
   }
   
+  // MARK: - Private properties
+  
+  
+  private var timer: Timer?
+  
   // MARK: - Life cycle
   
   
   override func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
+    checkDatePickerMaximumDate()
   }
   
-  // MARK: - Private func
+  // MARK: - Deinit
+  
+  
+  deinit {
+    timer?.invalidate()
+  }
+  
+  // MARK: - Table private func
+  
+
+  private func tableUpdates() {
+    tableView.beginUpdates()
+    tableView.endUpdates()
+  }
+  
+  private func scrollToUnhidePicker(indexPath: IndexPath) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [unowned self] in
+      self.tableView.scrollToRow(at: IndexPath(row: indexPath.row + 1, section: indexPath.section), at: .middle, animated: true)
+    }
+  }
+  
+  private func getHeightForRow(withSelected segments: [Bool], andSelected cells: [Bool], row: Int) -> CGFloat {
+    switch row {
+    case 0:
+      return 50
+    case 2, 5:
+      return segments[1] ? 50 : 0
+    case 3:
+      return cells[0] ? 200 : 0
+    case 6:
+      return cells[1] ? 200 : 0
+    case 8:
+      return segments[2] ? 50 : 0
+    case 9:
+      return cells[2] ? 200 : 0
+    case 11:
+      return segments[3] ? 50 : 0
+    case 12:
+      return cells[3] ? 200 : 0
+    default:
+      return 0
+    }
+  }
+  
+  private func setSelectionStyle(to cell: UITableViewCell, style: UITableViewCell.SelectionStyle) {
+    if cell == fromCell {
+      fromCell.selectionStyle = style
+    } else if cell == toCell {
+      toCell.selectionStyle = style
+    } else if cell == markCell {
+      markCell.selectionStyle = style
+    } else if cell == priceCell {
+      priceCell.selectionStyle = style
+    }
+  }
+  
+  private func setColorToLabels(selection: inout Bool, labels: inout [UILabel]!) {
+    selection = false
+    StaticTableManager.shared.setColorToTextIn(labels, selection)
+  }
+  
+  // MARK: - Segmented private func
   
   
   private func getCornerRadius(view: UIView) -> CGFloat {
@@ -190,55 +280,58 @@ class DetailTableViewController: UITableViewController {
     rightConstraints[tag].priority = UILayoutPriority(priority)
   }
   
-  private func getHeightForRow(withSelected segments: [Bool], andSelected cells: [Bool], row: Int) -> CGFloat {
-    switch row {
+  // MARK: - Date picker private func
+  
+  private func checkDatePickerMaximumDate() {
+    timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [unowned self] (timer) in
+      self.toDatePicker.maximumDate = Date()
+      self.fromDatePicker.maximumDate = Date()
+    }
+  }
+  
+  private func setValueToDateLabel(with tag: Int, date: Date) {
+    let stringDate = DateManager.shared.getStringDate(date: date) { DateManager.dateStringFormat }
+    switch tag {
     case 0:
-      return 50
-    case 2, 5:
-      return segments[1] ? 50 : 0
-    case 3:
-      return cells[0] ? 200 : 0
-    case 6:
-      return cells[1] ? 200 : 0
-    case 8:
-      return segments[2] ? 50 : 0
-    case 9:
-      return cells[2] ? 200 : 0
-    case 11:
-      return segments[3] ? 50 : 0
-    case 12:
-      return cells[3] ? 200 : 0
+      fromLabels[1].text = stringDate
+    case 1:
+      toLabels[1].text = stringDate
     default:
-      return 0
+      break
     }
   }
   
-  private func tableUpdates() {
-    tableView.beginUpdates()
-    tableView.endUpdates()
-  }
-  
-  private func setColorToLabels(selection: inout Bool, labels: inout [UILabel]!) {
-    selection = false
-    StaticTableManager.shared.setColorToTextIn(labels, selection)
-  }
-  
-  private func setSelectionStyle(to cell: UITableViewCell, style: UITableViewCell.SelectionStyle) {
-    if cell == fromCell {
-      fromCell.selectionStyle = style
-    } else if cell == toCell {
-      toCell.selectionStyle = style
-    } else if cell == markCell {
-      markCell.selectionStyle = style
-    } else if cell == priceCell {
-      priceCell.selectionStyle = style
+  private func set(date: Date, toDatePicketWith tag: Int) {
+    switch tag {
+    case 0:
+      if date > toDatePicker.date {
+        toDatePicker.setDate(date, animated: true)
+      }
+    case 1:
+      if date < fromDatePicker.date {
+        fromDatePicker.setDate(date, animated: true)
+      }
+    default:
+      break
     }
   }
   
-  private func scrollToUnhidePicker(indexPath: IndexPath) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [unowned self] in
-      self.tableView.scrollToRow(at: IndexPath(row: indexPath.row + 1, section: indexPath.section), at: .middle, animated: true)
-    }
+  private func getMinDate() -> Date? {
+    let dayliCounter = DataManager.shared.getFirstDayliCounter()
+    let date = DateManager.shared.getDate(from: dayliCounter.dateString) { DateManager.dateStringFormat }
+    return date
+  }
+  
+
+  
+  // MARK: - Objc private func
+  
+  
+  @objc private func getDateFromDatePicker(sender: UIDatePicker) {
+    let date = sender.date
+    let tag = sender.tag
+    set(date: date, toDatePicketWith: tag)
+    setValueToDateLabel(with: tag, date: date)
   }
   
   // MARK: - @IBActions

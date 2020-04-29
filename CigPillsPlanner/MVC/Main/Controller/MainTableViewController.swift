@@ -15,7 +15,6 @@ class MainTableViewController: UITableViewController {
   
   
   private var schedules: Results<CigaretteScheduleModel>!
-  private var markCounter: MarkCounter?
   private var breakingButton: UIButton!
   private var timer: Timer?
   private var count = 0
@@ -41,6 +40,7 @@ class MainTableViewController: UITableViewController {
     breakingButtonEnabling()
     checkAndCreateCountersFor(currentSchedule: schedules.first)
   }
+
   
   // MARK: - Table view data source
   
@@ -215,9 +215,6 @@ class MainTableViewController: UITableViewController {
     let dateString = currentSchedule.currentStringDate
     if DataManager.shared.getDayliCounter(for: dateString) == nil {
       DataManager.shared.createDayliCounter(date: dateString, mark: mark, price: price, perPack: packSize)
-    }
-    if DataManager.shared.getMarkCounter(for: mark) == nil {
-      DataManager.shared.createMarkCounter(with: mark, price)
     }
   }
   

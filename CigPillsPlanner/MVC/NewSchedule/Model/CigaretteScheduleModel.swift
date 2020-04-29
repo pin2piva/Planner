@@ -54,7 +54,6 @@ class CigaretteScheduleModel: Object {
   }
   
   func incrementCount() {
-    DataManager.shared.increaceMarkCount(for: self)
     DataManager.shared.increaceDayliCount(for: self)
   }
   

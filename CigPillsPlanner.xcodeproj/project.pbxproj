@@ -32,7 +32,6 @@
 		91C5EE31243CA2CD00516C35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE30243CA2CD00516C35 /* Assets.xcassets */; };
 		91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE3D243CA36E00516C35 /* RootViewController.swift */; };
 		91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE47243CA58900516C35 /* SplashViewController.swift */; };
-		91C5EE4E243CA61A00516C35 /* MarkCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE4D243CA61A00516C35 /* MarkCounter.swift */; };
 		91C5EE52243CA66900516C35 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE51243CA66900516C35 /* MainTableViewController.swift */; };
 		91C5EE5F243CA77B00516C35 /* CigaretteScheduleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE5E243CA77B00516C35 /* CigaretteScheduleModel.swift */; };
 		91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE60243CA79B00516C35 /* Scenario.swift */; };
@@ -93,7 +92,6 @@
 		91C5EE35243CA2CD00516C35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91C5EE3D243CA36E00516C35 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		91C5EE47243CA58900516C35 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
-		91C5EE4D243CA61A00516C35 /* MarkCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCounter.swift; sourceTree = "<group>"; };
 		91C5EE51243CA66900516C35 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		91C5EE5E243CA77B00516C35 /* CigaretteScheduleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteScheduleModel.swift; sourceTree = "<group>"; };
 		91C5EE60243CA79B00516C35 /* Scenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
@@ -336,7 +334,6 @@
 		91C5EE4C243CA5ED00516C35 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE4D243CA61A00516C35 /* MarkCounter.swift */,
 				91EB1574243F0C0700B5E75D /* DayliCounter.swift */,
 			);
 			path = Model;
@@ -599,7 +596,6 @@
 				91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */,
 				91C5EE28243CA2CC00516C35 /* AppDelegate.swift in Sources */,
 				91C5EE63243CA7D500516C35 /* NewScheduleTableViewController.swift in Sources */,
-				91C5EE4E243CA61A00516C35 /* MarkCounter.swift in Sources */,
 				91C5EE71243CA92800516C35 /* VisualizationTableViewController.swift in Sources */,
 				9171B7CD2449E3B1005C3183 /* CigaretteIntervalCell.swift in Sources */,
 				91C5EE7A243CA9FA00516C35 /* AlertManager.swift in Sources */,

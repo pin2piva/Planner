@@ -40,7 +40,7 @@ class NewScheduleTableViewController: UITableViewController {
   @IBOutlet private var intervalLabels: [UILabel]!
   @IBOutlet private weak var intervalPicker: UIDatePicker! {
     didSet {
-      intervalPicker.addTarget(self, action: #selector(timerInputAction(sender:)), for: .allEvents)
+      intervalPicker.addTarget(self, action: #selector(timerInputAction(sender:)), for: .valueChanged)
     }
   }
   
