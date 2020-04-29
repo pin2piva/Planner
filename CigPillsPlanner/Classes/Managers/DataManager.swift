@@ -20,8 +20,9 @@ class DataManager {
   
   
   private let realm = try! Realm()
-  private var dayliCounters: Results<DayliCounter> {
-    realm.objects(DayliCounter.self)
+  var dayliCounters: [DayliCounter] {
+    let results: [DayliCounter] = realm.objects(DayliCounter.self).map({ $0 })
+    return results
   }
   
   // MARK: - Common private func
@@ -47,7 +48,7 @@ class DataManager {
                          beginReduceDate: Date? = nil,
                          lastTimeSmoke: Date? = nil) {
     let schedule = CigaretteScheduleModel()
-    schedule.mark = mark
+    schedule.mark = mark.uppercased()
     schedule.price = price
     schedule.packSize = packSize
     schedule.scenario = scenario
@@ -139,12 +140,16 @@ class DataManager {
     return newLimit
   }
   
-  // MARK: - DayliCouner internal func
+  // MARK: - DayliCouner
+  
+  
+  
+  // MARK: - Create
   
   
   private func createMarkDateCounterWith(mark: String, price: Double, perPack: Int) -> MarkDateCounter {
     let markDateCounter = MarkDateCounter()
-    markDateCounter.mark = mark.lowercased()
+    markDateCounter.mark = mark
     markDateCounter.price = price
     markDateCounter.perPack = perPack
     return markDateCounter
@@ -161,14 +166,16 @@ class DataManager {
     add(dayliCounter)
   }
   
+  // MARK: - Increment
+  
   
   func increaceDayliCount(for schedule: CigaretteScheduleModel) {
     try! realm.write {
       guard let dayliCounter = getDayliCounter(for: schedule.currentStringDate) else { return }
-      let markDateCounter: [MarkDateCounter] = dayliCounter.mark.filter({ $0.mark == schedule.mark.lowercased() })
+      let markDateCounter: [MarkDateCounter] = dayliCounter.mark.filter({ $0.mark == schedule.mark })
       guard let markDateCounerWithPrice = markDateCounter.filter({ $0.price == schedule.price }).first else {
         let newMarkDateCounter = createMarkDateCounterWith(mark: schedule.mark, price: schedule.price, perPack: schedule.packSize)
-        newMarkDateCounter.mark = schedule.mark.lowercased()
+        newMarkDateCounter.mark = schedule.mark
         newMarkDateCounter.price = schedule.price
         newMarkDateCounter.count += 1
         dayliCounter.mark.append(newMarkDateCounter)
@@ -178,14 +185,22 @@ class DataManager {
     }
   }
   
+  // MARK: - Get DayliCounter
+  
   func getFirstDayliCounter() -> DayliCounter {
     return dayliCounters.first!
+  }
+  
+  func getLastDayliCounter() -> DayliCounter {
+    return dayliCounters.last!
   }
   
   func getDayliCounter(for date: String) -> DayliCounter? {
     let dayliCounter = realm.object(ofType: DayliCounter.self, forPrimaryKey: date)
     return dayliCounter
   }
+  
+  // MARK: - Get values
   
   func getDayliCount(for date: String) -> Int {
     guard let dayliCounter = getDayliCounter(for: date) else { return 0 }
@@ -209,14 +224,37 @@ class DataManager {
     return totalPrice
   }
   
+  func getMarksFrom(_ dayliCounters: [DayliCounter]) -> [String] {
+    let marks = Array(Set(dayliCounters.reduce([String](), { $0 + $1.mark.map({ $0.mark }) })))
+    return marks
+  }
+  
+  func getPricesFrom(_ dayliCounters: [DayliCounter]) -> [Double] {
+    let prices = Array(Set(dayliCounters.reduce([Double](), { $0 + $1.mark.map({ $0.price }) })))
+    return prices
+  }
+  
+  func getDayliCounters(fromDate: Date, toDate: Date, completion: @escaping ([DayliCounter]) -> Void) {
+    let fromDateString = DateManager.shared.getStringDate(date: fromDate) { DateManager.dateStringFormat }
+    let toDateString = DateManager.shared.getStringDate(date: toDate) { DateManager.dateStringFormat }
+    let counters: [DayliCounter] = dayliCounters.filter({ $0.dateString >= fromDateString && $0.dateString <= toDateString })
+    completion(counters)
+  }
+  
+
+  
+  
+  
+  
+/*
   func getTotalPriceFor(mark: String) -> Double {
-    let totalPriceForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark.lowercased() }).reduce(0, { $0 + ($1.price / Double($1.perPack) * Double($1.count)) }) })
+    let totalPriceForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark }).reduce(0, { $0 + ($1.price / Double($1.perPack) * Double($1.count)) }) })
     return totalPriceForMark
   }
   
   func getTotalCountFor(mark: String) -> Int {
-    let totalCountForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark.lowercased() }).reduce(0, { $0 + $1.count }) })
+    let totalCountForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark }).reduce(0, { $0 + $1.count }) })
     return totalCountForMark
   }
-  
+ */
 }

@@ -28,15 +28,11 @@ class DetailTableViewController: UITableViewController {
   @IBOutlet weak var fromCell: UITableViewCell!
   @IBOutlet weak var fromDatePicker: UIDatePicker! {
     didSet {
+      fromDatePicker.setDate(getMinDate()!, animated: false)
       fromDatePicker.minimumDate = getMinDate()
       fromDatePicker.addTarget(self, action: #selector(getDateFromDatePicker(sender:)), for: .valueChanged)
     }
   }
-  
-  
-
-  
-
   
   // MARK: - To date outlets
   
@@ -45,6 +41,7 @@ class DetailTableViewController: UITableViewController {
   @IBOutlet weak var toCell: UITableViewCell!
   @IBOutlet weak var toDatePicker: UIDatePicker! {
     didSet {
+      toDatePicker.setDate(Date(), animated: false)
       toDatePicker.minimumDate = getMinDate()
       toDatePicker.addTarget(self, action: #selector(getDateFromDatePicker(sender:)), for: .valueChanged)
     }
@@ -55,20 +52,45 @@ class DetailTableViewController: UITableViewController {
   
   @IBOutlet var markLabels: [UILabel]!
   @IBOutlet weak var markCell: UITableViewCell!
-  @IBOutlet weak var markPicker: UIPickerView!
+  @IBOutlet weak var markPicker: UIPickerView! {
+    didSet {
+      markPicker.delegate = self
+      markPicker.dataSource = self
+    }
+  }
   
   // MARK: - Price outlets
   
   
   @IBOutlet var priceLabels: [UILabel]!
   @IBOutlet weak var priceCell: UITableViewCell!
-  @IBOutlet weak var pricePicker: UIPickerView!
+  @IBOutlet weak var pricePicker: UIPickerView! {
+    didSet {
+      pricePicker.delegate = self
+      pricePicker.dataSource = self
+    }
+  }
   
   // MARK: - Detail labels
   
   
   @IBOutlet weak var countLabel: UILabel!
   @IBOutlet weak var spentLabel: UILabel!
+  
+  // MARK: - Private properties
+  
+  
+  private var marks = [String]() {
+    didSet {
+      markPicker.reloadAllComponents()
+    }
+  }
+  private var prices = [Double]() {
+    didSet {
+      pricePicker.reloadAllComponents()
+    }
+  }
+  
   
   // MARK: - Internal properties
   
@@ -144,7 +166,10 @@ class DetailTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
+    setInitialValuesToFilterLabels()
+    setTotalValuesToLabels()
     checkDatePickerMaximumDate()
+    getInitialValuesToPickers()
   }
   
   // MARK: - Deinit
@@ -322,7 +347,34 @@ class DetailTableViewController: UITableViewController {
     return date
   }
   
-
+  private func setInitialValuesToFilterLabels() {
+    fromLabels[1].text = DataManager.shared.getFirstDayliCounter().dateString
+    toLabels[1].text = DateManager.shared.getStringDate(date: Date()) { DateManager.dateStringFormat }
+    markLabels[1].text = DataManager.shared.getLastDayliCounter().mark.last?.mark
+    if let text = DataManager.shared.getLastDayliCounter().mark.last?.price {
+      priceLabels[1].text = "\(text)"
+    }
+  }
+  
+  private func setTotalValuesToLabels() {
+    countLabel.text = "\(DataManager.shared.getTotalCount())"
+    spentLabel.text = "\(NSString(format: "%.2f", DataManager.shared.getTotalPrice()))"
+  }
+  
+  // MARK: - Pickers private func
+  
+  
+  private func setMarks(fromDate: Date, toDate: Date, completion: @escaping ([DayliCounter]) -> Void) {
+    DataManager.shared.getDayliCounters(fromDate: fromDate, toDate: toDate) { (counters) in
+      completion(counters)
+    }
+  }
+  
+  private func getInitialValuesToPickers() {
+    let counters = DataManager.shared.dayliCounters
+    marks = DataManager.shared.getMarksFrom(counters)
+    prices = DataManager.shared.getPricesFrom(counters)
+  }
   
   // MARK: - Objc private func
   
@@ -332,6 +384,10 @@ class DetailTableViewController: UITableViewController {
     let tag = sender.tag
     set(date: date, toDatePicketWith: tag)
     setValueToDateLabel(with: tag, date: date)
+    setMarks(fromDate: fromDatePicker.date, toDate: toDatePicker.date) { [unowned self] (counters) in
+      self.marks = DataManager.shared.getMarksFrom(counters)
+      self.prices = DataManager.shared.getPricesFrom(counters)
+    }
   }
   
   // MARK: - @IBActions
@@ -395,6 +451,40 @@ extension DetailTableViewController {
     return 0
   }
   
+}
+
+// MARK: - Picker view data source
+
+
+extension DetailTableViewController: UIPickerViewDataSource {
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    return 1
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    switch pickerView.tag {
+    case 0:
+      return marks.count
+    case 1:
+      return prices.count
+    default:
+      return 0
+    }
+  }
+  
+}
+
+extension DetailTableViewController: UIPickerViewDelegate {
+  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    switch pickerView.tag {
+    case 0:
+      return marks[row]
+    case 1:
+      return "\(NSString(format: "%.2f", prices[row]))"
+    default:
+      return nil
+    }
+  }
 }
 
 extension DetailTableViewController: HaveTabBarItem {}
