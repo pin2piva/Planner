@@ -499,9 +499,9 @@ extension DetailTableViewController: UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     switch pickerView.tag {
     case 0:
-      return dayliCounters.count
-//    case 1:
-//      return prices.count
+      return marks.count
+    case 1:
+      return prices.count
     default:
       return 0
     }
@@ -514,9 +514,9 @@ extension DetailTableViewController: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     switch pickerView.tag {
     case 0:
-      return dayliCounters[row].dateString
-//    case 1:
-//      return prices[row]
+      return marks[row]
+    case 1:
+      return prices[row]
     default:
       return nil
     }
@@ -524,10 +524,10 @@ extension DetailTableViewController: UIPickerViewDelegate {
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch pickerView.tag {
-//    case 0:
-//      markLabels[1].text = marks[row]
-//    case 1:
-//      priceLabels[1].text = prices[row]
+    case 0:
+      markLabels[1].text = marks[row]
+    case 1:
+      priceLabels[1].text = prices[row]
     default:
       break
     }

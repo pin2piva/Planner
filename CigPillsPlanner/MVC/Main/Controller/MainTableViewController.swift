@@ -184,6 +184,9 @@ class MainTableViewController: UITableViewController {
     let schedules = ScheduleDataManager.shared.getDescendingSortedSchedules()
     let preLastSchedule = schedules[1]
     guard DayliDataManager.shared.getDayliCount(for: preLastSchedule.currentStringDate) == 0 else { return }
+    if let lastDayliCounter = DayliDataManager.shared.getDayliCounter(for: preLastSchedule.currentStringDate) {
+      DayliDataManager.shared.deleteDayliCounter(lastDayliCounter)
+    }
     ScheduleDataManager.shared.deleteSchedule(preLastSchedule)
   }
   

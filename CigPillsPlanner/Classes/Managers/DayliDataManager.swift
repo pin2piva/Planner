@@ -25,7 +25,7 @@ class DayliDataManager {
     return results
   }
   
-  // MARK: - Common private func
+  // MARK: - Private func
   
   
   private func add(_ object: DayliCounter) {
@@ -33,12 +33,8 @@ class DayliDataManager {
       realm.add(object, update: .modified)
     }
   }
-  
-  // MARK: - DayliCouner
-  
-  
-  
-  // MARK: - Create
+
+  // MARK: - Create/Delete
   
   
   private func createMarkDateCounterWith(mark: String, price: Double, perPack: Int) -> MarkDateCounter {
@@ -52,12 +48,15 @@ class DayliDataManager {
   func createDayliCounter(date: String, mark: String, price: Double, perPack: Int) {
     let dayliCounter = DayliCounter()
     dayliCounter.dateString = date
-    
     let markDateCounter = createMarkDateCounterWith(mark: mark, price: price, perPack: perPack)
-    
     dayliCounter.mark.append(markDateCounter)
-    
     add(dayliCounter)
+  }
+  
+  func deleteDayliCounter(_ counter: DayliCounter) {
+    try! realm.write {
+      realm.delete(counter)
+    }
   }
   
   // MARK: - Increment
