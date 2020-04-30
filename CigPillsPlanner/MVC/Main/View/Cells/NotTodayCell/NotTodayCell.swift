@@ -27,7 +27,7 @@ class NotTodayCell: UITableViewCell, CellProtocol {
   }
   
   func getDayliCount(_ schedule: CigaretteScheduleModel) -> Int {
-    DataManager.shared.getDayliCount(for: schedule.currentStringDate)
+    DayliDataManager.shared.getDayliCount(for: schedule.currentStringDate)
   }
   
   // MARK: - Private func

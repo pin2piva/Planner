@@ -71,8 +71,8 @@ class TimerManager {
   
   
   private func deactivateTimer() {
-    let currentSchedule = DataManager.shared.getDescendingSortedSchedules().first!
-    DataManager.shared.timer(activate: false, for: currentSchedule)
+    let currentSchedule = ScheduleDataManager.shared.getDescendingSortedSchedules().first!
+    ScheduleDataManager.shared.timer(activate: false, for: currentSchedule)
   }
 
   private func getTimeDifference(_ first: Date, _ second: Date) -> String? {

@@ -23,8 +23,8 @@ class CigaretteAccountingCell: UITableViewCell, CellProtocol {
   
   
   func setValues(_ schedule: CigaretteScheduleModel) {
-    let dayliCount = DataManager.shared.getDayliCount(for: schedule.currentStringDate)
-    let totalCount = DataManager.shared.getTotalCountBeforeCurrent(date: schedule.currentStringDate)
+    let dayliCount = DayliDataManager.shared.getDayliCount(for: schedule.currentStringDate)
+    let totalCount = DayliDataManager.shared.getTotalCountBeforeCurrent(date: schedule.currentStringDate)
     markLabel.text = schedule.mark
     priceLabel.text = "\(String(describing: schedule.price))"
     todayLabel.text = "\(dayliCount)"

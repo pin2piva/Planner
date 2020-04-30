@@ -1,5 +1,5 @@
 //
-//  DataManager.swift
+//  DayliDataManager.swift
 //  CigPillsPlanner
 //
 //  Created by Artsiom Habruseu on 4/8/20.
@@ -9,12 +9,12 @@
 import Foundation
 import RealmSwift
 
-class DataManager {
+class DayliDataManager {
   
   // MARK: - Static properties
   
   
-  static let shared = DataManager()
+  static let shared = DayliDataManager()
   
   // MARK: - Private Properties
   
@@ -28,116 +28,10 @@ class DataManager {
   // MARK: - Common private func
   
   
-  private func add<T: Object>(_ object: T) {
+  private func add(_ object: DayliCounter) {
     try! realm.write {
       realm.add(object, update: .modified)
     }
-  }
-  
-  // MARK: - Schedule internal func
-  
-  
-  func createNewSchedule(mark: String,
-                         price: Double,
-                         packSize: Int,
-                         scenario: String,
-                         limit: Int?,
-                         interval: TimeInterval?,
-                         reduceCig: Int?,
-                         reducePerDay: Int?,
-                         beginReduceDate: Date? = nil,
-                         lastTimeSmoke: Date? = nil) {
-    let schedule = CigaretteScheduleModel()
-    schedule.mark = mark.uppercased()
-    schedule.price = price
-    schedule.packSize = packSize
-    schedule.scenario = scenario
-    schedule.lastTimeSmoke = lastTimeSmoke
-    schedule.currentStringDate = DateManager.shared.getStringDate(date: Date()) { DateManager.dateStringFormat }
-    schedule.beginReduceDate = beginReduceDate
-    if var limit = limit {
-      if let reduceCig = reduceCig, let reducePerDay = reducePerDay  {
-        schedule.reduceCig = RealmOptional(reduceCig)
-        schedule.reducePerDay = RealmOptional(reducePerDay)
-        if  schedule.beginReduceDate != nil {
-          let newLimit = getReduce(from: beginReduceDate, with: reduceCig, reducePerDay, limit: limit)
-          if let newLimit = newLimit {
-            limit = newLimit
-            schedule.beginReduceDate = Date().zeroSeconds
-          }
-        } else {
-          schedule.beginReduceDate = Date().zeroSeconds
-        }
-      } else {
-        schedule.beginReduceDate = nil
-      }
-      schedule.limit = RealmOptional(limit)
-    }
-    if let interval = interval {
-      schedule.interval = RealmOptional(interval)
-      if let lastTime = lastTimeSmoke {
-        if Date() <= Date(timeInterval: interval, since: lastTime) {
-          schedule.timerIsActive = true
-        } else {
-          schedule.timerIsActive = false
-        }
-      }
-    }
-    add(schedule)
-  }
-  
-  func timer(activate: Bool, for schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      schedule.timerIsActive = activate
-    }
-  }
-  
-  func setLastTime(for schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      schedule.lastTimeSmoke = Date()
-    }
-  }
-  
-  func deleteSchedule(_ schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      realm.delete(schedule)
-    }
-  }
-  
-  func updateToYesterday(schedule: CigaretteScheduleModel) {
-    try! realm.write {
-      schedule.isToday = false
-      schedule.timerIsActive = false
-    }
-  }
-  
-  func getDescendingSortedSchedules() -> Results<CigaretteScheduleModel> {
-    return realm.objects(CigaretteScheduleModel.self).sorted(byKeyPath: "currentStringDate", ascending: false)
-  }
-  
-  // MARK: - Schedule private func
-  
-  
-  private func get(limit: Int, after reduce: Int) -> Int {
-    var newLimit = limit
-    for _ in 0..<reduce {
-      if newLimit > 1 {
-        newLimit -= 1
-      } else {
-        break
-      }
-    }
-    return newLimit
-  }
-  
-  private func getReduce(from begin: Date?, with reduceCig: Int, _ reducePerDay: Int, limit: Int) -> Int? {
-    let quotientReduce = DateManager.shared.checkReduce(from: begin, reducePerDay: reducePerDay, limit: limit)
-    guard let quotient = quotientReduce else { return nil }
-    var newLimit = limit
-    for _ in 0..<quotient {
-      newLimit = get(limit: newLimit, after: reduceCig)
-    }
-    return newLimit
   }
   
   // MARK: - DayliCouner
@@ -200,6 +94,20 @@ class DataManager {
     return dayliCounter
   }
   
+//  func getDayliCounters(fromDate: Date, toDate: Date, completion: @escaping ([DayliCounter]) -> Void) {
+//    let fromDateString = DateManager.shared.getStringDate(date: fromDate) { DateManager.dateStringFormat }
+//    let toDateString = DateManager.shared.getStringDate(date: toDate) { DateManager.dateStringFormat }
+//    let counters: [DayliCounter] = dayliCounters.filter({ $0.dateString >= fromDateString && $0.dateString <= toDateString })
+//    completion(counters)
+//  }
+  
+  func getDayliCounters(fromDate: Date, toDate: Date) -> [DayliCounter] {
+    let fromDateString = DateManager.shared.getStringDate(date: fromDate) { DateManager.dateStringFormat }
+    let toDateString = DateManager.shared.getStringDate(date: toDate) { DateManager.dateStringFormat }
+    let counters: [DayliCounter] = dayliCounters.filter({ $0.dateString >= fromDateString && $0.dateString <= toDateString })
+    return counters
+  }
+  
   // MARK: - Get values
   
   func getDayliCount(for date: String) -> Int {
@@ -234,12 +142,7 @@ class DataManager {
     return prices
   }
   
-  func getDayliCounters(fromDate: Date, toDate: Date, completion: @escaping ([DayliCounter]) -> Void) {
-    let fromDateString = DateManager.shared.getStringDate(date: fromDate) { DateManager.dateStringFormat }
-    let toDateString = DateManager.shared.getStringDate(date: toDate) { DateManager.dateStringFormat }
-    let counters: [DayliCounter] = dayliCounters.filter({ $0.dateString >= fromDateString && $0.dateString <= toDateString })
-    completion(counters)
-  }
+
   
 
   

@@ -493,7 +493,7 @@ extension NewScheduleTableViewController {
       try checkMark()
       try checkPrice()
       try checkPackSize()
-      DataManager.shared.createNewSchedule(mark: editedMark,
+      ScheduleDataManager.shared.createNewSchedule(mark: editedMark,
                                            price: editedPrice,
                                            packSize: editedPackSize,
                                            scenario: scenario,

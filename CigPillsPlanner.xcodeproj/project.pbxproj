@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		91111AB62453056200E192B4 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 91111AB52453056200E192B4 /* RealmSwift */; };
 		91111AB82453056200E192B4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 91111AB72453056200E192B4 /* Realm */; };
+		911BE51B245AD141005AB859 /* ScheduleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BE51A245AD141005AB859 /* ScheduleDataManager.swift */; };
 		9171B7C32449B0E1005C3183 /* CigaretteLimitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9171B7C12449B0E1005C3183 /* CigaretteLimitCell.swift */; };
 		9171B7C42449B0E1005C3183 /* CigaretteLimitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9171B7C22449B0E1005C3183 /* CigaretteLimitCell.xib */; };
 		9171B7CD2449E3B1005C3183 /* CigaretteIntervalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9171B7CB2449E3B1005C3183 /* CigaretteIntervalCell.swift */; };
@@ -18,6 +19,7 @@
 		918C87D32451B5CF00BD2640 /* Date+zeroSeconds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918C87D22451B5CF00BD2640 /* Date+zeroSeconds.swift */; };
 		918C87D52451B62000BD2640 /* Date+zeroHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918C87D42451B62000BD2640 /* Date+zeroHours.swift */; };
 		918C87D82452F00600BD2640 /* NewScheduleTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918C87D72452F00600BD2640 /* NewScheduleTableViewDelegate.swift */; };
+		91A7288E245AAE1E008A4254 /* Double+roundTwoDecimalPlaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A7288D245AAE1D008A4254 /* Double+roundTwoDecimalPlaces.swift */; };
 		91B606E3244D9026005731B6 /* CigaretteLimitIntervalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606E1244D9026005731B6 /* CigaretteLimitIntervalCell.swift */; };
 		91B606E4244D9026005731B6 /* CigaretteLimitIntervalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91B606E2244D9026005731B6 /* CigaretteLimitIntervalCell.xib */; };
 		91B606EA244D90DE005731B6 /* NotTodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B606E8244D90DE005731B6 /* NotTodayCell.swift */; };
@@ -47,7 +49,7 @@
 		91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */; };
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
 		91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */; };
-		91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DataManager.swift */; };
+		91EB1573243DB3D900B5E75D /* DayliDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DayliDataManager.swift */; };
 		91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1574243F0C0700B5E75D /* DayliCounter.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +67,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		911BE51A245AD141005AB859 /* ScheduleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDataManager.swift; sourceTree = "<group>"; };
 		9171B7C12449B0E1005C3183 /* CigaretteLimitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteLimitCell.swift; sourceTree = "<group>"; };
 		9171B7C22449B0E1005C3183 /* CigaretteLimitCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteLimitCell.xib; sourceTree = "<group>"; };
 		9171B7CB2449E3B1005C3183 /* CigaretteIntervalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteIntervalCell.swift; sourceTree = "<group>"; };
@@ -76,6 +79,7 @@
 		918C87D22451B5CF00BD2640 /* Date+zeroSeconds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+zeroSeconds.swift"; sourceTree = "<group>"; };
 		918C87D42451B62000BD2640 /* Date+zeroHours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+zeroHours.swift"; sourceTree = "<group>"; };
 		918C87D72452F00600BD2640 /* NewScheduleTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewScheduleTableViewDelegate.swift; sourceTree = "<group>"; };
+		91A7288D245AAE1D008A4254 /* Double+roundTwoDecimalPlaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+roundTwoDecimalPlaces.swift"; sourceTree = "<group>"; };
 		91B606E1244D9026005731B6 /* CigaretteLimitIntervalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteLimitIntervalCell.swift; sourceTree = "<group>"; };
 		91B606E2244D9026005731B6 /* CigaretteLimitIntervalCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteLimitIntervalCell.xib; sourceTree = "<group>"; };
 		91B606E8244D90DE005731B6 /* NotTodayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotTodayCell.swift; sourceTree = "<group>"; };
@@ -107,7 +111,7 @@
 		91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteAccountingCell.swift; sourceTree = "<group>"; };
 		91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteAccountingCell.xib; sourceTree = "<group>"; };
 		91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewScheduleTableViewController.storyboard; sourceTree = "<group>"; };
-		91EB1572243DB3D900B5E75D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		91EB1572243DB3D900B5E75D /* DayliDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayliDataManager.swift; sourceTree = "<group>"; };
 		91EB1574243F0C0700B5E75D /* DayliCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayliCounter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -178,6 +182,7 @@
 			children = (
 				918C87D22451B5CF00BD2640 /* Date+zeroSeconds.swift */,
 				918C87D42451B62000BD2640 /* Date+zeroHours.swift */,
+				91A7288D245AAE1D008A4254 /* Double+roundTwoDecimalPlaces.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -475,7 +480,8 @@
 		91C5EE7D243CAAA600516C35 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				91EB1572243DB3D900B5E75D /* DataManager.swift */,
+				91EB1572243DB3D900B5E75D /* DayliDataManager.swift */,
+				911BE51A245AD141005AB859 /* ScheduleDataManager.swift */,
 				91C5EE77243CA9DE00516C35 /* DateManager.swift */,
 				91C5EE79243CA9FA00516C35 /* AlertManager.swift */,
 				91C5EE7B243CAA1E00516C35 /* ErrorManager.swift */,
@@ -585,7 +591,7 @@
 				918C87D82452F00600BD2640 /* NewScheduleTableViewDelegate.swift in Sources */,
 				918C87D52451B62000BD2640 /* Date+zeroHours.swift in Sources */,
 				91C5EE48243CA58900516C35 /* SplashViewController.swift in Sources */,
-				91EB1573243DB3D900B5E75D /* DataManager.swift in Sources */,
+				91EB1573243DB3D900B5E75D /* DayliDataManager.swift in Sources */,
 				9171B7C32449B0E1005C3183 /* CigaretteLimitCell.swift in Sources */,
 				91C2106B2458707E00CF371C /* StaticTableManager.swift in Sources */,
 				91C5EE3E243CA36E00516C35 /* RootViewController.swift in Sources */,
@@ -602,6 +608,8 @@
 				918C87D32451B5CF00BD2640 /* Date+zeroSeconds.swift in Sources */,
 				91C5EE78243CA9DE00516C35 /* DateManager.swift in Sources */,
 				91B606EA244D90DE005731B6 /* NotTodayCell.swift in Sources */,
+				911BE51B245AD141005AB859 /* ScheduleDataManager.swift in Sources */,
+				91A7288E245AAE1E008A4254 /* Double+roundTwoDecimalPlaces.swift in Sources */,
 				91C5EE5F243CA77B00516C35 /* CigaretteScheduleModel.swift in Sources */,
 				91C5EE7C243CAA1E00516C35 /* ErrorManager.swift in Sources */,
 				91C5EE69243CA87800516C35 /* DetailTableViewController.swift in Sources */,

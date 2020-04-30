@@ -97,7 +97,7 @@ class MainTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
       let schedule = schedules[indexPath.row]
-      DataManager.shared.deleteSchedule(schedule)
+      ScheduleDataManager.shared.deleteSchedule(schedule)
       tableView.deleteRows(at: [indexPath], with: .automatic)
     }
   }
@@ -164,7 +164,7 @@ class MainTableViewController: UITableViewController {
   }
   
   private func checkSchedulesInRealm() {
-    schedules = DataManager.shared.getDescendingSortedSchedules()
+    schedules = ScheduleDataManager.shared.getDescendingSortedSchedules()
     checkTodaySchedule()
     checkTodayScheduleWhenAppRun()
   }
@@ -173,18 +173,18 @@ class MainTableViewController: UITableViewController {
     let currentDateString = DateManager.shared.getStringDate(date: Date()) { DateManager.dateStringFormat }
     guard let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString else { return }
     createCurrentScheduleWithLastProperties(from: lastShedule)
-    DataManager.shared.updateToYesterday(schedule: schedules[1])
+    ScheduleDataManager.shared.updateToYesterday(schedule: schedules[1])
     checkDayliCount()
-    schedules = DataManager.shared.getDescendingSortedSchedules()
+    schedules = ScheduleDataManager.shared.getDescendingSortedSchedules()
     titleFor = schedules[0].overLimit()
     tableView.reloadData()
   }
   
   private func checkDayliCount() {
-    let schedules = DataManager.shared.getDescendingSortedSchedules()
+    let schedules = ScheduleDataManager.shared.getDescendingSortedSchedules()
     let preLastSchedule = schedules[1]
-    guard DataManager.shared.getDayliCount(for: preLastSchedule.currentStringDate) == 0 else { return }
-    DataManager.shared.deleteSchedule(preLastSchedule)
+    guard DayliDataManager.shared.getDayliCount(for: preLastSchedule.currentStringDate) == 0 else { return }
+    ScheduleDataManager.shared.deleteSchedule(preLastSchedule)
   }
   
   private func checkTodayScheduleWhenAppRun() {
@@ -195,7 +195,7 @@ class MainTableViewController: UITableViewController {
   }
   
   private func createCurrentScheduleWithLastProperties(from lastSchedule: CigaretteScheduleModel) {
-    DataManager.shared.createNewSchedule(mark: lastSchedule.mark,
+    ScheduleDataManager.shared.createNewSchedule(mark: lastSchedule.mark,
                                          price: lastSchedule.price,
                                          packSize: lastSchedule.packSize,
                                          scenario: lastSchedule.scenario,
@@ -213,8 +213,8 @@ class MainTableViewController: UITableViewController {
     let price = currentSchedule.price
     let packSize = currentSchedule.packSize
     let dateString = currentSchedule.currentStringDate
-    if DataManager.shared.getDayliCounter(for: dateString) == nil {
-      DataManager.shared.createDayliCounter(date: dateString, mark: mark, price: price, perPack: packSize)
+    if DayliDataManager.shared.getDayliCounter(for: dateString) == nil {
+      DayliDataManager.shared.createDayliCounter(date: dateString, mark: mark, price: price, perPack: packSize)
     }
   }
   

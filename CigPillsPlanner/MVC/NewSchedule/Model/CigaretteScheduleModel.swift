@@ -40,21 +40,21 @@ class CigaretteScheduleModel: Object {
   func overLimit() -> String? {
     guard isToday else { return nil }
     guard let limit = limit.value else { return nil }
-    let dayliCount = DataManager.shared.getDayliCount(for: currentStringDate)
+    let dayliCount = DayliDataManager.shared.getDayliCount(for: currentStringDate)
     guard limit < dayliCount else { return nil }
     return "Limit exceeded"
   }
   
   func getTimer(isActive: Bool) {
-    DataManager.shared.timer(activate: isActive, for: self)
+    ScheduleDataManager.shared.timer(activate: isActive, for: self)
   }
   
   func getLastTime() {
-    DataManager.shared.setLastTime(for: self)
+    ScheduleDataManager.shared.setLastTime(for: self)
   }
   
   func incrementCount() {
-    DataManager.shared.increaceDayliCount(for: self)
+    DayliDataManager.shared.increaceDayliCount(for: self)
   }
   
   // MARK: - Primary Key
