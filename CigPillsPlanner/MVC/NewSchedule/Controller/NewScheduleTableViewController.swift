@@ -15,6 +15,7 @@ class NewScheduleTableViewController: UITableViewController {
   
   @IBOutlet private var textFields: [UITextField]! {
     didSet {
+      textFields.forEach({ $0.delegate = self })
       textFields.forEach({ $0.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged) })
     }
   }
@@ -459,10 +460,6 @@ class NewScheduleTableViewController: UITableViewController {
     case 0:
       editedMark = text
     case 1:
-      guard text != "" || text.first != "." || text.last != "." || text.filter({ $0 == "." }).count <= 1 else {
-        editedPrice = 0.0
-        return
-      }
       guard let price = Double(text) else { return }
       editedPrice = price
     case 2:
@@ -542,10 +539,11 @@ extension NewScheduleTableViewController {
   
   private func showNoPackAlert() {
     AlertManager.showAlert(title: .haveNoPackSize, message: .haveNoPackSize, style: .alert, presentIn: self) { () -> [UIAlertAction] in
-      let returnAction = UIAlertAction(title: "Ввести количество", style: .default, handler: nil)
+      let returnAction = UIAlertAction(title: "Ввести количество", style: .default) { [unowned self] (_) in
+        self.textFields[2].text = ""
+      }
       let continueAction = UIAlertAction(title: "Сохранить", style: .default) { [unowned self] (_) in
         self.editedPackSize = 20
-        self.textFields[2].text = "20"
         self.saveNewShedule()
       }
       return [returnAction, continueAction]
@@ -579,6 +577,27 @@ extension NewScheduleTableViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return true
+  }
+  
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    switch textField.tag {
+    case 0:
+      return true
+    case 1:
+      if string.isEmpty {
+        return true
+      }
+      let currentText = textField.text ?? ""
+      let replacementText = (currentText as NSString).replacingCharacters(in: range, with: string)
+      return replacementText.isValidDouble(maxDecimalPlaces: 2)
+    case 2:
+      if string.isEmpty {
+        return true
+      }
+      return string.isValidInt()
+    default:
+      return false
+    }
   }
   
 }
