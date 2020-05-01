@@ -39,6 +39,7 @@ class MainTableViewController: UITableViewController {
   override func viewWillLayoutSubviews() {
     breakingButtonEnabling()
     checkAndCreateCountersFor(currentSchedule: schedules.first)
+    DayliDataManager.shared.deleteEmptyMarkDateCountersFromCurrent()
   }
 
   
@@ -165,7 +166,6 @@ class MainTableViewController: UITableViewController {
   
   private func checkSchedulesInRealm() {
     schedules = ScheduleDataManager.shared.getDescendingSortedSchedules()
-    checkTodaySchedule()
     checkTodayScheduleWhenAppRun()
   }
     
@@ -174,13 +174,13 @@ class MainTableViewController: UITableViewController {
     guard let lastShedule = schedules.first, lastShedule.currentStringDate != currentDateString else { return }
     createCurrentScheduleWithLastProperties(from: lastShedule)
     ScheduleDataManager.shared.updateToYesterday(schedule: schedules[1])
-    checkDayliCount()
+    checkLastDayliCount()
     schedules = ScheduleDataManager.shared.getDescendingSortedSchedules()
     titleFor = schedules[0].overLimit()
     tableView.reloadData()
   }
   
-  private func checkDayliCount() {
+  private func checkLastDayliCount() {
     let schedules = ScheduleDataManager.shared.getDescendingSortedSchedules()
     let preLastSchedule = schedules[1]
     guard DayliDataManager.shared.getDayliCount(for: preLastSchedule.currentStringDate) == 0 else { return }
@@ -191,6 +191,7 @@ class MainTableViewController: UITableViewController {
   }
   
   private func checkTodayScheduleWhenAppRun() {
+    checkTodaySchedule()
     timer?.invalidate()
     timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [unowned self] (_) in
       self.checkTodaySchedule()

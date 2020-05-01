@@ -105,6 +105,7 @@ extension RootViewController: NewScheduleTableViewDelegate {
   
   func addDidFinish() {
     mainController.tableView.reloadData()
+//    mainController.view.layoutIfNeeded()
     navController.dismiss(animated: true)
   }
   

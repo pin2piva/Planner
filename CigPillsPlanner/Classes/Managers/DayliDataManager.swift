@@ -48,11 +48,23 @@ class DayliDataManager {
   func createDayliCounter(date: String, mark: String, price: Double, perPack: Int) {
     let dayliCounter = DayliCounter()
     dayliCounter.dateString = date
-    let markDateCounter = createMarkDateCounterWith(mark: mark, price: price, perPack: perPack)
-    dayliCounter.mark.append(markDateCounter)
+    if ScheduleDataManager.shared.getDescendingSortedSchedules().count <= 1 &&
+      dayliCounter.mark.count == 0 {
+      let firstMarkDateCounter = createMarkDateCounterWith(mark: mark, price: price, perPack: perPack)
+      dayliCounter.mark.append(firstMarkDateCounter)
+    }
     add(dayliCounter)
   }
   
+  func deleteEmptyMarkDateCountersFromCurrent() {
+    try! realm.write {
+      let current = ScheduleDataManager.shared.getMarkAndPriceForCurrentDate()
+      guard let dayliCounter = getDayliCounter(for: current.stringDate) else { return }
+      let markDateCounters = dayliCounter.mark.enumerated().filter({ $0.element.count == 0 && $0.element.mark != current.mark && $0.element.price != current.price })
+      markDateCounters.forEach({ dayliCounter.mark.remove(at: $0.offset) })
+    }
+  }
+
   func deleteDayliCounter(_ counter: DayliCounter) {
     try! realm.write {
       realm.delete(counter)
@@ -140,23 +152,5 @@ class DayliDataManager {
     let prices = Array(Set(dayliCounters.reduce([Double](), { $0 + $1.mark.map({ $0.price }) })))
     return prices
   }
-  
 
-  
-
-  
-  
-  
-  
-/*
-  func getTotalPriceFor(mark: String) -> Double {
-    let totalPriceForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark }).reduce(0, { $0 + ($1.price / Double($1.perPack) * Double($1.count)) }) })
-    return totalPriceForMark
-  }
-  
-  func getTotalCountFor(mark: String) -> Int {
-    let totalCountForMark = dayliCounters.reduce(0, { $0 + $1.mark.filter({ $0.mark == mark }).reduce(0, { $0 + $1.count }) })
-    return totalCountForMark
-  }
- */
 }
