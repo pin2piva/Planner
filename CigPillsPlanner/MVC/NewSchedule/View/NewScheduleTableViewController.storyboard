@@ -25,7 +25,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Cigarette mark (required)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1XF-Vf-mbH">
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Cigarette brand (required)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1XF-Vf-mbH">
                                                     <rect key="frame" x="20" y="4" width="374" height="42"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <textInputTraits key="textInputTraits"/>

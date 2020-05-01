@@ -14,23 +14,23 @@ class AlertManager {
   
   
   enum AlertTitles: String {
-    case haveNoMark = "Вы не ввели марку сигарет"
-    case wrongPrice = "Неправильно введена сумма"
-    case haveNoPackSize = "Не введен размер пачки"
-    case naveChanges = "Имеются несохраненные изменения"
+    case haveNoMark = "You have not entered a brand of cigarettes" // "Вы не ввели марку сигарет"
+    case wrongPrice = "Amount entered incorrectly" // "Неправильно введена сумма"
+    case haveNoPackSize = "No cigarette pack size entered" // "Не введен размер пачки сигарет"
+    case naveChanges = "There are unsaved changes" // "Имеются несохраненные изменения"
   }
   
   enum AlertMessages: String {
-    case haveNoMark = "Введите марку или продолжите, тогда название марки будет 'unkwown'"
-    case wrongPrice = "Попробуйте ввести целое или дробное число"
-    case haveNoPackSize = "Введите количество или продолжите, тогда количество будет равно 20"
-    case haveChanges = "Если выйдете, то потеряете их"
+    case haveNoMark = "Enter the brand or continue, then the brand name will be 'unknown'" // "Введите марку или продолжите, тогда название марки будет 'unkwown'"
+    case wrongPrice = "Try entering an integer or decimal number" // "Попробуйте ввести целое или десятичное число"
+    case haveNoPackSize = "Enter the quantity or continue, then the quantity will be 20" // "Введите количество или продолжите, тогда количество будет равно 20"
+    case haveChanges = "If you go out, you will lose them" // "Если выйдете, то потеряете их"
   }
   
   enum AlertActionTitles: String {
     case ok = "OK"
-    case enterValue = "Вести"
-    case continueWithDefaultValue = "Продолжить!"
+    case enterValue = "Enter"
+    case continueWithDefaultValue = "Continue"
   }
   
   // MARK: - Static func

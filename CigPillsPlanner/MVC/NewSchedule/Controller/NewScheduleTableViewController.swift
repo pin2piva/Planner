@@ -460,6 +460,10 @@ class NewScheduleTableViewController: UITableViewController {
     case 0:
       editedMark = text
     case 1:
+      guard text != "" else {
+        editedPrice = 0
+        return
+      }
       guard let price = Double(text) else { return }
       editedPrice = price
     case 2:
@@ -527,8 +531,8 @@ extension NewScheduleTableViewController {
   
   private func showHaveNoMarkAlert() {
     AlertManager.showAlert(title: .haveNoMark, message: .haveNoMark, style: .alert, presentIn: self) { () -> [UIAlertAction] in
-      let returnAction = UIAlertAction(title: "Ввести марку", style: .default, handler: nil)
-      let continueAction = UIAlertAction(title: "Сохранить", style: .default) { [unowned self] (_) in
+      let returnAction = UIAlertAction(title: "Enter mark", style: .default, handler: nil)
+      let continueAction = UIAlertAction(title: "Save", style: .default) { [unowned self] (_) in
         self.editedMark = "unknown"
         self.textFields[0].text = self.editedMark
         self.saveNewShedule()
@@ -539,10 +543,10 @@ extension NewScheduleTableViewController {
   
   private func showNoPackAlert() {
     AlertManager.showAlert(title: .haveNoPackSize, message: .haveNoPackSize, style: .alert, presentIn: self) { () -> [UIAlertAction] in
-      let returnAction = UIAlertAction(title: "Ввести количество", style: .default) { [unowned self] (_) in
+      let returnAction = UIAlertAction(title: "Enter quantity", style: .default) { [unowned self] (_) in
         self.textFields[2].text = ""
       }
-      let continueAction = UIAlertAction(title: "Сохранить", style: .default) { [unowned self] (_) in
+      let continueAction = UIAlertAction(title: "Save", style: .default) { [unowned self] (_) in
         self.editedPackSize = 20
         self.saveNewShedule()
       }
@@ -551,7 +555,7 @@ extension NewScheduleTableViewController {
   }
   
   private func checkPrice() throws {
-    guard editedPrice != 0.0 else {
+    guard editedPrice != 0 else {
       throw Errors.wrongPrice
     }
   }
