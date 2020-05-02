@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		910DA0EA245DB92000F74625 /* Array+removeDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910DA0E9245DB92000F74625 /* Array+removeDuplicates.swift */; };
 		91111AB62453056200E192B4 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 91111AB52453056200E192B4 /* RealmSwift */; };
 		91111AB82453056200E192B4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 91111AB72453056200E192B4 /* Realm */; };
 		9115CDCC245C1ADE00E232EC /* String+isValidDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115CDCB245C1ADE00E232EC /* String+isValidDouble.swift */; };
@@ -69,6 +70,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		910DA0E9245DB92000F74625 /* Array+removeDuplicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+removeDuplicates.swift"; sourceTree = "<group>"; };
 		9115CDCB245C1ADE00E232EC /* String+isValidDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isValidDouble.swift"; sourceTree = "<group>"; };
 		9115CDCD245C1AF100E232EC /* String+isValidInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isValidInt.swift"; sourceTree = "<group>"; };
 		911BE51A245AD141005AB859 /* ScheduleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDataManager.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				91A7288D245AAE1D008A4254 /* Double+roundTwoDecimalPlaces.swift */,
 				9115CDCD245C1AF100E232EC /* String+isValidInt.swift */,
 				9115CDCB245C1ADE00E232EC /* String+isValidDouble.swift */,
+				910DA0E9245DB92000F74625 /* Array+removeDuplicates.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -427,8 +430,8 @@
 		91C5EE6A243CA87F00516C35 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE6B243CA88700516C35 /* Controller */,
 				91111ABB2453118C00E192B4 /* View */,
+				91C5EE6B243CA88700516C35 /* Controller */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -593,6 +596,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91B606F1244DEB6E005731B6 /* CigaretteLimitIntervalReduceCell.swift in Sources */,
+				910DA0EA245DB92000F74625 /* Array+removeDuplicates.swift in Sources */,
 				918C8782244F0D9600BD2640 /* CellProtocol.swift in Sources */,
 				918C87D82452F00600BD2640 /* NewScheduleTableViewDelegate.swift in Sources */,
 				918C87D52451B62000BD2640 /* Date+zeroHours.swift in Sources */,

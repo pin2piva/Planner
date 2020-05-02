@@ -81,61 +81,58 @@ class DetailTableViewController: UITableViewController {
   
   private var dayliCounters = [DayliCounter]() {
     didSet {
-      markPicker.reloadAllComponents()
-      print("dayliCounters change")
+      marks = getMarks(from: dayliCounters)
+      prices = getPrices(from: dayliCounters)
     }
   }
   
-  private var marks: [String] {
-    dayliCounters.reduce([String](), { $0 + $1.mark.map({ $0.mark }) })
+  private var marks = [String]() {
+    didSet {
+      markPicker.reloadAllComponents()
+      prices = getPrices(from: dayliCounters)
+      if let mark = markLabels[1].text, mark != "", marks.contains(mark) {
+        let index = marks.enumerated().filter({ $0.element == mark }).first!.offset
+        markPicker.selectRow(index, inComponent: 0, animated: true)
+      } else {
+        markPicker.selectRow(0, inComponent: 0, animated: true)
+        markLabels[1].text = marks.isEmpty ? "" : marks[0]
+      }
+    }
   }
   
-//  private var marks = [String]() {
-//    didSet {
-//      markPicker.reloadAllComponents()
-//      setValues(to: markPicker, andTo: markLabels[1], from: marks)
-//      if let mark = markLabels[1].text, marks.contains(mark) {
-//        if let row = marks.enumerated().filter({ $0.element == mark }).first?.offset {
-//          markPicker.selectRow(row, inComponent: 0, animated: true)
-//        }
-//      } else if marks.count > 0 {
-//        markPicker.selectRow(0, inComponent: 0, animated: true)
-//        markLabels[1].text = marks[markPicker.selectedRow(inComponent: 0)]
-//      } else {
-//        markLabels[1].text = "-"
-//      }
-//    }
-//  }
-//  private var prices = [String]() {
-//    didSet {
-//      pricePicker.reloadAllComponents()
-//      setValues(to: pricePicker, andTo: priceLabels[1], from: prices)
-//      if let price = priceLabels[1].text, prices.contains(price) {
-//        if let row = prices.enumerated().filter({ $0.element == price }).first?.offset {
-//          pricePicker.selectRow(row, inComponent: 0, animated: true)
-//        }
-//      } else if prices.count > 0 {
-//        pricePicker.selectRow(0, inComponent: 0, animated: true)
-//        priceLabels[1].text = prices[markPicker.selectedRow(inComponent: 0)]
-//      } else {
-//        priceLabels[1].text = "-"
-//      }
-//    }
-//  }
-//
-//  private func setValues(to picker: UIPickerView, andTo label: UILabel, from array: [String]) {
-//    if let price = label.text, array.contains(price) {
-//      if let row = array.enumerated().filter({ $0.element == price }).first?.offset {
-//        picker.selectRow(row, inComponent: 0, animated: true)
-//      }
-//    } else if array.count > 0 {
-//      picker.selectRow(0, inComponent: 0, animated: true)
-//      label.text = array[picker.selectedRow(inComponent: 0)]
-//    } else {
-//      label.text = "-"
-//    }
-//  }
+  private var prices = [String]() {
+    didSet {
+      pricePicker.reloadAllComponents()
+      if let price = priceLabels[1].text, price != "", prices.contains(price) {
+        let index = prices.enumerated().filter({ $0.element == price }).first!.offset
+        pricePicker.selectRow(index, inComponent: 0, animated: true)
+      } else {
+        pricePicker.selectRow(0, inComponent: 0, animated: true)
+        priceLabels[1].text = prices.isEmpty ? "" : prices[0]
+      }
+    }
+  }
   
+  private func getMarks(from counters: [DayliCounter]) -> [String] {
+    let marks = counters.reduce([String](), { $0 + $1.mark.map({ $0.mark }) })
+    let dict = marks.enumerated().reduce(into: [String: [Int]](), { $0[$1.element] == nil ? $0[$1.element] = [$1.offset] : $0[$1.element]?.append($1.offset) })
+    let indexies: [Int] = dict.map({ $0.value.max()! }).sorted(by: >)
+    let sortedMarks = indexies.map({ marks[$0] })
+    return sortedMarks
+  }
+  
+  private func getPrices(from counters: [DayliCounter]) -> [String] {
+    if markSelection {
+      if let mark = markLabels[1].text, mark != "" {
+        return counters.reduce([MarkDateCounter](), { $0 + $1.mark.filter({ $0.mark == mark }) }).map({ String($0.price) }).removeDuplicates.sorted(by: >)
+      } else {
+        return []
+      }
+    } else {
+      return counters.reduce([String](), { $0 + $1.mark.map({ String($0.price) }) }).removeDuplicates.sorted(by: >)
+    }
+  }
+
   // MARK: - Internal properties
   
   
@@ -154,20 +151,21 @@ class DetailTableViewController: UITableViewController {
       buttonTapAnimation(newValue, tag: 1)
       setColorToLabels(selection: &fromCellIsSelected, labels: &fromLabels)
       setColorToLabels(selection: &toCellIsSelected, labels: &toLabels)
-      newValue ? getDayliCountersFromDate() : getAllDayliCounters()
+      dayliCounters = newValue ? getDayliCountersFromDate() : getAllDayliCounters()
     }
   }
   private var markSelection = false {
-    willSet {
-      buttonTapAnimation(newValue, tag: 2)
+    didSet {
+      buttonTapAnimation(markSelection, tag: 2)
       setColorToLabels(selection: &markCellIsSelected, labels: &markLabels)
-      
+      prices = getPrices(from: dayliCounters)
     }
   }
   private var priceSelection = false {
-    willSet {
-      buttonTapAnimation(newValue, tag: 3)
+    didSet {
+      buttonTapAnimation(priceSelection, tag: 3)
       setColorToLabels(selection: &priceCellIsSelected, labels: &priceLabels)
+      prices = getPrices(from: dayliCounters)
     }
   }
   private var segmentSelection: [Bool] {
@@ -215,7 +213,7 @@ class DetailTableViewController: UITableViewController {
     setInitialValuesToFilterLabels()
     setTotalValuesToLabels()
     checkDatePickerMaximumDate()
-    getAllDayliCounters()
+    dayliCounters = getAllDayliCounters()
   }
   
   // MARK: - Deinit
@@ -396,10 +394,8 @@ class DetailTableViewController: UITableViewController {
   private func setInitialValuesToFilterLabels() {
     fromLabels[1].text = DayliDataManager.shared.getFirstDayliCounter().dateString
     toLabels[1].text = DateManager.shared.getStringDate(date: Date()) { DateManager.dateStringFormat }
-    markLabels[1].text = DayliDataManager.shared.getLastDayliCounter().mark.last?.mark
-    if let text = DayliDataManager.shared.getLastDayliCounter().mark.last?.price {
-      priceLabels[1].text = "\(text)"
-    }
+    markLabels[1].text = DayliDataManager.shared.getLastMark()
+    priceLabels[1].text = DayliDataManager.shared.getLastPrice()
   }
   
   private func setTotalValuesToLabels() {
@@ -410,12 +406,12 @@ class DetailTableViewController: UITableViewController {
   // MARK: - Pickers private func
 
   
-  private func getAllDayliCounters() {
-    dayliCounters = DayliDataManager.shared.dayliCounters
+  private func getAllDayliCounters() -> [DayliCounter] {
+    return DayliDataManager.shared.dayliCounters
   }
   
-  private func getDayliCountersFromDate() {
-    dayliCounters = DayliDataManager.shared.getDayliCounters(fromDate: fromDatePicker.date, toDate: toDatePicker.date)
+  private func getDayliCountersFromDate() -> [DayliCounter] {
+    return DayliDataManager.shared.getDayliCounters(fromDate: fromDatePicker.date, toDate: toDatePicker.date)
   }
   
   // MARK: - Objc private func
@@ -426,7 +422,7 @@ class DetailTableViewController: UITableViewController {
     let tag = sender.tag
     set(date: date, toDatePicketWith: tag)
     setValueToDateLabel(with: tag, date: date)
-    getDayliCountersFromDate()
+    dayliCounters = getDayliCountersFromDate()
   }
   
   // MARK: - @IBActions
@@ -503,10 +499,9 @@ extension DetailTableViewController: UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     switch pickerView.tag {
     case 0:
-//      return dayliCounters.count
       return marks.count
-//    case 1:
-//      return prices.count
+    case 1:
+      return prices.count
     default:
       return 0
     }
@@ -519,10 +514,9 @@ extension DetailTableViewController: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     switch pickerView.tag {
     case 0:
-//      return dayliCounters[row].dateString
       return marks[row]
-//    case 1:
-//      return prices[row]
+    case 1:
+      return prices[row]
     default:
       return nil
     }
@@ -530,10 +524,11 @@ extension DetailTableViewController: UIPickerViewDelegate {
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch pickerView.tag {
-//    case 0:
-//      markLabels[1].text = marks[row]
-//    case 1:
-//      priceLabels[1].text = prices[row]
+    case 0:
+      markLabels[1].text = marks[row]
+      prices = getPrices(from: dayliCounters)
+    case 1:
+      priceLabels[1].text = prices[row]
     default:
       break
     }

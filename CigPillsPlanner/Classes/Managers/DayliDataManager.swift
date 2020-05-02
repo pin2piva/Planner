@@ -96,21 +96,20 @@ class DayliDataManager {
     return dayliCounters.first!
   }
   
-  func getLastDayliCounter() -> DayliCounter {
-    return dayliCounters.last!
+  func getLastPrice() -> String? {
+    guard let lastPrice = dayliCounters.reduce([Double](), { $0 + $1.mark.map({ $0.price }) }).last else { return nil }
+    return String(lastPrice)
+  }
+  
+  func getLastMark() -> String? {
+    let lastMark = dayliCounters.reduce([String](), { $0 + $1.mark.map({ $0.mark }) }).last
+    return lastMark
   }
   
   func getDayliCounter(for date: String) -> DayliCounter? {
     let dayliCounter = realm.object(ofType: DayliCounter.self, forPrimaryKey: date)
     return dayliCounter
   }
-  
-//  func getDayliCounters(fromDate: Date, toDate: Date, completion: @escaping ([DayliCounter]) -> Void) {
-//    let fromDateString = DateManager.shared.getStringDate(date: fromDate) { DateManager.dateStringFormat }
-//    let toDateString = DateManager.shared.getStringDate(date: toDate) { DateManager.dateStringFormat }
-//    let counters: [DayliCounter] = dayliCounters.filter({ $0.dateString >= fromDateString && $0.dateString <= toDateString })
-//    completion(counters)
-//  }
   
   func getDayliCounters(fromDate: Date, toDate: Date) -> [DayliCounter] {
     let fromDateString = DateManager.shared.getStringDate(date: fromDate) { DateManager.dateStringFormat }
@@ -141,16 +140,6 @@ class DayliDataManager {
   func getTotalPrice() -> Double {
     let totalPrice = dayliCounters.reduce(0, { $0 + $1.mark.reduce(0, { $0 + ($1.price / Double($1.perPack) * Double($1.count)) }) })
     return totalPrice
-  }
-  
-  func getMarksFrom(_ dayliCounters: [DayliCounter]) -> [String] {
-    let marks = Array(Set(dayliCounters.reduce([String](), { $0 + $1.mark.map({ $0.mark }) })))
-    return marks
-  }
-  
-  func getPricesFrom(_ dayliCounters: [DayliCounter]) -> [Double] {
-    let prices = Array(Set(dayliCounters.reduce([Double](), { $0 + $1.mark.map({ $0.price }) })))
-    return prices
   }
 
 }
