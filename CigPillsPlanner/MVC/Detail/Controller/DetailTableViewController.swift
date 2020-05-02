@@ -81,57 +81,25 @@ class DetailTableViewController: UITableViewController {
   
   private var dayliCounters = [DayliCounter]() {
     didSet {
-      marks = getMarks(from: dayliCounters)
-      prices = getPrices(from: dayliCounters)
+      setMarks()
+      setPrices()
     }
   }
   
   private var marks = [String]() {
     didSet {
-      markPicker.reloadAllComponents()
-      prices = getPrices(from: dayliCounters)
-      if let mark = markLabels[1].text, mark != "", marks.contains(mark) {
-        let index = marks.enumerated().filter({ $0.element == mark }).first!.offset
-        markPicker.selectRow(index, inComponent: 0, animated: true)
-      } else {
-        markPicker.selectRow(0, inComponent: 0, animated: true)
-        markLabels[1].text = marks.isEmpty ? "" : marks[0]
-      }
+      setPrices()
+      checkTextIn(label: markLabels[1], markPicker, and: marks)
     }
   }
   
   private var prices = [String]() {
     didSet {
-      pricePicker.reloadAllComponents()
-      if let price = priceLabels[1].text, price != "", prices.contains(price) {
-        let index = prices.enumerated().filter({ $0.element == price }).first!.offset
-        pricePicker.selectRow(index, inComponent: 0, animated: true)
-      } else {
-        pricePicker.selectRow(0, inComponent: 0, animated: true)
-        priceLabels[1].text = prices.isEmpty ? "" : prices[0]
-      }
+      checkTextIn(label: priceLabels[1], pricePicker, and: prices)
     }
   }
   
-  private func getMarks(from counters: [DayliCounter]) -> [String] {
-    let marks = counters.reduce([String](), { $0 + $1.mark.map({ $0.mark }) })
-    let dict = marks.enumerated().reduce(into: [String: [Int]](), { $0[$1.element] == nil ? $0[$1.element] = [$1.offset] : $0[$1.element]?.append($1.offset) })
-    let indexies: [Int] = dict.map({ $0.value.max()! }).sorted(by: >)
-    let sortedMarks = indexies.map({ marks[$0] })
-    return sortedMarks
-  }
-  
-  private func getPrices(from counters: [DayliCounter]) -> [String] {
-    if markSelection {
-      if let mark = markLabels[1].text, mark != "" {
-        return counters.reduce([MarkDateCounter](), { $0 + $1.mark.filter({ $0.mark == mark }) }).map({ String($0.price) }).removeDuplicates.sorted(by: >)
-      } else {
-        return []
-      }
-    } else {
-      return counters.reduce([String](), { $0 + $1.mark.map({ String($0.price) }) }).removeDuplicates.sorted(by: >)
-    }
-  }
+
 
   // MARK: - Internal properties
   
@@ -158,14 +126,14 @@ class DetailTableViewController: UITableViewController {
     didSet {
       buttonTapAnimation(markSelection, tag: 2)
       setColorToLabels(selection: &markCellIsSelected, labels: &markLabels)
-      prices = getPrices(from: dayliCounters)
+      setPrices()
     }
   }
   private var priceSelection = false {
     didSet {
       buttonTapAnimation(priceSelection, tag: 3)
       setColorToLabels(selection: &priceCellIsSelected, labels: &priceLabels)
-      prices = getPrices(from: dayliCounters)
+      setPrices()
     }
   }
   private var segmentSelection: [Bool] {
@@ -414,6 +382,37 @@ class DetailTableViewController: UITableViewController {
     return DayliDataManager.shared.getDayliCounters(fromDate: fromDatePicker.date, toDate: toDatePicker.date)
   }
   
+  private func checkTextIn(label: UILabel, _ picker: UIPickerView, and array: [String]) {
+    picker.reloadAllComponents()
+    if let text = label.text, text != "", prices.contains(text) {
+      let index = array.enumerated().filter({ $0.element == text }).first!.offset
+      picker.selectRow(index, inComponent: 0, animated: true)
+    } else {
+      picker.selectRow(0, inComponent: 0, animated: true)
+      label.text = array.isEmpty ? "" : array[0]
+    }
+  }
+  
+  private func setMarks() {
+    let marks = dayliCounters.reduce([String](), { $0 + $1.mark.map({ $0.mark }) })
+    let dict = marks.enumerated().reduce(into: [String: [Int]](), { $0[$1.element] == nil ? $0[$1.element] = [$1.offset] : $0[$1.element]?.append($1.offset) })
+    let indexies: [Int] = dict.map({ $0.value.max()! }).sorted(by: >)
+    let sortedMarks = indexies.map({ marks[$0] })
+    self.marks = sortedMarks
+  }
+  
+  private func setPrices() {
+    if markSelection {
+      if let mark = markLabels[1].text, mark != "" {
+        prices = dayliCounters.reduce([MarkDateCounter](), { $0 + $1.mark.filter({ $0.mark == mark }) }).map({ String($0.price) }).removeDuplicates.sorted(by: >)
+      } else {
+        prices = []
+      }
+    } else {
+      prices = dayliCounters.reduce([String](), { $0 + $1.mark.map({ String($0.price) }) }).removeDuplicates.sorted(by: >)
+    }
+  }
+  
   // MARK: - Objc private func
   
   
@@ -526,14 +525,13 @@ extension DetailTableViewController: UIPickerViewDelegate {
     switch pickerView.tag {
     case 0:
       markLabels[1].text = marks[row]
-      prices = getPrices(from: dayliCounters)
+      setPrices()
     case 1:
       priceLabels[1].text = prices[row]
     default:
       break
     }
   }
-  
   
 }
 
