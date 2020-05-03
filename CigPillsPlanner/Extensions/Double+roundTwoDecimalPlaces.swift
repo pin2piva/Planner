@@ -10,7 +10,7 @@ import Foundation
 
 extension Double {
   
-  var twoDecimalPlaces: Double {
+  var roundTwoDecimalPlaces: Double {
     return (self * 100).rounded() / 100
   }
   

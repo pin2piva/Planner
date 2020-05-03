@@ -74,8 +74,8 @@ class DetailTableViewController: UITableViewController {
   // MARK: - Detail labels
   
   
-  @IBOutlet weak var countLabel: UILabel!
-  @IBOutlet weak var spentLabel: UILabel!
+  @IBOutlet weak var countDetailLabel: UILabel!
+  @IBOutlet weak var spentDetailLabel: UILabel!
   
   // MARK: - Private properties
   
@@ -83,24 +83,30 @@ class DetailTableViewController: UITableViewController {
     didSet {
       setMarks()
       setPrices()
+      checkSegmentedSelection()
+      print(dayliCounters.count)
     }
   }
-  
   private var marks = [String]() {
     didSet {
       setPrices()
       checkTextIn(label: markLabels[1], markPicker, and: marks)
+      print("marks: \(marks)")
     }
   }
-  
   private var prices = [String]() {
     didSet {
       checkTextIn(label: priceLabels[1], pricePicker, and: prices)
+      print("prices: \(prices)")
     }
   }
+  private var mark: String {
+    marks[markPicker.selectedRow(inComponent: 0)]
+  }
+  private var price: Double {
+    Double(prices[pricePicker.selectedRow(inComponent: 0)])!
+  }
   
-
-
   // MARK: - Internal properties
   
   
@@ -110,16 +116,19 @@ class DetailTableViewController: UITableViewController {
   
   
   private var totalSelection = true {
-    willSet {
-      buttonTapAnimation(newValue, tag: 0)
+    didSet {
+      buttonTapAnimation(totalSelection, tag: 0)
+      if totalSelection {
+        setTotalValuesToLabels()
+      }
     }
   }
   private var dateSelection = false {
-    willSet {
-      buttonTapAnimation(newValue, tag: 1)
+    didSet {
+      buttonTapAnimation(dateSelection, tag: 1)
       setColorToLabels(selection: &fromCellIsSelected, labels: &fromLabels)
       setColorToLabels(selection: &toCellIsSelected, labels: &toLabels)
-      dayliCounters = newValue ? getDayliCountersFromDate() : getAllDayliCounters()
+      dayliCounters = dateSelection ? getDayliCountersFromDate() : getAllDayliCounters()
     }
   }
   private var markSelection = false {
@@ -179,9 +188,9 @@ class DetailTableViewController: UITableViewController {
     super.viewDidLoad()
     setupViews()
     setInitialValuesToFilterLabels()
+    dayliCounters = getAllDayliCounters()
     setTotalValuesToLabels()
     checkDatePickerMaximumDate()
-    dayliCounters = getAllDayliCounters()
   }
   
   // MARK: - Deinit
@@ -193,7 +202,7 @@ class DetailTableViewController: UITableViewController {
   
   // MARK: - Table private func
   
-
+  
   private func tableUpdates() {
     tableView.beginUpdates()
     tableView.endUpdates()
@@ -274,6 +283,7 @@ class DetailTableViewController: UITableViewController {
     default:
       break
     }
+    checkSegmentedSelection()
     tableUpdates()
   }
   
@@ -315,6 +325,55 @@ class DetailTableViewController: UITableViewController {
   private func set(priority: Float, forConstraintWith tag: Int) {
     leftConstraints[tag].priority = UILayoutPriority(priority)
     rightConstraints[tag].priority = UILayoutPriority(priority)
+  }
+  
+  private func setZeroToDetailLabels() {
+    countDetailLabel.text = "0"
+    spentDetailLabel.text = "0"
+  }
+  
+  private func setTotalValuesToLabels() {
+    countDetailLabel.text = "\(dayliCounters.reduce(0, { $0 + $1.mark.reduce(0, { $0 + $1.count }) }))"
+    spentDetailLabel.text = "\(dayliCounters.reduce(0, { $0 + $1.mark.reduce(0, { $0 + $1.getSpent() }) }).roundTwoDecimalPlaces)"
+  }
+  
+  private func setValueToDetailLabelsWithMark(completion: () -> Void) {
+    if marks.count > 0 {
+      countDetailLabel.text = "\(getMarkDateCountersFor(mark: mark).reduce(0, { $0 + $1.count }))"
+      spentDetailLabel.text = "\(getMarkDateCountersFor(mark: mark).reduce(0, { $0 + $1.getSpent() }).roundTwoDecimalPlaces)"
+    } else {
+      completion()
+    }
+  }
+  
+  private func setValueToDetailLabelsWithMarkPrice(completion: () -> Void) {
+    if marks.count > 0 {
+      countDetailLabel.text = "\(getMarkDateCountersFor(mark: mark).filter({ $0.price == price }).reduce(0, { $0 + $1.count }))"
+      spentDetailLabel.text = "\(getMarkDateCountersFor(mark: mark).filter({ $0.price == price }).reduce(0, { $0 + $1.getSpent() }).roundTwoDecimalPlaces)"
+    } else {
+      completion()
+    }
+  }
+  
+  private func setValueToDetailLabelsWithPrice(completion: () -> Void) {
+    if prices.count > 0 {
+      countDetailLabel.text = "\(getMarkDateCounterFor(price: price).reduce(0, { $0 + $1.count }))"
+      spentDetailLabel.text = "\(getMarkDateCounterFor(price: price).reduce(0, { $0 + $1.getSpent() }).roundTwoDecimalPlaces)"
+    } else {
+      completion()
+    }
+  }
+  
+  private func checkSegmentedSelection() {
+    if dateSelection && !markSelection && !priceSelection {
+      setTotalValuesToLabels()
+    } else if markSelection && !priceSelection {
+      setValueToDetailLabelsWithMark() { setZeroToDetailLabels() }
+    } else if !markSelection && priceSelection {
+      setValueToDetailLabelsWithPrice() { setZeroToDetailLabels() }
+    } else if markSelection && priceSelection {
+      setValueToDetailLabelsWithMarkPrice() { setZeroToDetailLabels() }
+    }
   }
   
   // MARK: - Date picker private func
@@ -366,16 +425,13 @@ class DetailTableViewController: UITableViewController {
     priceLabels[1].text = DayliDataManager.shared.getLastPrice()
   }
   
-  private func setTotalValuesToLabels() {
-    countLabel.text = "\(DayliDataManager.shared.getTotalCount())"
-    spentLabel.text = "\(DayliDataManager.shared.getTotalPrice().twoDecimalPlaces)"
-  }
+  
   
   // MARK: - Pickers private func
-
+  
   
   private func getAllDayliCounters() -> [DayliCounter] {
-    return DayliDataManager.shared.dayliCounters
+    return DayliDataManager.shared.dayliCounters.map({ $0 })
   }
   
   private func getDayliCountersFromDate() -> [DayliCounter] {
@@ -384,7 +440,7 @@ class DetailTableViewController: UITableViewController {
   
   private func checkTextIn(label: UILabel, _ picker: UIPickerView, and array: [String]) {
     picker.reloadAllComponents()
-    if let text = label.text, text != "", prices.contains(text) {
+    if let text = label.text, text != "", array.contains(text) {
       let index = array.enumerated().filter({ $0.element == text }).first!.offset
       picker.selectRow(index, inComponent: 0, animated: true)
     } else {
@@ -404,13 +460,21 @@ class DetailTableViewController: UITableViewController {
   private func setPrices() {
     if markSelection {
       if let mark = markLabels[1].text, mark != "" {
-        prices = dayliCounters.reduce([MarkDateCounter](), { $0 + $1.mark.filter({ $0.mark == mark }) }).map({ String($0.price) }).removeDuplicates.sorted(by: >)
+        prices = getMarkDateCountersFor(mark: mark).map({ String($0.price) }).removeDuplicates.sorted(by: <)
       } else {
         prices = []
       }
     } else {
-      prices = dayliCounters.reduce([String](), { $0 + $1.mark.map({ String($0.price) }) }).removeDuplicates.sorted(by: >)
+      prices = dayliCounters.reduce([String](), { $0 + $1.mark.map({ String($0.price) }) }).removeDuplicates.sorted(by: <)
     }
+  }
+  
+  private func getMarkDateCountersFor(mark: String) -> [MarkDateCounter] {
+    return dayliCounters.reduce([MarkDateCounter](), { $0 + $1.mark.filter({ $0.mark == mark }) })
+  }
+  
+  private func getMarkDateCounterFor(price: Double) -> [MarkDateCounter] {
+    return dayliCounters.reduce([MarkDateCounter](), { $0 + $1.mark.filter({ $0.price == price }) })
   }
   
   // MARK: - Objc private func
@@ -422,6 +486,7 @@ class DetailTableViewController: UITableViewController {
     set(date: date, toDatePicketWith: tag)
     setValueToDateLabel(with: tag, date: date)
     dayliCounters = getDayliCountersFromDate()
+    checkSegmentedSelection()
   }
   
   // MARK: - @IBActions
@@ -531,6 +596,7 @@ extension DetailTableViewController: UIPickerViewDelegate {
     default:
       break
     }
+    checkSegmentedSelection()
   }
   
 }

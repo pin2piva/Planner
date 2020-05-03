@@ -27,4 +27,8 @@ class MarkDateCounter: Object {
   @objc dynamic var price: Double = 0
   @objc dynamic var perPack: Int = 0
   
+  func getSpent() -> Double {
+    return price / Double(perPack) * Double(count)
+  }
+  
 }

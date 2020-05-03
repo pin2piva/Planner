@@ -519,14 +519,14 @@
                     </tableView>
                     <connections>
                         <outlet property="commonView" destination="hoI-JW-eEv" id="R0N-ah-kEM"/>
-                        <outlet property="countLabel" destination="nLn-nL-wAx" id="1YB-pp-ikB"/>
+                        <outlet property="countDetailLabel" destination="nLn-nL-wAx" id="1YB-pp-ikB"/>
                         <outlet property="fromCell" destination="gyV-Df-ne5" id="9hX-6E-sAk"/>
                         <outlet property="fromDatePicker" destination="LbD-uG-Wv6" id="Jmt-Qr-Ol9"/>
                         <outlet property="markCell" destination="d6A-U8-ofb" id="49v-CU-i66"/>
                         <outlet property="markPicker" destination="b2i-M8-EWe" id="e0p-xK-O7A"/>
                         <outlet property="priceCell" destination="Lw5-ZQ-FHy" id="nWn-f2-3fD"/>
                         <outlet property="pricePicker" destination="Evh-7y-P7A" id="lYx-2e-tF7"/>
-                        <outlet property="spentLabel" destination="hzA-kq-cOs" id="Jlx-rO-ggW"/>
+                        <outlet property="spentDetailLabel" destination="hzA-kq-cOs" id="Jlx-rO-ggW"/>
                         <outlet property="toCell" destination="H0S-Lo-bSq" id="neb-S1-erh"/>
                         <outlet property="toDatePicker" destination="q0l-KR-4XL" id="CMD-jY-nZp"/>
                         <outletCollection property="buttons" destination="cnv-J7-kR0" collectionClass="NSMutableArray" id="R86-Ul-1An"/>
@@ -561,7 +561,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7kM-me-LNB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="28" y="66"/>
+            <point key="canvasLocation" x="27.536231884057973" y="65.625"/>
         </scene>
     </scenes>
 </document>

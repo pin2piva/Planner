@@ -20,17 +20,17 @@ class DayliDataManager {
   
   
   private let realm = try! Realm()
-  var dayliCounters: [DayliCounter] {
-    let results: [DayliCounter] = realm.objects(DayliCounter.self).map({ $0 })
-    return results
+  var dayliCounters: Results<DayliCounter> {
+    return realm.objects(DayliCounter.self)
   }
   
   // MARK: - Private func
   
   
-  private func add(_ object: DayliCounter) {
+  private func create(_ object: DayliCounter) {
     try! realm.write {
-      realm.add(object, update: .modified)
+//      realm.add(object, update: .modified)
+      realm.create(DayliCounter.self, value: object, update: .modified)
     }
   }
 
@@ -53,14 +53,15 @@ class DayliDataManager {
       let firstMarkDateCounter = createMarkDateCounterWith(mark: mark, price: price, perPack: perPack)
       dayliCounter.mark.append(firstMarkDateCounter)
     }
-    add(dayliCounter)
+    create(dayliCounter)
   }
   
   func deleteEmptyMarkDateCountersFromCurrent() {
     try! realm.write {
       let current = ScheduleDataManager.shared.getMarkAndPriceForCurrentDate()
-      guard let dayliCounter = getDayliCounter(for: current.stringDate) else { return }
-      let markDateCounters = dayliCounter.mark.enumerated().filter({ $0.element.count == 0 && $0.element.mark != current.mark && $0.element.price != current.price })
+      guard let stringDate = current.stringDate, let mark = current.mark, let price = current.price else { return }
+      guard let dayliCounter = getDayliCounter(for: stringDate) else { return }
+      let markDateCounters = dayliCounter.mark.enumerated().filter({ $0.element.count == 0 && $0.element.mark != mark && $0.element.price != price })
       markDateCounters.forEach({ dayliCounter.mark.remove(at: $0.offset) })
     }
   }

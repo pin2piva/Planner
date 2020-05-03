@@ -35,7 +35,7 @@ class ScheduleDataManager {
                          lastTimeSmoke: Date? = nil) {
     let schedule = CigaretteScheduleModel()
     schedule.mark = mark.uppercased()
-    schedule.price = price.twoDecimalPlaces
+    schedule.price = price.roundTwoDecimalPlaces
     schedule.packSize = packSize
     schedule.scenario = scenario
     schedule.lastTimeSmoke = lastTimeSmoke
@@ -69,7 +69,7 @@ class ScheduleDataManager {
         }
       }
     }
-    add(schedule)
+    create(schedule)
   }
   
   func timer(activate: Bool, for schedule: CigaretteScheduleModel) {
@@ -83,12 +83,11 @@ class ScheduleDataManager {
       schedule.lastTimeSmoke = Date()
     }
   }
-  
-  func getMarkAndPriceForCurrentDate() -> (stringDate: String, mark: String, price: Double) {
-    let currentDate = Date()
-    let currentStringDate = DateManager.shared.getStringDate(date: currentDate) { DateManager.dateStringFormat }
+  // TODO: - Some problem here
+  func getMarkAndPriceForCurrentDate() -> (stringDate: String?, mark: String?, price: Double?) {
+    let currentStringDate = DateManager.shared.getStringDate(date: Date()) { DateManager.dateStringFormat }
     let currentSchedule = realm.object(ofType: CigaretteScheduleModel.self, forPrimaryKey: currentStringDate)
-    return (currentSchedule!.currentStringDate, currentSchedule!.mark, currentSchedule!.price)
+    return (currentSchedule?.currentStringDate, currentSchedule?.mark, currentSchedule?.price)
   }
   
   func deleteSchedule(_ schedule: CigaretteScheduleModel) {
@@ -111,9 +110,10 @@ class ScheduleDataManager {
   // MARK: - Schedule private func
   
   
-  private func add(_ object: CigaretteScheduleModel) {
+  private func create(_ object: CigaretteScheduleModel) {
     try! realm.write {
-      realm.add(object, update: .modified)
+//      realm.add(object, update: .modified)
+      realm.create(CigaretteScheduleModel.self, value: object, update: .modified)
     }
   }
   
