@@ -127,6 +127,16 @@ class DayliDataManager {
     return count
   }
   
+  func isQuit() -> Bool {
+    guard dayliCounters.count > 10 else { return false }
+    let count = dayliCounters.count
+    let countInterval = count - 11...(count - 2)
+    let counters: [DayliCounter] = dayliCounters[countInterval].map({ $0 })
+    print(counters.map({ $0.mark.reduce(0, { $0 + $1.count }) }))
+    guard counters.map({ $0.mark.reduce(0, { $0 + $1.count }) }) == Array(repeating: 1, count: 10) else { return false }
+    return true
+  }
+  
   func getTotalCountBeforeCurrent(date: String) -> Int {
     let countersBeforeCurrentDate: [DayliCounter] = dayliCounters.filter({ $0.dateString <= date })
     let totalCount = countersBeforeCurrentDate.reduce(0, { $0 + $1.mark.reduce(0, { $0 + $1.count }) })

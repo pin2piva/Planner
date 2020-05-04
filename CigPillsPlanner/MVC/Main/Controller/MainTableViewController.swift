@@ -23,6 +23,7 @@ class MainTableViewController: UITableViewController {
       title = titleFor
     }
   }
+  private let notifications = UserNotificationManager()
   
   // MARK: - Life cycle
   
@@ -261,13 +262,15 @@ class MainTableViewController: UITableViewController {
   private func setNotification(schedule: CigaretteScheduleModel?) {
     guard let schedule = schedule else { return }
     if let interval = schedule.interval.value {
-      UserNotificationManager.shared.intervalNotification(timeInterval: interval)
+      notifications.intervalNotification(timeInterval: interval)
     }
     if schedule.isOverLimit() && schedule.overLimitDifference() == 1 {
-      UserNotificationManager.shared.overLimitNotification(limit: schedule.limit.value!)
+      notifications.overLimitNotification(limit: schedule.limit.value!)
     }
-    if schedule.reduceCig.value != nil {
-      UserNotificationManager.shared.reduceIsDoneNotification()
+    if let limit = schedule.limit.value, limit == 1, schedule.reduceCig.value != nil {
+      if DayliDataManager.shared.isQuit() {
+        notifications.reduceIsDoneNotification()
+      }
     }
   }
 }

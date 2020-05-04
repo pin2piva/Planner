@@ -9,13 +9,15 @@
 import Foundation
 import UserNotifications
 
-class UserNotificationManager {
+class UserNotificationManager: NSObject {
   
-  static let shared = UserNotificationManager()
+  // MARK: - Properties
   
-//  private let launchImageName = ""
   
-  private var center = UNUserNotificationCenter.current()
+  var center = UNUserNotificationCenter.current()
+  
+  // MARK: - Internal func
+  
   
   func intervalNotification(timeInterval: TimeInterval) {
     let content = UNMutableNotificationContent()
@@ -65,4 +67,38 @@ class UserNotificationManager {
     }
   }
   
+  func requestAutorization() {
+    center.requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] (granted, error) in
+      print("Authorization granded - \(granted)")
+      
+      guard granted else { return }
+      self?.getNotificationSettings()
+    }
+  }
+  
+  // MARK: - Private func
+  
+  
+  private func getNotificationSettings() {
+    center.getNotificationSettings { (settings) in
+      print("Notification settings - \(settings)")
+    }
+  }
+  
+}
+
+// MARK: - Extensions
+
+
+
+// MARK: - User notification center delegate
+
+
+extension UserNotificationManager: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+      completionHandler([.alert, .sound])
+  //    if notification.request.identifier == "intervalNotification" {
+  //      completionHandler([.alert, .sound])
+  //    }
+    }
 }

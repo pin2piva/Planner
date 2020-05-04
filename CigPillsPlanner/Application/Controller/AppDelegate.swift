@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,17 +14,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Properties
   
   var window: UIWindow?
-  private let center = UNUserNotificationCenter.current()
+  
+  private var notifications = UserNotificationManager()
+  
   
   // MARK: - Internal func
   
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     setupRoot()
-    requestAutorization()
     
-    center.delegate = self
-    
+    notifications.requestAutorization()
+    notifications.center.delegate = notifications
     return true
   }
   
@@ -41,21 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.rootViewController = RootViewController()
     window?.makeKeyAndVisible()
   }
-  
-  private func requestAutorization() {
-    center.requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] (granted, error) in
-      print("Authorization granded - \(granted)")
-      
-      guard granted else { return }
-      self?.getNotificationSettings()
-    }
-  }
-  
-  private func getNotificationSettings() {
-    center.getNotificationSettings { (settings) in
-      print("Notification settings - \(settings)")
-    }
-  }
+
   
 }
 
@@ -71,16 +57,3 @@ extension AppDelegate {
     window?.rootViewController as! RootViewController
   }
 }
-
-// MARK: - User notification center delegate
-
-
-extension AppDelegate: UNUserNotificationCenterDelegate {
-  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    completionHandler([.alert, .sound])
-//    if notification.request.identifier == "intervalNotification" {
-//      completionHandler([.alert, .sound])
-//    }
-  }
-}
-
