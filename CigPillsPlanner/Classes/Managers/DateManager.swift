@@ -22,13 +22,14 @@ class DateManager {
   
   
   private let dateFormatter = DateFormatter()
+  private let calendar = Calendar.current
   
   // MARK: - Internal func
   
   
-  func getStringDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date, _ completion: () -> String?) -> String? {
+  func getStringDifferenceBetween(components: Set<Calendar.Component>, _ from: Date, and to: Date, _ dateStringFormat: () -> String?) -> String? {
     guard let date = getDateDifferenceBetween(components: components, from, and: to) else { return nil }
-    dateFormatter.dateFormat = completion()
+    dateFormatter.dateFormat = dateStringFormat()
     return dateFormatter.string(from: date)
   }
   
@@ -45,22 +46,20 @@ class DateManager {
     guard let date = zeroHourDate else { return nil }
     let dayComponent = Calendar.current.dateComponents([.minute], from: begin, to: date) // испавить на день
     guard let days = dayComponent.minute else { return nil } // исправить на день
-    print("minute difference - \(days)")
     return days / reducePerDay
   }
   
-  func getStringDate(date: Date, _ completion: () -> String?) -> String {
-    dateFormatter.dateFormat = completion()
+  func getStringDate(date: Date, _ dateStringFormat: () -> String?) -> String {
+    dateFormatter.dateFormat = dateStringFormat()
     return dateFormatter.string(from: date)
   }
   
-  func getDate(from string: String, _ completion: () -> String?) -> Date? {
-    dateFormatter.dateFormat = completion()
+  func getDate(from string: String, _ dateStringFormat: () -> String?) -> Date? {
+    dateFormatter.dateFormat = dateStringFormat()
     return dateFormatter.date(from: string)
   }
   
   func getTimeInterval(from date: Date, to secondDate: Date) -> TimeInterval? {
-    let calendar = Calendar.current
     let components = calendar.dateComponents([.second], from: date, to: secondDate)
     let seconds = components.second
     guard let secondInterval = seconds else { return nil }
@@ -84,6 +83,11 @@ class DateManager {
     default:
       return "yy-MM-dd HH:mm:ss"
     }
+  }
+  
+  func getDateComponentsWith(dateComponents: Set<Calendar.Component>, dateString: String, _ dateStringFormat: () -> String?) -> DateComponents? {
+    guard let date = getDate(from: dateString, { dateStringFormat() }) else { return nil }
+    return calendar.dateComponents(dateComponents, from: date)
   }
   
 }

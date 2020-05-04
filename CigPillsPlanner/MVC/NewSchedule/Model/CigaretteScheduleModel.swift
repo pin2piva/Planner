@@ -39,10 +39,20 @@ class CigaretteScheduleModel: Object {
   
   func overLimit() -> String? {
     guard isToday else { return nil }
-    guard let limit = limit.value else { return nil }
-    let dayliCount = DayliDataManager.shared.getDayliCount(for: currentStringDate)
-    guard limit < dayliCount else { return nil }
+    guard isOverLimit() else { return nil }
     return "Limit exceeded"
+  }
+  
+  func isOverLimit() -> Bool {
+    guard let limit = limit.value else { return false }
+    let dayliCount = DayliDataManager.shared.getDayliCount(for: currentStringDate)
+    return limit < dayliCount
+  }
+  
+  func overLimitDifference() -> Int {
+    guard let limit = limit.value else { return 0 }
+    let dayliCount = DayliDataManager.shared.getDayliCount(for: currentStringDate)
+    return dayliCount - limit
   }
   
   func getTimer(isActive: Bool) {

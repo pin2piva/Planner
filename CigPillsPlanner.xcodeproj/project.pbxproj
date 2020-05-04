@@ -13,6 +13,7 @@
 		9115CDCC245C1ADE00E232EC /* String+isValidDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115CDCB245C1ADE00E232EC /* String+isValidDouble.swift */; };
 		9115CDCE245C1AF100E232EC /* String+isValidInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115CDCD245C1AF100E232EC /* String+isValidInt.swift */; };
 		911BE51B245AD141005AB859 /* ScheduleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BE51A245AD141005AB859 /* ScheduleDataManager.swift */; };
+		916C41BE24600C1900443C07 /* UserNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916C41BD24600C1900443C07 /* UserNotificationManager.swift */; };
 		9171B7C32449B0E1005C3183 /* CigaretteLimitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9171B7C12449B0E1005C3183 /* CigaretteLimitCell.swift */; };
 		9171B7C42449B0E1005C3183 /* CigaretteLimitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9171B7C22449B0E1005C3183 /* CigaretteLimitCell.xib */; };
 		9171B7CD2449E3B1005C3183 /* CigaretteIntervalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9171B7CB2449E3B1005C3183 /* CigaretteIntervalCell.swift */; };
@@ -74,6 +75,7 @@
 		9115CDCB245C1ADE00E232EC /* String+isValidDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isValidDouble.swift"; sourceTree = "<group>"; };
 		9115CDCD245C1AF100E232EC /* String+isValidInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isValidInt.swift"; sourceTree = "<group>"; };
 		911BE51A245AD141005AB859 /* ScheduleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDataManager.swift; sourceTree = "<group>"; };
+		916C41BD24600C1900443C07 /* UserNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationManager.swift; sourceTree = "<group>"; };
 		9171B7C12449B0E1005C3183 /* CigaretteLimitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteLimitCell.swift; sourceTree = "<group>"; };
 		9171B7C22449B0E1005C3183 /* CigaretteLimitCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteLimitCell.xib; sourceTree = "<group>"; };
 		9171B7CB2449E3B1005C3183 /* CigaretteIntervalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteIntervalCell.swift; sourceTree = "<group>"; };
@@ -496,6 +498,7 @@
 				91C5EE7B243CAA1E00516C35 /* ErrorManager.swift */,
 				918C877F244ED3CB00BD2640 /* TimerManager.swift */,
 				91C2106A2458707E00CF371C /* StaticTableManager.swift */,
+				916C41BD24600C1900443C07 /* UserNotificationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 				91C5EE71243CA92800516C35 /* VisualizationTableViewController.swift in Sources */,
 				9171B7CD2449E3B1005C3183 /* CigaretteIntervalCell.swift in Sources */,
 				91C5EE7A243CA9FA00516C35 /* AlertManager.swift in Sources */,
+				916C41BE24600C1900443C07 /* UserNotificationManager.swift in Sources */,
 				918C87D32451B5CF00BD2640 /* Date+zeroSeconds.swift in Sources */,
 				91C5EE78243CA9DE00516C35 /* DateManager.swift in Sources */,
 				91B606EA244D90DE005731B6 /* NotTodayCell.swift in Sources */,

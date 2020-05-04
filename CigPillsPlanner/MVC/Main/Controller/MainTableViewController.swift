@@ -41,6 +41,16 @@ class MainTableViewController: UITableViewController {
     checkAndCreateCountersFor(currentSchedule: schedules.first)
     DayliDataManager.shared.deleteEmptyMarkDateCountersFromCurrent()
   }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    breakingButton.isHidden = true
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    breakingButton.isHidden = false
+  }
 
   
   // MARK: - Table view data source
@@ -144,14 +154,22 @@ class MainTableViewController: UITableViewController {
   }
   
   private func createButton() {
-    breakingButton = UIButton(frame: CGRect(origin: CGPoint(x: self.view.frame.width - 100,
-                                                            y: self.view.frame.height - 50),
-                                            size: CGSize(width: 50, height: 50)))
+    let frame = self.view.frame
+    let side = frame.height / 10
+    let xPoint = (frame.width / 2) - (side / 2)
+    let yPoint = frame.height - frame.height / 8
+    breakingButton = UIButton(frame: CGRect(origin: CGPoint(x: xPoint,
+                                                            y: yPoint),
+                                            size: CGSize(width: side, height: side)))
     
-    breakingButton.backgroundColor = .systemGray
-    breakingButton.setImage(UIImage(systemName: "plus"), for: .normal)
+    breakingButton.backgroundColor = .clear
+//    breakingButton.setImage(UIImage(systemName: "plus"), for: .normal)
+    breakingButton.setTitle("+", for: .normal)
+    breakingButton.setTitleColor(.black, for: .normal)
     breakingButton.clipsToBounds = true
-    breakingButton.layer.cornerRadius = 15
+    breakingButton.layer.cornerRadius = side / 2
+    breakingButton.layer.borderColor = UIColor.systemGray.cgColor
+    breakingButton.layer.borderWidth = 1
     breakingButton.addTarget(self, action: #selector(increaceCount), for: .touchUpInside)
     self.navigationController?.view.addSubview(breakingButton)
   }
@@ -236,7 +254,20 @@ class MainTableViewController: UITableViewController {
     currentSchedule.getLastTime()
     currentSchedule.getTimer(isActive: true)
     currentSchedule.incrementCount()
+    setNotification(schedule: current)
     tableView.reloadData()
   }
   
+  private func setNotification(schedule: CigaretteScheduleModel?) {
+    guard let schedule = schedule else { return }
+    if let interval = schedule.interval.value {
+      UserNotificationManager.shared.intervalNotification(timeInterval: interval)
+    }
+    if schedule.isOverLimit() && schedule.overLimitDifference() == 1 {
+      UserNotificationManager.shared.overLimitNotification(limit: schedule.limit.value!)
+    }
+    if schedule.reduceCig.value != nil {
+      UserNotificationManager.shared.reduceIsDoneNotification()
+    }
+  }
 }
