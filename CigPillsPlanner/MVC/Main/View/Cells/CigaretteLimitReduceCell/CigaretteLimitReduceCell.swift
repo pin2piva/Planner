@@ -29,8 +29,12 @@ class CigaretteLimitReduceCell: UITableViewCell, CellProtocol {
     markLabel.text = schedule.mark
     priceLabel.text = "\(String(describing: schedule.price))"
     totalLabel.text = "\(totalCount)"
-    balanceLabel.text = "\(dayliCount)/\(schedule.limit.value!)"
-    reduceLabel.text = "\(schedule.reduceCig.value!)/\(schedule.reducePerDay.value!)"
+    if let limit = schedule.limit.value {
+      balanceLabel.text = "\(dayliCount)/\(limit)"
+    }
+    if let reduceCig = schedule.reduceCig.value, let reducePerDay = schedule.reducePerDay.value {
+      reduceLabel.text = "\(reduceCig)/\(reducePerDay)"
+    }
     TimerManager.shared.lastTime(schedule) { [weak self] (time) in
       self?.lastLabel.text = time
     }

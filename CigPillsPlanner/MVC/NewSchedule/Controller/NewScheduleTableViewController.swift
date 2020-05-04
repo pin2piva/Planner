@@ -330,6 +330,7 @@ class NewScheduleTableViewController: UITableViewController {
       if !sender.isOn {
         reduceSwitch.setOn(false, animated: true)
         reduceCellIsSelect = true
+        checkReduceIsValid(false)
         StaticTableManager.shared.setHideTo(cell: reduceCell, when: &reduceCellIsSelect, colorFor: reduceLabels)
       }
     case 1:
@@ -342,6 +343,7 @@ class NewScheduleTableViewController: UITableViewController {
       checkReduceIsValid(sender.isOn)
       if sender.isOn {
         limitSwitch.setOn(true, animated: true)
+        checkLimitIsValid(true)
       }
     default:
       return
@@ -426,7 +428,6 @@ class NewScheduleTableViewController: UITableViewController {
     guard let secondRow = Int(second) else { return }
     reducePicker.selectRow(firstRow - 1, inComponent: 0, animated: false)
     reducePicker.selectRow(secondRow - 1, inComponent: 1, animated: false)
-    
   }
   
   private func saveNewShedule() {

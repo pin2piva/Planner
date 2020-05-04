@@ -33,7 +33,9 @@ class CigaretteLimitIntervalCell: UITableViewCell, CellProtocol {
     let dayliCount = DayliDataManager.shared.getDayliCount(for: schedule.currentStringDate)
     markLabel.text = schedule.mark
     priceLabel.text = "\(String(describing: schedule.price))"
-    balanceLabel.text = "\(dayliCount)/\(schedule.limit.value!)"
+    if let limit = schedule.limit.value {
+      balanceLabel.text = "\(dayliCount)/\(limit)"
+    }
     totalLabel.text = "\(totalCount)"
     TimerManager.shared.lastTime(schedule) { [weak self] (time) in
       self?.lastLabel.text = time
