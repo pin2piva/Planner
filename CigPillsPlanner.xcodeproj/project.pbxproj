@@ -45,7 +45,7 @@
 		91C5EE65243CA83100516C35 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE64243CA83100516C35 /* TabBarController.swift */; };
 		91C5EE69243CA87800516C35 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE68243CA87800516C35 /* DetailTableViewController.swift */; };
 		91C5EE6D243CA8DD00516C35 /* DiagramTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE6C243CA8DD00516C35 /* DiagramTableViewController.swift */; };
-		91C5EE71243CA92800516C35 /* VisualizationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE70243CA92800516C35 /* VisualizationTableViewController.swift */; };
+		91C5EE71243CA92800516C35 /* VisualizationCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE70243CA92800516C35 /* VisualizationCollectionViewController.swift */; };
 		91C5EE75243CA9B500516C35 /* HaveTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE74243CA9B500516C35 /* HaveTabBarItem.swift */; };
 		91C5EE78243CA9DE00516C35 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE77243CA9DE00516C35 /* DateManager.swift */; };
 		91C5EE7A243CA9FA00516C35 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE79243CA9FA00516C35 /* AlertManager.swift */; };
@@ -53,6 +53,8 @@
 		91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */; };
 		91C5EE83243CAB6C00516C35 /* CigaretteAccountingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */; };
 		91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */; };
+		91D322AD2461B07400BA240A /* PackCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D322AC2461B07400BA240A /* PackCollectionViewCell.swift */; };
+		91D322F72462F8C100BA240A /* String+attributeWithStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D322F62462F8C100BA240A /* String+attributeWithStroke.swift */; };
 		91EB1573243DB3D900B5E75D /* DayliDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DayliDataManager.swift */; };
 		91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1574243F0C0700B5E75D /* DayliCounter.swift */; };
 /* End PBXBuildFile section */
@@ -111,7 +113,7 @@
 		91C5EE64243CA83100516C35 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		91C5EE68243CA87800516C35 /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		91C5EE6C243CA8DD00516C35 /* DiagramTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagramTableViewController.swift; sourceTree = "<group>"; };
-		91C5EE70243CA92800516C35 /* VisualizationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationTableViewController.swift; sourceTree = "<group>"; };
+		91C5EE70243CA92800516C35 /* VisualizationCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationCollectionViewController.swift; sourceTree = "<group>"; };
 		91C5EE74243CA9B500516C35 /* HaveTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaveTabBarItem.swift; sourceTree = "<group>"; };
 		91C5EE77243CA9DE00516C35 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		91C5EE79243CA9FA00516C35 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
@@ -119,6 +121,8 @@
 		91C5EE80243CAB6C00516C35 /* CigaretteAccountingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CigaretteAccountingCell.swift; sourceTree = "<group>"; };
 		91C5EE81243CAB6C00516C35 /* CigaretteAccountingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CigaretteAccountingCell.xib; sourceTree = "<group>"; };
 		91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewScheduleTableViewController.storyboard; sourceTree = "<group>"; };
+		91D322AC2461B07400BA240A /* PackCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackCollectionViewCell.swift; sourceTree = "<group>"; };
+		91D322F62462F8C100BA240A /* String+attributeWithStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+attributeWithStroke.swift"; sourceTree = "<group>"; };
 		91EB1572243DB3D900B5E75D /* DayliDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayliDataManager.swift; sourceTree = "<group>"; };
 		91EB1574243F0C0700B5E75D /* DayliCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayliCounter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -193,6 +197,7 @@
 				91A7288D245AAE1D008A4254 /* Double+roundTwoDecimalPlaces.swift */,
 				9115CDCD245C1AF100E232EC /* String+isValidInt.swift */,
 				9115CDCB245C1ADE00E232EC /* String+isValidDouble.swift */,
+				91D322F62462F8C100BA240A /* String+attributeWithStroke.swift */,
 				910DA0E9245DB92000F74625 /* Array+removeDuplicates.swift */,
 			);
 			path = Extensions;
@@ -466,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				91C5EE73243CA93700516C35 /* Controller */,
+				91D32298246168F300BA240A /* View */,
 			);
 			path = Visualization;
 			sourceTree = "<group>";
@@ -473,7 +479,7 @@
 		91C5EE73243CA93700516C35 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE70243CA92800516C35 /* VisualizationTableViewController.swift */,
+				91C5EE70243CA92800516C35 /* VisualizationCollectionViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -501,6 +507,14 @@
 				916C41BD24600C1900443C07 /* UserNotificationManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		91D32298246168F300BA240A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				91D322AC2461B07400BA240A /* PackCollectionViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		91E537D02448A7980056E67A /* CigaretteLimitCell */ = {
@@ -616,9 +630,10 @@
 				91C5EE61243CA79B00516C35 /* Scenario.swift in Sources */,
 				91C5EE28243CA2CC00516C35 /* AppDelegate.swift in Sources */,
 				91C5EE63243CA7D500516C35 /* NewScheduleTableViewController.swift in Sources */,
-				91C5EE71243CA92800516C35 /* VisualizationTableViewController.swift in Sources */,
+				91C5EE71243CA92800516C35 /* VisualizationCollectionViewController.swift in Sources */,
 				9171B7CD2449E3B1005C3183 /* CigaretteIntervalCell.swift in Sources */,
 				91C5EE7A243CA9FA00516C35 /* AlertManager.swift in Sources */,
+				91D322AD2461B07400BA240A /* PackCollectionViewCell.swift in Sources */,
 				916C41BE24600C1900443C07 /* UserNotificationManager.swift in Sources */,
 				918C87D32451B5CF00BD2640 /* Date+zeroSeconds.swift in Sources */,
 				91C5EE78243CA9DE00516C35 /* DateManager.swift in Sources */,
@@ -633,6 +648,7 @@
 				91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */,
 				91C5EE65243CA83100516C35 /* TabBarController.swift in Sources */,
 				91C5EE52243CA66900516C35 /* MainTableViewController.swift in Sources */,
+				91D322F72462F8C100BA240A /* String+attributeWithStroke.swift in Sources */,
 				91C5EE75243CA9B500516C35 /* HaveTabBarItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

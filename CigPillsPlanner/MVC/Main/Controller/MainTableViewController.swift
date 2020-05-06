@@ -34,6 +34,7 @@ class MainTableViewController: UITableViewController {
     registerCell()
     setupNavigationItem()
     createButton()
+    setupViewGradient()
     tableView.tableFooterView = UIView()
   }
   
@@ -46,11 +47,13 @@ class MainTableViewController: UITableViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     breakingButton.isHidden = true
+    title = nil
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     breakingButton.isHidden = false
+    titleFor = schedules.first?.overLimit()
   }
 
   
@@ -118,19 +121,8 @@ class MainTableViewController: UITableViewController {
   
   
   private func setupViewGradient() {
-    let gradient = CAGradientLayer()
-    gradient.startPoint = CGPoint(x: 0, y: 0)
-    gradient.endPoint = CGPoint(x: 0, y: 1)
-    gradient.colors = [UIColor.systemGray6.cgColor,
-                       UIColor.systemGray.cgColor]
+    tableView.separatorColor = .gray
     
-    let backgroundView = UIView(frame: CGRect(x: view.bounds.origin.x,
-                                              y: view.bounds.origin.y,
-                                              width: view.bounds.width,
-                                              height: view.bounds.height + 50))
-    gradient.frame = backgroundView.bounds
-    backgroundView.layer.addSublayer(gradient)
-    self.tableView.backgroundView = backgroundView
   }
   
   private func registerCell() {
@@ -166,7 +158,7 @@ class MainTableViewController: UITableViewController {
     breakingButton.backgroundColor = .clear
 //    breakingButton.setImage(UIImage(systemName: "plus"), for: .normal)
     breakingButton.setTitle("+", for: .normal)
-    breakingButton.setTitleColor(.black, for: .normal)
+    breakingButton.setTitleColor(.systemGray, for: .normal)
     breakingButton.clipsToBounds = true
     breakingButton.layer.cornerRadius = side / 2
     breakingButton.layer.borderColor = UIColor.systemGray.cgColor

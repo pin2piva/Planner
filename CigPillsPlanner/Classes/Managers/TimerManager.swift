@@ -78,7 +78,7 @@ class TimerManager {
   private func getTimeDifference(_ first: Date, _ second: Date) -> String? {
     let interval = DateManager.shared.getTimeInterval(from: first, to: second)
     guard let stringFormat = DateManager.shared.getDateStringFormat(from: interval) else { return nil }
-    let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.second], first, and: second) { stringFormat }
+    let lastTimeString = DateManager.shared.getStringDifferenceBetween(components: [.second, .minute, .hour, .day, .month, .year], first, and: second) { stringFormat }
     return lastTimeString
   }
 

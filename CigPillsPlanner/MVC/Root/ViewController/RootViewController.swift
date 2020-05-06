@@ -60,8 +60,11 @@ class RootViewController: UIViewController {
     let detailStoryboard = UIStoryboard(name: "DetailTableViewController", bundle: nil)
     let detail = detailStoryboard.instantiateViewController(identifier: "DetailTableViewController") as! DetailTableViewController
     
+    
+    
     let diagram = DiagramTableViewController(itemName: "Diagram")
-    let visualization = VisualizationTableViewController(itemName: "Visual")
+    let visualization = VisualizationCollectionViewController(itemName: "Visual")
+    
     let tabBarController = TabBarViewController(viewControllers: [detail, diagram, visualization])
     navController.pushViewController(tabBarController, animated: true)
   }

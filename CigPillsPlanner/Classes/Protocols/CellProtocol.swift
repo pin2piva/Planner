@@ -11,3 +11,6 @@ import Foundation
 protocol CellProtocol {
   func setValues(_ schedule: CigaretteScheduleModel)
 }
+
+
+
