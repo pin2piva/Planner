@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DiagramTableViewController: UITableViewController {
+class ChartViewController: UIViewController {
   
   var itemName: String
   
@@ -23,9 +23,9 @@ class DiagramTableViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    tableView.backgroundColor = .orange
+    view.backgroundColor = .orange
   }
   
 }
 
-extension DiagramTableViewController: HaveTabBarItem {}
+extension ChartViewController: HaveTabBarItem {}

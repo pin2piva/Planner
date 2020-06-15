@@ -25,6 +25,11 @@ class MainTableViewController: UITableViewController {
   }
   private let notifications = UserNotificationManager()
   
+  private var composeButton: UIBarButtonItem!
+  private var editButton: UIBarButtonItem!
+  private var doneButton: UIBarButtonItem!
+  private var deleteButton: UIBarButtonItem!
+  
   // MARK: - Life cycle
   
   
@@ -32,10 +37,13 @@ class MainTableViewController: UITableViewController {
     super.viewDidLoad()
     checkSchedulesInRealm()
     registerCell()
+    setupBarButtonItems()
     setupNavigationItem()
     createButton()
     setupViewGradient()
     tableView.tableFooterView = UIView()
+    
+    tableView.allowsMultipleSelectionDuringEditing = true
   }
   
   override func viewWillLayoutSubviews() {
@@ -99,7 +107,12 @@ class MainTableViewController: UITableViewController {
   
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    AppDelegate.shared.rootViewController.showTabBarViewController()
+    if !tableView.isEditing {
+      AppDelegate.shared.rootViewController.showTabBarViewController()
+    }
+  }
+  
+  override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
   }
   
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -143,8 +156,23 @@ class MainTableViewController: UITableViewController {
   }
   
   private func setupNavigationItem() {
-    navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editCurrentSchedule)), animated: true)
+    if tableView.isEditing {
+      navigationItem.setRightBarButton(deleteButton, animated: true)
+      navigationItem.setLeftBarButton(doneButton, animated: true)
+    } else {
+      navigationItem.setRightBarButton(composeButton, animated: true)
+      navigationItem.setLeftBarButton(editButton, animated: true)
+    }
   }
+  
+  private func setupBarButtonItems() {
+    composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(composeCurrentSchedule))
+    editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editingTable))
+    doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(editingTable))
+    deleteButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteRows))
+    deleteButton.isEnabled = false
+  }
+  
   
   private func createButton() {
     let frame = self.view.frame
@@ -156,13 +184,16 @@ class MainTableViewController: UITableViewController {
                                             size: CGSize(width: side, height: side)))
     
     breakingButton.backgroundColor = .clear
-//    breakingButton.setImage(UIImage(systemName: "plus"), for: .normal)
-    breakingButton.setTitle("+", for: .normal)
-    breakingButton.setTitleColor(.systemGray, for: .normal)
+    if view.traitCollection.userInterfaceStyle == .dark {
+      breakingButton.setImage(UIImage(named: "Button-dark"), for: .normal)
+      breakingButton.layer.borderColor = UIColor.lightGray.cgColor
+    } else {
+      breakingButton.setImage(UIImage(named: "Button-white"), for: .normal)
+      breakingButton.layer.borderColor = UIColor.black.cgColor
+    }
     breakingButton.clipsToBounds = true
     breakingButton.layer.cornerRadius = side / 2
-    breakingButton.layer.borderColor = UIColor.systemGray.cgColor
-    breakingButton.layer.borderWidth = 1
+    breakingButton.layer.borderWidth = 1.5
     breakingButton.addTarget(self, action: #selector(increaceCount), for: .touchUpInside)
     self.navigationController?.view.addSubview(breakingButton)
   }
@@ -236,9 +267,18 @@ class MainTableViewController: UITableViewController {
   // MARK: - @obcj private func
   
   
-  @objc private func editCurrentSchedule() {
+  @objc private func composeCurrentSchedule() {
     let currentSchedule = schedules.first
     AppDelegate.shared.rootViewController.showAddNewSheduleController(currentSchedule)
+  }
+  
+  @objc private func editingTable() {
+      tableView.setEditing(!tableView.isEditing, animated: true)
+      setupNavigationItem()
+  }
+  // TODO: DeleteRows!!!
+  @objc private func deleteRows() {
+    
   }
   
   @objc private func increaceCount() {

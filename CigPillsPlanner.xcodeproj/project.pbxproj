@@ -44,7 +44,7 @@
 		91C5EE63243CA7D500516C35 /* NewScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE62243CA7D500516C35 /* NewScheduleTableViewController.swift */; };
 		91C5EE65243CA83100516C35 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE64243CA83100516C35 /* TabBarController.swift */; };
 		91C5EE69243CA87800516C35 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE68243CA87800516C35 /* DetailTableViewController.swift */; };
-		91C5EE6D243CA8DD00516C35 /* DiagramTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE6C243CA8DD00516C35 /* DiagramTableViewController.swift */; };
+		91C5EE6D243CA8DD00516C35 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE6C243CA8DD00516C35 /* ChartViewController.swift */; };
 		91C5EE71243CA92800516C35 /* VisualizationCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE70243CA92800516C35 /* VisualizationCollectionViewController.swift */; };
 		91C5EE75243CA9B500516C35 /* HaveTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE74243CA9B500516C35 /* HaveTabBarItem.swift */; };
 		91C5EE78243CA9DE00516C35 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5EE77243CA9DE00516C35 /* DateManager.swift */; };
@@ -55,6 +55,7 @@
 		91C5EE85243CABBD00516C35 /* NewScheduleTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C5EE84243CABBD00516C35 /* NewScheduleTableViewController.storyboard */; };
 		91D322AD2461B07400BA240A /* PackCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D322AC2461B07400BA240A /* PackCollectionViewCell.swift */; };
 		91D322F72462F8C100BA240A /* String+attributeWithStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D322F62462F8C100BA240A /* String+attributeWithStroke.swift */; };
+		91D3231A2463E75500BA240A /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 91D323192463E75500BA240A /* Charts */; };
 		91EB1573243DB3D900B5E75D /* DayliDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1572243DB3D900B5E75D /* DayliDataManager.swift */; };
 		91EB1575243F0C0700B5E75D /* DayliCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB1574243F0C0700B5E75D /* DayliCounter.swift */; };
 /* End PBXBuildFile section */
@@ -112,7 +113,7 @@
 		91C5EE62243CA7D500516C35 /* NewScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewScheduleTableViewController.swift; sourceTree = "<group>"; };
 		91C5EE64243CA83100516C35 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		91C5EE68243CA87800516C35 /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
-		91C5EE6C243CA8DD00516C35 /* DiagramTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagramTableViewController.swift; sourceTree = "<group>"; };
+		91C5EE6C243CA8DD00516C35 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		91C5EE70243CA92800516C35 /* VisualizationCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationCollectionViewController.swift; sourceTree = "<group>"; };
 		91C5EE74243CA9B500516C35 /* HaveTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaveTabBarItem.swift; sourceTree = "<group>"; };
 		91C5EE77243CA9DE00516C35 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
@@ -133,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91111AB82453056200E192B4 /* Realm in Frameworks */,
+				91D3231A2463E75500BA240A /* Charts in Frameworks */,
 				91111AB62453056200E192B4 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,7 +168,7 @@
 				91C5EE57243CA70700516C35 /* NewSchedule */,
 				91C5EE66243CA83500516C35 /* TabBar */,
 				91C5EE6A243CA87F00516C35 /* Detail */,
-				91C5EE6E243CA8E400516C35 /* Diagram */,
+				91C5EE6E243CA8E400516C35 /* Chart */,
 				91C5EE72243CA92E00516C35 /* Visualization */,
 			);
 			path = MVC;
@@ -451,18 +453,18 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		91C5EE6E243CA8E400516C35 /* Diagram */ = {
+		91C5EE6E243CA8E400516C35 /* Chart */ = {
 			isa = PBXGroup;
 			children = (
 				91C5EE6F243CA8EB00516C35 /* Controller */,
 			);
-			path = Diagram;
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		91C5EE6F243CA8EB00516C35 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				91C5EE6C243CA8DD00516C35 /* DiagramTableViewController.swift */,
+				91C5EE6C243CA8DD00516C35 /* ChartViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -546,6 +548,7 @@
 			packageProductDependencies = (
 				91111AB52453056200E192B4 /* RealmSwift */,
 				91111AB72453056200E192B4 /* Realm */,
+				91D323192463E75500BA240A /* Charts */,
 			);
 			productName = "Cig'n'Pills Planner";
 			productReference = 91C5EE24243CA2CC00516C35 /* CigPillsPlanner.app */;
@@ -577,6 +580,7 @@
 			mainGroup = 91C5EE1B243CA2CB00516C35;
 			packageReferences = (
 				91111AB42453056200E192B4 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				91D323182463E75500BA240A /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 91C5EE25243CA2CC00516C35 /* Products */;
 			projectDirPath = "";
@@ -644,7 +648,7 @@
 				91C5EE5F243CA77B00516C35 /* CigaretteScheduleModel.swift in Sources */,
 				91C5EE7C243CAA1E00516C35 /* ErrorManager.swift in Sources */,
 				91C5EE69243CA87800516C35 /* DetailTableViewController.swift in Sources */,
-				91C5EE6D243CA8DD00516C35 /* DiagramTableViewController.swift in Sources */,
+				91C5EE6D243CA8DD00516C35 /* ChartViewController.swift in Sources */,
 				91C5EE82243CAB6C00516C35 /* CigaretteAccountingCell.swift in Sources */,
 				91C5EE65243CA83100516C35 /* TabBarController.swift in Sources */,
 				91C5EE52243CA66900516C35 /* MainTableViewController.swift in Sources */,
@@ -842,6 +846,14 @@
 				minimumVersion = 4.4.1;
 			};
 		};
+		91D323182463E75500BA240A /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -854,6 +866,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 91111AB42453056200E192B4 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = Realm;
+		};
+		91D323192463E75500BA240A /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91D323182463E75500BA240A /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
